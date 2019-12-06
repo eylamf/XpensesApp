@@ -47,6 +47,7 @@ const App = ({loading, isNewUser}: Props): React$Node => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'rgb(0, 0, 0)',
   },
 
   loading: {

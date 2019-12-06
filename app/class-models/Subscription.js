@@ -54,7 +54,7 @@ class Subscription {
     return this.description != null;
   }
 
-  setCompanyDescription(desc: string) {
+  setDescription(desc: ?string) {
     this.description = desc;
   }
 

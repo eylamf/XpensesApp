@@ -14,7 +14,6 @@ type Props = {
 
 const MySubscriptions = ({navigation, route}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
-  const [count, setCount] = useState(0);
 
   const onGoToFixed = () => {
     navigation.navigate('FixedSubscriptions');
@@ -22,7 +21,7 @@ const MySubscriptions = ({navigation, route}: Props): Element<any> => {
 
   return (
     <View style={theme.styles.container}>
-      <Text onPress={onGoToFixed}>Go to fixed</Text>
+      <Text style={theme.styles.text} onPress={onGoToFixed}>Go to fixed</Text>
       <SubscriptionsList />
     </View>
   );

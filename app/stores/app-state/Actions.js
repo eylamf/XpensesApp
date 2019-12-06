@@ -16,9 +16,9 @@ export const checkIfNewUser = async () => {
       AppStateStore.setIsNewUser(isNew);
     } else {
       await AsyncStorage.setItem('isNewUser', 'false');
-
-      await SubscriptionActions.setFixedSubscriptions();
     }
+
+    await SubscriptionActions.fetchSubscriptions();
 
     AppStateStore.setLoading(false);
   } catch (e) {

@@ -1,6 +1,6 @@
 // @flow
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useLayoutEffect} from 'react';
 import type {Element} from 'react';
 import {View, Text} from 'react-native';
 import stylesheet from './FixedStyles';
@@ -16,13 +16,20 @@ type Props = {
 const MySubscriptions = ({navigation, route}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: 'All Subscriptions',
+    });
+  }, [navigation]);
+
   const onSubscriptionPress = useCallback((subscription: Subscription) => {
-    navigation.navigate('SubDetails', {subscription});
+    navigation.navigate('SubDetails', {subscription, isAddMode: true});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <View style={theme.styles.container}>
+      <Text style={theme.styles.text} onPress={() => navigation.goBack()}>Close</Text>
       <FixedSubscriptionsList onItemPress={onSubscriptionPress} />
     </View>
   );

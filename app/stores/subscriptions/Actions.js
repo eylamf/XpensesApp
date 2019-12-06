@@ -37,6 +37,7 @@ export const setFixedSubscriptions = async () => {
 export const fetchSubscriptions = async () => {
   let keys = [];
 
+
   // Get keys with proper prefix
   try {
     keys = await AsyncStorage.getAllKeys();

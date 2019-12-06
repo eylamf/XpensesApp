@@ -1,13 +1,14 @@
 // @flow
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import type {Element} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
+import {connect} from 'remx';
 import {useTheme} from '../../utils/hooks/useTheme';
 import type {Theme} from '../../utils/Types';
 import SubscriptionItem from '../list-items/SubscriptionItem';
 import {SubscriptionsStore} from '../../stores/subscriptions/Store';
-import {connect} from 'remx';
+import LineDivider from '../LineDivider';
 
 type Props = {
   subscriptionIDs: string[],
@@ -22,11 +23,19 @@ const SubscriptionsList = ({subscriptionIDs}: Props): Element<any> => {
     return <SubscriptionItem subscriptionID={subID} />;
   };
 
+  const renderSeparator = useCallback(() => {
+    return <LineDivider leftSpace={15} color={theme.colors.soft2} />;
+  }, [theme.colors.soft2]);
+
+  console.log(subscriptionIDs);
+
   return (
     <FlatList
       data={subscriptionIDs}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
+      ItemSeparatorComponent={renderSeparator}
+      ListFooterComponent={renderSeparator}
     />
   );
 };
