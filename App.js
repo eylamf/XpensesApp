@@ -1,7 +1,9 @@
 // @flow
 
-import React, {useRef, useEffect} from 'react';
-import {StyleSheet, View, ActivityIndicator} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, View, ActivityIndicator, YellowBox} from 'react-native';
+import 'react-native-gesture-handler';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {enableScreens} from 'react-native-screens';
 import {NavigationNativeContainer} from '@react-navigation/native';
 import {Navigation} from './app/utils/Navigation';
@@ -10,6 +12,8 @@ import * as AppStateActions from './app/stores/app-state/Actions';
 import {connect} from 'remx';
 
 enableScreens();
+
+YellowBox.ignoreWarnings(['Warning: componentWillMount']);
 
 type Props = {
   loading: boolean,
@@ -25,15 +29,17 @@ const App = ({loading, isNewUser}: Props): React$Node => {
 
   return (
     <View style={styles.container}>
-      {loading ? (
-        <View style={styles.loading}>
-          <ActivityIndicator />
-        </View>
-      ) : (
-        <NavigationNativeContainer>
-          <Navigation />
-        </NavigationNativeContainer>
-      )}
+      <SafeAreaProvider>
+        {loading ? (
+          <View style={styles.loading}>
+            <ActivityIndicator />
+          </View>
+        ) : (
+          <NavigationNativeContainer>
+            <Navigation />
+          </NavigationNativeContainer>
+        )}
+      </SafeAreaProvider>
     </View>
   );
 };
