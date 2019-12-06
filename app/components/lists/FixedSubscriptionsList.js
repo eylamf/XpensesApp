@@ -5,11 +5,14 @@ import type {Element} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 import {useTheme} from '../../utils/hooks/useTheme';
 import type {Theme, ReducerAction} from '../../utils/Types';
+import Subscription from '../../class-models/Subscription';
 import FixedSubscriptionItem from '../list-items/FixedSubscriptionItem';
 import LineDivider from '../LineDivider';
 import {SUBSCRIPTIONS} from '../../utils/Data';
 
-type Props = {};
+type Props = {
+  onItemPress: (sub: Subscription) => void,
+};
 
 type State = {
   ids: string[],
@@ -32,7 +35,7 @@ const reducer = (state: State, action: ReducerAction): State => {
   }
 };
 
-const FixedSubscriptionsList = ({}: Props): Element<any> => {
+const FixedSubscriptionsList = ({onItemPress}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
   const [state, dispatch] = useReducer(reducer, {
     ids: Object.keys(SUBSCRIPTIONS),
@@ -44,7 +47,7 @@ const FixedSubscriptionsList = ({}: Props): Element<any> => {
   const renderItem = useCallback(
     ({item: subID}: {item: string}): Element<any> => {
       const subscription = SUBSCRIPTIONS[subID];
-      return <FixedSubscriptionItem subscription={subscription} />;
+      return <FixedSubscriptionItem subscription={subscription} onPress={onItemPress} />;
     },
     [],
   );
