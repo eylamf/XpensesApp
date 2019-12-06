@@ -14,8 +14,6 @@ export function useTheme(stylesheet: any) {
 
       console.log('recalculated');
     }
-
-    console.log('hit');
   }, [theme, stylesheet]);
 
   return [theme, styles];

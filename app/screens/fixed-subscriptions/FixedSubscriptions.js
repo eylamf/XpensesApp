@@ -3,9 +3,9 @@
 import React, {useState} from 'react';
 import type {Element} from 'react';
 import {View, Text} from 'react-native';
-import stylesheet from './SubscriptionsStyles';
+import stylesheet from './FixedStyles';
 import {useTheme} from '../../utils/hooks/useTheme';
-import SubscriptionsList from '../../components/lists/SubscriptionsList';
+import FixedSubscriptionsList from '../../components/lists/FixedSubscriptionsList';
 
 type Props = {
   navigation: any,
@@ -14,16 +14,10 @@ type Props = {
 
 const MySubscriptions = ({navigation, route}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
-  const [count, setCount] = useState(0);
-
-  const onGoToFixed = () => {
-    navigation.navigate('FixedSubscriptions');
-  };
 
   return (
     <View style={theme.styles.container}>
-      <Text onPress={onGoToFixed}>Go to fixed</Text>
-      <SubscriptionsList />
+      <FixedSubscriptionsList />
     </View>
   );
 };
