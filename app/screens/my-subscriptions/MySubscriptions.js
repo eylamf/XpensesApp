@@ -1,10 +1,11 @@
 // @flow
 
-import React, {useState} from 'react';
+import React, {useCallback} from 'react';
 import type {Element} from 'react';
 import {View, Text} from 'react-native';
 import stylesheet from './SubscriptionsStyles';
 import {useTheme} from '../../utils/hooks/useTheme';
+import Subscription from '../../class-models/Subscription';
 import SubscriptionsList from '../../components/lists/SubscriptionsList';
 
 type Props = {
@@ -19,10 +20,19 @@ const MySubscriptions = ({navigation, route}: Props): Element<any> => {
     navigation.navigate('FixedSubscriptions');
   };
 
+  const onSubscriptionPress = useCallback(
+    (subscription: Subscription) => {
+      navigation.navigate('SubDetails', {subscription, isAdd: false});
+    },
+    [navigation],
+  );
+
   return (
     <View style={theme.styles.container}>
-      <Text style={theme.styles.text} onPress={onGoToFixed}>Go to fixed</Text>
-      <SubscriptionsList />
+      <Text style={theme.styles.text} onPress={onGoToFixed}>
+        Go to fixed
+      </Text>
+      <SubscriptionsList onItemPress={onSubscriptionPress} />
     </View>
   );
 };

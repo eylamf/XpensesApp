@@ -16,6 +16,7 @@ type Props = {
   subscription: Subscription,
   description: ?string,
   cost: number,
+  onPress: (sub: Subscription) => void,
 };
 
 const SubscriptionItem = ({
@@ -23,6 +24,7 @@ const SubscriptionItem = ({
   subscription,
   description,
   cost,
+  onPress,
 }: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
 
@@ -31,7 +33,8 @@ const SubscriptionItem = ({
       style={styles.container}
       activeOpacity={0.9}
       underlayColor={theme.colors.soft}
-      rippleColor={theme.colors.soft}>
+      rippleColor={theme.colors.soft}
+      onPress={() => onPress(subscription)}>
       <Row style={theme.styles.padding}>
         <Image
           style={[

@@ -13,9 +13,9 @@ class Subscription {
   description: ?string;
   cost: number;
   firstPayment: number;
-  cycle: ?SubscriptionCycle;
+  cycle: SubscriptionCycle;
   hasReminder: boolean;
-  reminderInterval: ?ReminderInterval;
+  reminderInterval: ReminderInterval;
 
   constructor(source: SubscriptionSource) {
     const {

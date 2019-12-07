@@ -10,7 +10,7 @@ import SubscriptionDetails from '../screens/sub-details/SubscriptionDetails';
 const SearchStack = createNativeStackNavigator();
 
 const FixedSubscriptionsNav = (): React$Node => (
-  <SearchStack.Navigator>
+  <SearchStack.Navigator initialRouteName={'Search'}>
     <SearchStack.Screen name={'Search'} component={FixedSubscriptions} />
     <SearchStack.Screen
       name={'SubDetails'}
@@ -29,7 +29,7 @@ const FixedSubscriptionsNav = (): React$Node => (
 const NavStack = createNativeStackNavigator();
 
 export const Navigation = (): React$Node => (
-  <NavStack.Navigator>
+  <NavStack.Navigator initialRouteName={'Subscriptions'}>
     <NavStack.Screen name={'Subscriptions'} component={MySubscriptions} />
     <NavStack.Screen
       name={'FixedSubscriptions'}
@@ -38,6 +38,13 @@ export const Navigation = (): React$Node => (
         animation: 'fade',
         presentation: 'transparentModal',
         contentStyle: {backgroundColor: 'transparent'},
+      }}
+    />
+    <NavStack.Screen
+      name={'SubDetails'}
+      component={SubscriptionDetails}
+      options={{
+        presentation: 'modal',
       }}
     />
   </NavStack.Navigator>

@@ -37,30 +37,29 @@ const SubDetailsHeader = React.memo<any>(
 
     return (
       <LinearGradient style={styles.container} colors={gradientColor}>
-        {/* <Row style={styles.content}>
-        <TouchableOpacity
-          style={styles.left}
-          activeOpacity={0.8}
-          onPress={onClose}>
-          <Image
-            style={[
-              styles.chevron,
-              {transform: [{rotate: isAddMode ? '180deg' : '90deg'}]},
-            ]}
-            source={CHEVRON}
-            resizeMode={'cover'}
-          />
-        </TouchableOpacity>
-        <View style={styles.center}>
-          <Text style={styles.title}>{title}</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.right}
-          activeOpacity={0.8}
-          onPress={onClose}>
-          <Text style={styles.actionLabel}>{'Save'}</Text>
-        </TouchableOpacity>
-      </Row> */}
+        {!isAddMode && (
+          <Row style={styles.content}>
+            <TouchableOpacity
+              style={styles.left}
+              activeOpacity={0.8}
+              onPress={onClose}>
+              <Image
+                style={styles.chevron}
+                source={CHEVRON}
+                resizeMode={'cover'}
+              />
+            </TouchableOpacity>
+            <View style={styles.center}>
+              {/* <Text style={styles.title}>{title}</Text> */}
+            </View>
+            <TouchableOpacity
+              style={styles.right}
+              activeOpacity={0.8}
+              onPress={onClose}>
+              <Text style={styles.actionLabel}>{'Save'}</Text>
+            </TouchableOpacity>
+          </Row>
+        )}
       </LinearGradient>
     );
   },
@@ -70,8 +69,8 @@ const stylesheet = (theme: Theme) =>
   StyleSheet.create({
     container: {
       height: 80,
-      paddingRight: 15,
-      paddingLeft: 9,
+      paddingRight: 20,
+      paddingLeft: 14,
       position: 'absolute',
       top: 0,
       left: 0,
@@ -81,7 +80,8 @@ const stylesheet = (theme: Theme) =>
 
     content: {
       flex: 1,
-      paddingTop: Constants.getStatusBarHeight(),
+      // paddingTop: Constants.getStatusBarHeight(), // TODO check if iOS < 13, else use the below style
+      paddingBottom: 15,
     },
 
     left: {
@@ -93,6 +93,7 @@ const stylesheet = (theme: Theme) =>
       width: 26,
       height: 26,
       tintColor: theme.colors.white,
+      transform: [{rotate: '90deg'}],
     },
 
     center: {

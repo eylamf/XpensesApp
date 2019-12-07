@@ -1,6 +1,6 @@
 // @flow
 
-import React, {useCallback, useState, useLayoutEffect} from 'react';
+import React, {useCallback, useReducer, useLayoutEffect} from 'react';
 import type {Element} from 'react';
 import {
   View,
@@ -14,14 +14,83 @@ import {useSafeArea} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import stylesheet from './DetailsStyles';
 import {useTheme} from '../../utils/hooks/useTheme';
+import type {ReducerAction, ReminderInterval, SubscriptionCycle} from '../../utils/Types';
 import Subscription from '../../class-models/Subscription';
 import SubDetailsHeader from '../../components/headers/SubDetailsHeader';
+import SubDetailsForm from '../../components/SubDetailsForm';
 import Row from '../../components/Row';
 import * as SubscriptionActions from '../../stores/subscriptions/Actions';
 
 type Props = {
   navigation: any,
   route: any,
+};
+
+type State = {
+  cost: string,
+  description: ?string,
+  firstPayment: number,
+  cycle: SubscriptionCycle,
+  hasReminder: boolean,
+  reminderInterval: ReminderInterval,
+  enableFirstPaymentPicker: boolean,
+  enableCyclePicker: boolean,
+  enableReminderPicker: boolean,
+};
+
+const types = {
+  SET_COST: 'SET_COST',
+  SET_DESC: 'SET_DESC',
+  SET_FIRST_PAYMENT: 'SET_FIRST_PAYMENT',
+  TOGGLE_HAS_REMINDER: 'TOGGLE_HAS_REMINDER',
+  SET_REMINDER_INTERVAL: 'SET_REMINDER_INTERVAL',
+  SET_CYCLE: 'SET_CYCLE',
+  TOGGLE_PAYMENT_PICKER: 'TOGGLE_PAYMENT_PICKER',
+  TOGGLE_CYCLE_PICKER: 'TOGGLE_CYCLE_PICKER',
+  TOGGLE_REMINDER_PICKER: 'TOGGLE_REMINDER_PICKER',
+};
+
+const reducer = (state: State, action: ReducerAction): State => {
+  switch (action.type) {
+    case types.SET_COST:
+      return {...state, cost: action.payload.cost};
+
+    case types.SET_DESC:
+      return {...state, description: action.payload.description};
+
+    case types.SET_FIRST_PAYMENT:
+      return {...state, firstPayment: action.payload.firstPayment};
+
+    case types.SET_CYCLE:
+      return {...state, cycle: action.payload.cycle};
+
+    case types.TOGGLE_HAS_REMINDER:
+      return {...state, hasReminder: !state.hasReminder};
+
+    case types.SET_REMINDER_INTERVAL:
+      return {...state, reminderInterval: action.payload.reminderInterval};
+
+    case types.TOGGLE_PAYMENT_PICKER: {
+      return {
+        ...state,
+        enableFirstPaymentPicker: !state.enableFirstPaymentPicker,
+        enableCyclePicker: false,
+        enableReminderPicker: false,
+      };
+    }
+
+    case types.TOGGLE_CYCLE_PICKER: {
+      return {
+        ...state,
+        enableFirstPaymentPicker: false,
+        enableCyclePicker: !state.enableCyclePicker,
+        enableReminderPicker: false,
+      };
+    }
+
+    default:
+      return state;
+  }
 };
 
 const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
@@ -34,8 +103,17 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     isAddMode,
   }: {subscription: Subscription, isAddMode: boolean} = route.params;
 
-  const [cost, setCost] = useState(subscription.cost.toFixed(2).toString());
-  const [description, setDescription] = useState(subscription.description);
+  const [state, dispatch] = useReducer(reducer, {
+    cost: subscription.cost.toFixed(2).toString(),
+    description: subscription.description,
+    firstPayment: subscription.firstPayment,
+    cycle: subscription.cycle,
+    hasReminder: subscription.hasReminder,
+    reminderInterval: subscription.reminderInterval,
+    enableFirstPaymentPicker: false,
+    enableCyclePicker: false,
+    enableReminderPicker: false,
+  });
 
   const onClose = useCallback(() => {
     navigation.goBack();
@@ -45,33 +123,34 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     if (isAddMode) {
       const updated = new Subscription({...subscription});
 
-      if (cost !== subscription.cost) {
-        updated.setCost(Number(cost));
+      if (state.cost !== subscription.cost) {
+        updated.setCost(Number(state.cost));
       }
 
-      if (description !== subscription.description) {
-        updated.setDescription(description);
+      if (state.description !== subscription.description) {
+        updated.setDescription(state.description);
       }
 
       console.log('SubDetails: updated', updated);
 
       SubscriptionActions.addSubscription(updated);
+    } else {
     }
-  }, [cost, description, isAddMode, subscription]);
+  }, [state.cost, state.description, isAddMode, subscription]);
 
   useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          style={styles.headerRight}
-          activeOpacity={0.8}
-          onPress={onAction}>
-          <Text style={theme.styles.whiteText}>
-            {isAddMode ? 'Add' : 'Save'}
-          </Text>
-        </TouchableOpacity>
-      ),
-    });
+    if (isAddMode) {
+      navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity
+            style={styles.headerRight}
+            activeOpacity={0.8}
+            onPress={onAction}>
+            <Text style={theme.styles.whiteText}>Add</Text>
+          </TouchableOpacity>
+        ),
+      });
+    }
   }, [
     navigation,
     isAddMode,
@@ -81,9 +160,9 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
   ]);
 
   const onBlur = () => {
-    let formatted = Number(cost).toFixed(2);
+    let formatted = Number(state.cost).toFixed(2);
 
-    setCost(formatted.toString());
+    dispatch({type: types.SET_COST, payload: {cost: formatted.toString()}});
   };
 
   return (
@@ -95,7 +174,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
           title={subscription.company.name}
           isAddMode={isAddMode}
           onClose={onClose}
-          // onAction={onAction}
+          onSave={onAction}
         />
         <ScrollView
           contentContainerStyle={[
@@ -115,8 +194,10 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
               style={theme.styles.whiteText}
               placeholder={'Add a description'}
               placeholderTextColor={subscription.company.tint2}
-              onChangeText={(text: string) => setDescription(text)}
-              value={description}
+              onChangeText={(text: string) =>
+                dispatch({type: types.SET_DESC, payload: {description: text}})
+              }
+              value={state.description}
               selectionColor={theme.colors.white}
             />
           </View>
@@ -135,14 +216,20 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
                 style={styles.costInput}
                 placeholder={'0.00'}
                 placeholderTextColor={subscription.company.tint2}
-                value={cost}
-                onChangeText={(text: string) => setCost(text)}
+                value={state.cost}
+                onChangeText={(text: string) =>
+                  dispatch({type: types.SET_COST, payload: {cost: text}})
+                }
                 onBlur={onBlur}
                 selectionColor={theme.colors.white}
                 keyboardType={'numeric'}
               />
             </Row>
           </Row>
+          <SubDetailsForm
+            state={state}
+            dispatch={dispatch}
+          />
         </ScrollView>
       </View>
     </>
