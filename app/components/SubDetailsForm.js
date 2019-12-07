@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type {Element} from 'react';
-import {View, LayoutAnimation, StyleSheet} from 'react-native';
+import {View, Text, LayoutAnimation, Switch, StyleSheet} from 'react-native';
 import moment from 'moment';
 import {useTheme} from '../utils/hooks/useTheme';
 import type {
@@ -19,6 +19,7 @@ import LineDivider from './LineDivider';
 type Props = {
   dispatch: (action: ReducerAction) => void,
   state: DetailsState,
+  onScrollToEnd: () => void,
 };
 
 type DetailsState = {
@@ -45,7 +46,11 @@ const types = {
   TOGGLE_REMINDER_PICKER: 'TOGGLE_REMINDER_PICKER',
 };
 
-const SubDetailsForm = ({dispatch, state}: Props): Element<any> => {
+const SubDetailsForm = ({
+  dispatch,
+  state,
+  onScrollToEnd,
+}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
 
   const onToggleFirstPaymentPicker = () => {
@@ -55,6 +60,8 @@ const SubDetailsForm = ({dispatch, state}: Props): Element<any> => {
       type: types.TOGGLE_PAYMENT_PICKER,
       payload: null,
     });
+
+    onScrollToEnd();
   };
 
   const onChangeFirstPayment = (value: Date) => {
@@ -71,6 +78,8 @@ const SubDetailsForm = ({dispatch, state}: Props): Element<any> => {
       type: types.TOGGLE_CYCLE_PICKER,
       payload: null,
     });
+
+    onScrollToEnd();
   };
 
   const onSelectCycleQuantity = (quantity: number) => {
@@ -86,6 +95,65 @@ const SubDetailsForm = ({dispatch, state}: Props): Element<any> => {
       payload: {cycle: {quantity: state.cycle.quantity, unit}},
     });
   };
+
+  const onToggleReminder = (hasReminder: boolean) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+
+    dispatch({
+      type: types.TOGGLE_HAS_REMINDER,
+      payload: {hasReminder},
+    });
+
+    onScrollToEnd();
+  };
+
+  const onToggleReminderPicker = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+
+    dispatch({
+      type: types.TOGGLE_REMINDER_PICKER,
+      payload: null,
+    });
+
+    onScrollToEnd();
+  };
+
+  const onSelectReminderQuantity = (newQuantity: number) => {
+    let {unit} = state.reminderInterval;
+
+    if (newQuantity === 0) {
+      unit = 'Same Day';
+    } else if (newQuantity > 0 && unit === 'Same Day') {
+      unit = 'Day(s)';
+    }
+
+    dispatch({
+      type: types.SET_REMINDER_INTERVAL,
+      payload: {reminderInterval: {quantity: newQuantity, unit}},
+    });
+  };
+
+  const onSelectReminderUnit = (newUnit: string) => {
+    let {quantity} = state.reminderInterval;
+
+    if (newUnit === 'Same Day') {
+      quantity = 0;
+    } else if (newUnit !== 'Same Day' && quantity === 0) {
+      quantity = 1;
+    }
+
+    dispatch({
+      type: types.SET_REMINDER_INTERVAL,
+      payload: {reminderInterval: {quantity, unit: newUnit}},
+    });
+  };
+
+  const reminderLabel =
+    state.reminderInterval.quantity === 0
+      ? 'Same Day'
+      : `${state.reminderInterval.quantity} ${
+          state.reminderInterval.unit
+        } before`;
 
   console.log('details form render');
 
@@ -124,6 +192,38 @@ const SubDetailsForm = ({dispatch, state}: Props): Element<any> => {
         </View>
       )}
       <LineDivider leftSpace={15} color={theme.colors.soft2} />
+      <FormDataRow
+        isExpanded={state.enableReminderPicker}
+        label={'Remind Me'}
+        value={'true'}
+        rightComponent={
+          <Switch
+            value={state.hasReminder}
+            onValueChange={onToggleReminder}
+            // trackColor={{
+            //   true: subscription.company.forceTint
+            //     ? null
+            //     : subscription.company.color,
+            // }}
+          />
+        }
+        onPress={onToggleReminderPicker}
+      />
+      {state.hasReminder && !state.enableReminderPicker && (
+        <Text style={styles.reminderDate}>{reminderLabel}</Text>
+      )}
+      {state.enableReminderPicker && (
+        <View style={styles.picker}>
+          <IntervalPicker
+            type={'reminder'}
+            label={'How far in advance?'}
+            interval={state.reminderInterval}
+            onSelectQuantity={onSelectReminderQuantity}
+            onSelectUnit={onSelectReminderUnit}
+          />
+        </View>
+      )}
+      <LineDivider leftSpace={15} color={theme.colors.soft2} />
     </>
   );
 };
@@ -131,6 +231,13 @@ const SubDetailsForm = ({dispatch, state}: Props): Element<any> => {
 const stylesheet = (theme: Theme) =>
   StyleSheet.create({
     picker: {overflow: 'hidden'},
+
+    reminderDate: {
+      paddingHorizontal: 15,
+      marginBottom: 15,
+      alignSelf: 'flex-end',
+      ...theme.styles.lightText,
+    },
   });
 
 export default SubDetailsForm;

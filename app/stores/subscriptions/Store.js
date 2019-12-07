@@ -56,7 +56,7 @@ const setters = remx.setters({
 
   addSubscription(subscription: Subscription) {
     state.subscriptions[subscription.id] = subscription;
-    state.ids.push(subscription.id);
+    state.ids = [...state.ids, subscription.id];
     state.totalCost += subscription.cost;
   },
 

@@ -1,6 +1,6 @@
 // @flow
 
-import React, {useCallback, useReducer, useLayoutEffect} from 'react';
+import React, {useRef, useCallback, useReducer, useLayoutEffect} from 'react';
 import type {Element} from 'react';
 import {
   View,
@@ -64,8 +64,16 @@ const reducer = (state: State, action: ReducerAction): State => {
     case types.SET_CYCLE:
       return {...state, cycle: action.payload.cycle};
 
-    case types.TOGGLE_HAS_REMINDER:
-      return {...state, hasReminder: !state.hasReminder};
+    case types.TOGGLE_HAS_REMINDER: {
+      const {hasReminder} = action.payload;
+      return {
+        ...state,
+        hasReminder,
+        enableReminderPicker: hasReminder,
+        enableFirstPaymentPicker: false,
+        enableCyclePicker: false,
+      };
+    }
 
     case types.SET_REMINDER_INTERVAL:
       return {...state, reminderInterval: action.payload.reminderInterval};
@@ -88,12 +96,33 @@ const reducer = (state: State, action: ReducerAction): State => {
       };
     }
 
+    case types.TOGGLE_REMINDER_PICKER: {
+      const enabled = !state.enableReminderPicker;
+      let hasReminder = state.hasReminder;
+
+      if (enabled) {
+        if (!hasReminder) {
+          hasReminder = true;
+        }
+      }
+
+      return {
+        ...state,
+        enableFirstPaymentPicker: false,
+        enableCyclePicker: false,
+        enableReminderPicker: enabled,
+        hasReminder,
+      };
+    }
+
     default:
       return state;
   }
 };
 
 const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
+  const scrollview = useRef();
+
   const [theme, styles] = useTheme(stylesheet);
 
   const insets = useSafeArea();
@@ -119,7 +148,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     navigation.goBack();
   }, [navigation]);
 
-  const onAction = useCallback(() => {
+  const onAction = useCallback(async () => {
     if (isAddMode) {
       const updated = new Subscription({...subscription});
 
@@ -131,12 +160,12 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
         updated.setDescription(state.description);
       }
 
-      console.log('SubDetails: updated', updated);
+      await SubscriptionActions.addSubscription(updated);
 
-      SubscriptionActions.addSubscription(updated);
+      onClose();
     } else {
     }
-  }, [state.cost, state.description, isAddMode, subscription]);
+  }, [state.cost, state.description, isAddMode, subscription, onClose]);
 
   useLayoutEffect(() => {
     if (isAddMode) {
@@ -165,6 +194,12 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     dispatch({type: types.SET_COST, payload: {cost: formatted.toString()}});
   };
 
+  const onScrollToEnd = () => {
+    setTimeout(() => {
+      scrollview.current && scrollview.current.scrollToEnd();
+    }, 0);
+  };
+
   return (
     <>
       <StatusBar barStyle={'light-content'} animated />
@@ -177,9 +212,10 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
           onSave={onAction}
         />
         <ScrollView
+          ref={scrollview}
           contentContainerStyle={[
             styles.listContent,
-            {paddingBottom: insets.bottom},
+            {paddingBottom: insets.bottom + 15},
           ]}
           stickyHeaderIndices={[1]}>
           <View
@@ -229,6 +265,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
           <SubDetailsForm
             state={state}
             dispatch={dispatch}
+            onScrollToEnd={onScrollToEnd}
           />
         </ScrollView>
       </View>
