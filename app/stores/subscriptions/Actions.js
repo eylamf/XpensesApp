@@ -37,7 +37,6 @@ export const setFixedSubscriptions = async () => {
 export const fetchSubscriptions = async () => {
   let keys = [];
 
-
   // Get keys with proper prefix
   try {
     keys = await AsyncStorage.getAllKeys();
@@ -123,5 +122,18 @@ export const addSubscription = async (subscription: Subscription) => {
     SubscriptionsStore.addSubscription(subscription);
   } catch (e) {
     console.warn('Subscription Actions: add - error adding', e);
+  }
+};
+
+export const updateSubscription = async (subscription: Subscription) => {
+  try {
+    await AsyncStorage.mergeItem(
+      `sub:${subscription.id}`,
+      JSON.stringify(subscription),
+    );
+
+    SubscriptionsStore.updateSubscription(subscription);
+  } catch (e) {
+    console.warn('Subscription Actions: update - error updating', e);
   }
 };

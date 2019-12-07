@@ -3,6 +3,7 @@
 import React from 'react';
 import type {Element} from 'react';
 import {View, Text, LayoutAnimation, Switch, StyleSheet} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import moment from 'moment';
 import {useTheme} from '../utils/hooks/useTheme';
 import type {
@@ -210,7 +211,14 @@ const SubDetailsForm = ({
         onPress={onToggleReminderPicker}
       />
       {state.hasReminder && !state.enableReminderPicker && (
-        <Text style={styles.reminderDate}>{reminderLabel}</Text>
+        <TouchableOpacity
+          // style={styles}
+          activeOpacity={0.8}
+          onPress={onToggleReminderPicker}>
+          <Text style={styles.reminderDate}>
+            {reminderLabel}
+          </Text>
+        </TouchableOpacity>
       )}
       {state.enableReminderPicker && (
         <View style={styles.picker}>

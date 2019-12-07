@@ -148,6 +148,8 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     navigation.goBack();
   }, [navigation]);
 
+  console.log(isAddMode);
+
   const onAction = useCallback(async () => {
     if (isAddMode) {
       const updated = new Subscription({...subscription});
@@ -164,8 +166,31 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
 
       onClose();
     } else {
+      const updated = new Subscription({
+        company: subscription.company,
+        cost: Number(state.cost),
+        firstPayment: state.firstPayment,
+        description: state.description,
+        cycle: state.cycle,
+        reminderInterval: state.reminderInterval,
+        hasReminder: state.hasReminder,
+      });
+
+      await SubscriptionActions.updateSubscription(updated);
+
+      onClose();
     }
-  }, [state.cost, state.description, isAddMode, subscription, onClose]);
+  }, [
+    isAddMode,
+    subscription,
+    state.cost,
+    state.firstPayment,
+    state.description,
+    state.cycle,
+    state.reminderInterval,
+    state.hasReminder,
+    onClose,
+  ]);
 
   useLayoutEffect(() => {
     if (isAddMode) {

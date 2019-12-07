@@ -7,6 +7,7 @@ import stylesheet from './SubscriptionsStyles';
 import {useTheme} from '../../utils/hooks/useTheme';
 import Subscription from '../../class-models/Subscription';
 import SubscriptionsList from '../../components/lists/SubscriptionsList';
+import SubscriptionsCostFooter from '../../components/headers/SubscriptionsCostFooter';
 
 type Props = {
   navigation: any,
@@ -22,7 +23,7 @@ const MySubscriptions = ({navigation, route}: Props): Element<any> => {
 
   const onSubscriptionPress = useCallback(
     (subscription: Subscription) => {
-      navigation.navigate('SubDetails', {subscription, isAdd: false});
+      navigation.navigate('SubDetails', {subscription, isAddMode: false});
     },
     [navigation],
   );
@@ -33,6 +34,7 @@ const MySubscriptions = ({navigation, route}: Props): Element<any> => {
         Go to fixed
       </Text>
       <SubscriptionsList onItemPress={onSubscriptionPress} />
+      <SubscriptionsCostFooter />
     </View>
   );
 };

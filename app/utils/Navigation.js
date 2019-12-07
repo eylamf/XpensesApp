@@ -30,7 +30,11 @@ const NavStack = createNativeStackNavigator();
 
 export const Navigation = (): React$Node => (
   <NavStack.Navigator initialRouteName={'Subscriptions'}>
-    <NavStack.Screen name={'Subscriptions'} component={MySubscriptions} />
+    <NavStack.Screen
+      name={'Subscriptions'}
+      component={MySubscriptions}
+      options={{headerShown: false}}
+    />
     <NavStack.Screen
       name={'FixedSubscriptions'}
       component={FixedSubscriptionsNav}

@@ -66,6 +66,12 @@ const setters = remx.setters({
 
     delete state.subscriptions[sid];
   },
+
+  updateSubscription(subscription: Subscription) {
+    state.totalCost -= state.subscriptions[subscription.id].cost;
+    state.subscriptions[subscription.id] = subscription;
+    state.totalCost += subscription.cost;
+  },
 });
 
 export const SubscriptionsStore = {

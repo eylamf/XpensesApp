@@ -17,12 +17,13 @@ type Props = {
   title: string,
   isAddMode: boolean,
   onClose: () => void,
+  onSave: () => void,
 };
 
 const CHEVRON = require('../../../assets/Chevron.png');
 
 const SubDetailsHeader = React.memo<any>(
-  ({color, title, isAddMode, onClose}: Props): Element<any> => {
+  ({color, title, isAddMode, onClose, onSave}: Props): Element<any> => {
     const [theme, styles] = useTheme(stylesheet);
 
     const gradientColor = useMemo(
@@ -55,7 +56,7 @@ const SubDetailsHeader = React.memo<any>(
             <TouchableOpacity
               style={styles.right}
               activeOpacity={0.8}
-              onPress={onClose}>
+              onPress={onSave}>
               <Text style={styles.actionLabel}>{'Save'}</Text>
             </TouchableOpacity>
           </Row>
