@@ -31,7 +31,12 @@ const FixedSubscriptionItem = ({
       onPress={() => onPress(subscription)}>
       <Row style={theme.styles.padding}>
         <Image
-          style={styles.logo}
+          style={[
+            styles.logo,
+            subscription.company.forceTint
+              ? {tintColor: theme.colors.opposite}
+              : null,
+          ]}
           source={{uri: subscription.company.logoURI}}
           resizeMode={'cover'}
         />

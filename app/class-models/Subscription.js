@@ -13,9 +13,9 @@ class Subscription {
   description: ?string;
   cost: number;
   firstPayment: number;
-  cycle: ?SubscriptionCycle;
+  cycle: SubscriptionCycle;
   hasReminder: boolean;
-  reminderInterval: ?ReminderInterval;
+  reminderInterval: ReminderInterval;
 
   constructor(source: SubscriptionSource) {
     const {
@@ -54,7 +54,7 @@ class Subscription {
     return this.description != null;
   }
 
-  setCompanyDescription(desc: string) {
+  setDescription(desc: ?string) {
     this.description = desc;
   }
 

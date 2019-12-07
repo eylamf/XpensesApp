@@ -37,6 +37,7 @@ export const setFixedSubscriptions = async () => {
 export const fetchSubscriptions = async () => {
   let keys = [];
 
+
   // Get keys with proper prefix
   try {
     keys = await AsyncStorage.getAllKeys();
@@ -50,6 +51,8 @@ export const fetchSubscriptions = async () => {
 
       // TODO: add a stores comparator to use here
       keys.sort();
+
+      // await AsyncStorage.multiRemove(keys);
     } else {
       throw new Error('Could not get keys');
     }

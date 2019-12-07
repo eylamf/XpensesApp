@@ -77,7 +77,7 @@ export type SubscriptionSource = $ReadOnly<{
   description?: ?string,
   cost?: number,
   firstPayment?: number,
-  cycle?: ?SubscriptionCycle,
+  cycle: ?SubscriptionCycle,
   hasReminder?: boolean,
-  reminderInterval?: ?ReminderInterval,
+  reminderInterval: ?ReminderInterval,
 }>;
