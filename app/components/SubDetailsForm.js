@@ -18,6 +18,7 @@ import IntervalPicker from './pickers/IntervalPicker';
 import LineDivider from './LineDivider';
 
 type Props = {
+  switchTint: ?string,
   dispatch: (action: ReducerAction) => void,
   state: DetailsState,
   onScrollToEnd: () => void,
@@ -48,6 +49,7 @@ const types = {
 };
 
 const SubDetailsForm = ({
+  switchTint,
   dispatch,
   state,
   onScrollToEnd,
@@ -174,7 +176,7 @@ const SubDetailsForm = ({
           />
         </View>
       )}
-      <LineDivider leftSpace={15} color={theme.colors.soft2} />
+      <LineDivider leftSpace={15} color={theme.colors.soft1} />
       <FormDataRow
         isExpanded={state.enableCyclePicker}
         label={'Payment Cycle'}
@@ -192,7 +194,7 @@ const SubDetailsForm = ({
           />
         </View>
       )}
-      <LineDivider leftSpace={15} color={theme.colors.soft2} />
+      <LineDivider leftSpace={15} color={theme.colors.soft1} />
       <FormDataRow
         isExpanded={state.enableReminderPicker}
         label={'Remind Me'}
@@ -201,11 +203,7 @@ const SubDetailsForm = ({
           <Switch
             value={state.hasReminder}
             onValueChange={onToggleReminder}
-            // trackColor={{
-            //   true: subscription.company.forceTint
-            //     ? null
-            //     : subscription.company.color,
-            // }}
+            trackColor={{true: switchTint}}
           />
         }
         onPress={onToggleReminderPicker}
@@ -215,9 +213,7 @@ const SubDetailsForm = ({
           // style={styles}
           activeOpacity={0.8}
           onPress={onToggleReminderPicker}>
-          <Text style={styles.reminderDate}>
-            {reminderLabel}
-          </Text>
+          <Text style={styles.reminderDate}>{reminderLabel}</Text>
         </TouchableOpacity>
       )}
       {state.enableReminderPicker && (
@@ -231,7 +227,7 @@ const SubDetailsForm = ({
           />
         </View>
       )}
-      <LineDivider leftSpace={15} color={theme.colors.soft2} />
+      <LineDivider leftSpace={15} color={theme.colors.soft1} />
     </>
   );
 };

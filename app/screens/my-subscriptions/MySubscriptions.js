@@ -2,17 +2,21 @@
 
 import React, {useCallback} from 'react';
 import type {Element} from 'react';
-import {View, Text} from 'react-native';
+import {View, Image} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import stylesheet from './SubscriptionsStyles';
 import {useTheme} from '../../utils/hooks/useTheme';
 import Subscription from '../../class-models/Subscription';
 import SubscriptionsList from '../../components/lists/SubscriptionsList';
 import SubscriptionsCostFooter from '../../components/headers/SubscriptionsCostFooter';
+import LargeTitle from '../../components/headers/LargeTitle';
 
 type Props = {
   navigation: any,
   route: any,
 };
+
+const PLUS = require('../../../assets/Plus.png');
 
 const MySubscriptions = ({navigation, route}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
@@ -30,9 +34,20 @@ const MySubscriptions = ({navigation, route}: Props): Element<any> => {
 
   return (
     <View style={theme.styles.container}>
-      <Text style={[theme.styles.text, {marginTop: 30}]} onPress={onGoToFixed}>
+      <LargeTitle
+        title={'Subscriptions'}
+        rightComponent={
+          <TouchableOpacity
+            style={styles.addBtn}
+            activeOpacity={0.8}
+            onPress={onGoToFixed}>
+            <Image style={styles.addIcon} source={PLUS} resizeMode={'cover'} />
+          </TouchableOpacity>
+        }
+      />
+      {/* <Text style={[theme.styles.text, {marginTop: 30}]} onPress={onGoToFixed}>
         Go to fixed
-      </Text>
+      </Text> */}
       <SubscriptionsList onItemPress={onSubscriptionPress} />
       <SubscriptionsCostFooter />
     </View>

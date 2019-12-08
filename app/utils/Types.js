@@ -9,6 +9,7 @@ type ColorSet = $Exact<{
   accent: string,
   main: string,
   soft: string,
+  soft1: string,
   soft2: string,
   soft3: string,
   opposite: string,

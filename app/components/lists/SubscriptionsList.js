@@ -1,9 +1,12 @@
 // @flow
 
-import React, {useCallback} from 'react';
+import React, {useRef, useMemo, useCallback} from 'react';
 import type {Element} from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import {View, FlatList, StyleSheet} from 'react-native';
+import Animated from 'react-native-reanimated';
+import LinearGradient from 'react-native-linear-gradient';
 import {connect} from 'remx';
+import {convertColorToOpacity} from '../../utils/Theme';
 import {useTheme} from '../../utils/hooks/useTheme';
 import type {Theme} from '../../utils/Types';
 import Subscription from '../../class-models/Subscription';
@@ -16,11 +19,19 @@ type Props = {
   onItemPress: (sub: Subscription) => void,
 };
 
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+
 const SubscriptionsList = ({
   subscriptionIDs,
   onItemPress,
 }: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const gradientColors = useMemo(() => {
+    return [theme.colors.main, convertColorToOpacity(theme.colors.main, 0)];
+  }, [theme.colors.main]);
 
   const keyExtractor = (item: string): string => item;
 
@@ -29,27 +40,51 @@ const SubscriptionsList = ({
   };
 
   const renderSeparator = () => {
-    return <LineDivider leftSpace={15} color={theme.colors.soft2} />;
+    return <LineDivider leftSpace={15} color={theme.colors.soft1} />;
   };
 
-  console.log(subscriptionIDs);
+  const fadeOpacity = Animated.interpolate(scrollY, {
+    inputRange: [0, 30],
+    outputRange: [0, 1],
+  });
 
   return (
-    <FlatList
-      data={subscriptionIDs}
-      keyExtractor={keyExtractor}
-      renderItem={renderItem}
-      ItemSeparatorComponent={renderSeparator}
-      ListFooterComponent={renderSeparator}
-    />
+    <View style={theme.styles.flexOne}>
+      <Animated.View
+        style={[styles.fade, {opacity: fadeOpacity}]}
+        pointerEvents={'none'}>
+        <LinearGradient style={styles.gradient} colors={gradientColors} />
+      </Animated.View>
+      {/* <LineDivider color={theme.colors.soft1} /> */}
+      <AnimatedFlatList
+        data={subscriptionIDs}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        ItemSeparatorComponent={renderSeparator}
+        ListFooterComponent={renderSeparator}
+        scrollEventThrottle={16}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {
+            useNativeDriver: true,
+          },
+        )}
+      />
+    </View>
   );
 };
 
 const stylesheet = (theme: Theme) =>
   StyleSheet.create({
-    content: {
-      paddingTop: 15,
+    fade: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 2,
     },
+
+    gradient: {height: 80},
   });
 
 const mapStateToProps = () => ({

@@ -14,7 +14,11 @@ import {useSafeArea} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import stylesheet from './DetailsStyles';
 import {useTheme} from '../../utils/hooks/useTheme';
-import type {ReducerAction, ReminderInterval, SubscriptionCycle} from '../../utils/Types';
+import type {
+  ReducerAction,
+  ReminderInterval,
+  SubscriptionCycle,
+} from '../../utils/Types';
 import Subscription from '../../class-models/Subscription';
 import SubDetailsHeader from '../../components/headers/SubDetailsHeader';
 import SubDetailsForm from '../../components/SubDetailsForm';
@@ -288,6 +292,9 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
             </Row>
           </Row>
           <SubDetailsForm
+            switchTint={
+              subscription.company.forceTint ? null : subscription.company.color
+            }
             state={state}
             dispatch={dispatch}
             onScrollToEnd={onScrollToEnd}
