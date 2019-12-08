@@ -28,7 +28,7 @@ const getters = remx.getters({
   },
 
   getTotalCost(): number {
-    return state.totalCost;
+    return state.totalCost.toFixed(2);
   },
 
   exists(sid: string): boolean {

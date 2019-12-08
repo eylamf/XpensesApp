@@ -39,9 +39,9 @@ export const Navigation = (): React$Node => (
       name={'FixedSubscriptions'}
       component={FixedSubscriptionsNav}
       options={{
-        animation: 'fade',
+        // animation: 'fade',
         presentation: 'transparentModal',
-        contentStyle: {backgroundColor: 'transparent'},
+        // contentStyle: {backgroundColor: 'transparent'},
       }}
     />
     <NavStack.Screen

@@ -39,7 +39,7 @@ const stylesheet = (theme: Theme) =>
 
     costSection: {
       paddingTop: 30,
-      paddingBottom: 30,
+      paddingBottom: 35,
       ...theme.styles.center,
     },
 

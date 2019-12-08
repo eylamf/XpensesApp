@@ -30,7 +30,7 @@ const MySubscriptions = ({navigation, route}: Props): Element<any> => {
 
   return (
     <View style={theme.styles.container}>
-      <Text style={theme.styles.text} onPress={onGoToFixed}>
+      <Text style={[theme.styles.text, {marginTop: 30}]} onPress={onGoToFixed}>
         Go to fixed
       </Text>
       <SubscriptionsList onItemPress={onSubscriptionPress} />
