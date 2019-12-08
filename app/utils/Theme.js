@@ -11,7 +11,7 @@ export const COLORS: ColorMap = {
     accent: '',
     main: 'rgb(255, 255, 255)',
     soft: 'rgb(244, 246, 247)',
-    soft1: 'rgb(215, 220, 224)',
+    soft1: 'rgb(225, 234, 236)',
     soft2: 'rgb(200, 206, 212)',
     soft3: 'rgb(190, 196, 204)',
     opposite: 'rgb(0, 0, 0)',
