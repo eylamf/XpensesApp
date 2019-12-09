@@ -21,7 +21,7 @@ const stylesheet = (theme: Theme) =>
     addIcon: {
       width: 15,
       height: 15,
-      tintColor: theme.colors.opposite,
+      tintColor: theme.colors.primary,
     },
   });
 

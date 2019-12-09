@@ -138,3 +138,6 @@ export type SubscriptionSource = $ReadOnly<{
   hasReminder?: boolean,
   reminderInterval: ?ReminderInterval,
 }>;
+
+export type CostTypeFilter = 'Average' | 'Remaining' | 'Total';
+export type CostIntervalFilter = 'Weekly' | 'Monthly' | 'Yearly';

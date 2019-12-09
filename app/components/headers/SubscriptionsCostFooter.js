@@ -2,7 +2,15 @@
 
 import React, {useRef, useMemo, useEffect} from 'react';
 import type {Element} from 'react';
-import {Animated, Easing, View, Text, Image, StyleSheet} from 'react-native';
+import {
+  Animated,
+  Easing,
+  TouchableOpacity,
+  Text,
+  Image,
+  StyleSheet,
+} from 'react-native';
+// import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSafeArea} from 'react-native-safe-area-context';
 import {connect} from 'remx';
 import LinearGradient from 'react-native-linear-gradient';
@@ -10,17 +18,28 @@ import LinearGradient from 'react-native-linear-gradient';
 import {convertColorToOpacity} from '../../utils/Theme';
 import {useTheme} from '../../utils/hooks/useTheme';
 import {SubscriptionsStore} from '../../stores/subscriptions/Store';
-import type {Theme} from '../../utils/Types';
+import {AppStateStore} from '../../stores/app-state/Store';
+import type {
+  Theme,
+  CostTypeFilter,
+  CostIntervalFilter,
+} from '../../utils/Types';
 import Row from '../Row';
 
 type Props = {
   totalCost: number,
+  costTypeFilter: CostTypeFilter,
+  costIntervalFilter: CostIntervalFilter,
 };
 
 const CHEVRON = require('../../../assets/Chevron.png');
 export const GRADIENT_TOP_PADDING = 150;
 
-const SubscriptionsCostFooter = ({totalCost}: Props): Element<any> => {
+const SubscriptionsCostFooter = ({
+  totalCost,
+  costTypeFilter,
+  costIntervalFilter,
+}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
 
   const gradient = useMemo(() => {
@@ -67,6 +86,10 @@ const SubscriptionsCostFooter = ({totalCost}: Props): Element<any> => {
     };
   }, [totalCost, totalCostAnimVal, transitionValue]);
 
+  const onShowFilterOptions = () => {
+    AppStateStore.setBottomSheetEnabled(true);
+  };
+
   const scale = totalCostAnimVal.interpolate({
     inputRange: [0, 0.5, 1],
     outputRange: [1, 1.2, 1],
@@ -88,24 +111,20 @@ const SubscriptionsCostFooter = ({totalCost}: Props): Element<any> => {
         pointerEvents={'none'}
       />
       <Row style={[styles.content, {paddingBottom: insets.bottom + 30}]}>
-        <View style={theme.styles.flexOne}>
-          <Text style={theme.styles.mdText}>Total</Text>
+        <TouchableOpacity
+          style={theme.styles.flexOne}
+          activeOpacity={0.8}
+          onPress={onShowFilterOptions}>
+          <Text style={theme.styles.mdText}>{costTypeFilter}</Text>
           <Row style={styles.configure}>
-            <Text
-              style={
-                theme.id === 'light'
-                  ? theme.styles.smText
-                  : theme.styles.smLightText
-              }>
-              Monthly
-            </Text>
-            <Image
+            <Text style={styles.filterInterval}>{costIntervalFilter}</Text>
+            {/* <Image
               style={styles.chevron}
               source={CHEVRON}
               resizeMode={'cover'}
-            />
+            /> */}
           </Row>
-        </View>
+        </TouchableOpacity>
         <Animated.Text style={[styles.totalCost, {transform: [{scale}]}]}>
           ${totalCost}
         </Animated.Text>
@@ -148,6 +167,10 @@ const stylesheet = (theme: Theme) =>
       ...theme.styles.bold,
     },
 
+    filterInterval: {
+      ...theme.styles.lightText,
+    },
+
     configure: {
       marginTop: 3,
       marginRight: 2,
@@ -156,6 +179,8 @@ const stylesheet = (theme: Theme) =>
 
 const mapStateToProps = () => ({
   totalCost: SubscriptionsStore.getTotalCost(),
+  costTypeFilter: AppStateStore.getCostTypeFilter(),
+  costIntervalFilter: AppStateStore.getCostIntervalFilter(),
 });
 
 export default connect(mapStateToProps)(SubscriptionsCostFooter);

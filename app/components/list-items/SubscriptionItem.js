@@ -73,7 +73,7 @@ const stylesheet = (theme: Theme) =>
 
     name: {
       ...theme.styles.text,
-      ...theme.styles.bold,
+      // ...theme.styles.bold,
     },
 
     desc: {
@@ -89,7 +89,7 @@ const stylesheet = (theme: Theme) =>
     costLabel: {
       marginBottom: 3,
       ...theme.styles.text,
-      ...theme.styles.bold,
+      // ...theme.styles.bold,
     },
 
     interval: {

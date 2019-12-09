@@ -10,7 +10,11 @@ import {connect} from 'remx';
 import {Navigation} from './app/utils/Navigation';
 import {AppStateStore} from './app/stores/app-state/Store';
 import * as AppStateActions from './app/stores/app-state/Actions';
-import {registerForPushNotifications, fetchNotifications} from './app/stores/notifications/Actions';
+import {
+  registerForPushNotifications,
+  fetchNotifications,
+} from './app/stores/notifications/Actions';
+import AppContainer from './app/components/AppContainer';
 
 enableScreens();
 
@@ -47,7 +51,9 @@ const App = ({loading, isNewUser}: Props): React$Node => {
           </View>
         ) : (
           <NavigationNativeContainer>
-            <Navigation />
+            <AppContainer>
+              <Navigation />
+            </AppContainer>
           </NavigationNativeContainer>
         )}
       </SafeAreaProvider>
