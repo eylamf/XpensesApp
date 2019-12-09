@@ -1,6 +1,8 @@
 // @flow
 
 import Company from '../class-models/Company';
+import ReminderInterval from '../class-models/ReminderInterval';
+import SubscriptionCycleInterval from '../class-models/SubscriptionCycleInterval';
 
 type ColorSet = $Exact<{
   primary: string,
@@ -41,14 +43,68 @@ export type ReducerAction = $ReadOnly<{
   payload: any,
 }>;
 
-export type SubscriptionCycle = $Exact<{
-  quantity: number,
-  unit: 'Minute(s)' | 'Day(s)' | 'Week(s)' | 'Month(s)',
+export type SubscriptionIntervalUnit =
+  | 'Day(s)'
+  | 'Week(s)'
+  | 'Month(s)'
+  | 'Year(s)';
+
+export type SubscriptionIntervalFormattedUnit =
+  | 'Day'
+  | 'Week'
+  | 'Month'
+  | 'Year';
+
+export type SubscriptionIntervalSource = $Exact<{
+  quantity: ReminderIntervalQuantity,
+  unit: SubscriptionIntervalUnit,
 }>;
 
-export type ReminderInterval = $Exact<{
-  quantity: number,
-  unit: 'Same Day' | 'Minute(s)' | 'Day(s)' | 'Week(s)' | 'Month(s)',
+export type ReminderIntervalQuantity =
+  | 0
+  | 1
+  | 2
+  | 3
+  | 4
+  | 5
+  | 6
+  | 7
+  | 8
+  | 9
+  | 10
+  | 11
+  | 12
+  | 13
+  | 14
+  | 15
+  | 16
+  | 17
+  | 18
+  | 19
+  | 20
+  | 21
+  | 22
+  | 23
+  | 24
+  | 25
+  | 26
+  | 27
+  | 28
+  | 29
+  | 30;
+
+export type ReminderIntervalUnit =
+  | 'Same Day'
+  // | 'Minute(s)'
+  | 'Day(s)'
+  | 'Week(s)'
+  | 'Month(s)';
+
+export type ReminderIntervalFormattedUnit = 'Day' | 'Week' | 'Month';
+
+export type ReminderIntervalSource = $Exact<{
+  quantity: ReminderIntervalQuantity,
+  unit: ReminderIntervalUnit,
 }>;
 
 export type RepeatType = 'month' | 'week' | 'day' | 'hour' | 'time';
@@ -59,7 +115,7 @@ export type NotificationSource = $ReadOnly<{
   message: string,
   fireDate: number,
   repeatType?: RepeatType,
-  repeatTime?: number,
+  repeatTime?: ?number,
 }>;
 
 export type CompanySource = $ReadOnly<{
@@ -78,7 +134,7 @@ export type SubscriptionSource = $ReadOnly<{
   description?: ?string,
   cost?: number,
   firstPayment?: number,
-  cycle: ?SubscriptionCycle,
+  cycle: ?SubscriptionCycleInterval,
   hasReminder?: boolean,
   reminderInterval: ?ReminderInterval,
 }>;

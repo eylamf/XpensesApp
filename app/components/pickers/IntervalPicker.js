@@ -8,21 +8,24 @@ import {useTheme} from '../../utils/hooks/useTheme';
 // import Constants from '../../utils/Constants';
 import type {
   Theme,
-  ReminderInterval,
-  SubscriptionCycle,
+  ReminderIntervalQuantity,
+  ReminderIntervalUnit,
+  SubscriptionIntervalUnit,
 } from '../../utils/Types';
+import ReminderInterval from '../../class-models/ReminderInterval';
+import SubscriptionCycleInterval from '../../class-models/SubscriptionCycleInterval';
 import Row from '../Row';
 
 type Props = {
   type: 'cycle' | 'reminder',
   label: string,
-  interval: ReminderInterval | SubscriptionCycle,
-  onSelectQuantity: (q: number) => void,
-  onSelectUnit: (u: string) => void,
+  interval: ReminderInterval | SubscriptionCycleInterval,
+  onSelectQuantity: (q: ReminderIntervalQuantity) => void,
+  onSelectUnit: (u: ReminderIntervalUnit | SubscriptionIntervalUnit) => void,
 };
 
 const CYCLE_QUANTITIES = [...Array(30).keys()].map(n => ++n);
-const CYCLE_UNITS = ['Day(s)', 'Week(s)', 'Month(s)'];
+const CYCLE_UNITS = ['Day(s)', 'Week(s)', 'Month(s)', 'Year(s)'];
 const REMINDER_QUANTITIES = [...Array(30).keys()];
 const REMINDER_UNITS = ['Same Day', 'Day(s)', 'Week(s)', 'Month(s)'];
 

@@ -9,9 +9,12 @@ import {useTheme} from '../utils/hooks/useTheme';
 import type {
   Theme,
   ReducerAction,
-  SubscriptionCycle,
-  ReminderInterval,
+  ReminderIntervalQuantity,
+  ReminderIntervalUnit,
+  SubscriptionIntervalUnit,
 } from '../utils/Types';
+import ReminderInterval from '../class-models/ReminderInterval';
+import SubscriptionCycleInterval from '../class-models/SubscriptionCycleInterval';
 import FormDataRow from './list-items/FormDataRow';
 import FirstPaymentPicker from './pickers/FirstPaymentPicker';
 import IntervalPicker from './pickers/IntervalPicker';
@@ -28,7 +31,7 @@ type DetailsState = {
   cost: string,
   description: ?string,
   firstPayment: number,
-  cycle: SubscriptionCycle,
+  cycle: SubscriptionCycleInterval,
   hasReminder: boolean,
   reminderInterval: ReminderInterval,
   enableFirstPaymentPicker: boolean,
@@ -68,9 +71,11 @@ const SubDetailsForm = ({
   };
 
   const onChangeFirstPayment = (value: Date) => {
+    const adjusted = value.setSeconds(0, 0);
+
     dispatch({
       type: types.SET_FIRST_PAYMENT,
-      payload: {firstPayment: value.getTime()},
+      payload: {firstPayment: adjusted},
     });
   };
 
@@ -85,17 +90,27 @@ const SubDetailsForm = ({
     onScrollToEnd();
   };
 
-  const onSelectCycleQuantity = (quantity: number) => {
+  const onSelectCycleQuantity = (quantity: ReminderIntervalQuantity) => {
     dispatch({
       type: types.SET_CYCLE,
-      payload: {cycle: {quantity, unit: state.cycle.unit}},
+      payload: {
+        cycle: new SubscriptionCycleInterval({
+          quantity,
+          unit: state.cycle.unit,
+        }),
+      },
     });
   };
 
-  const onSelectCycleUnit = (unit: string) => {
+  const onSelectCycleUnit = (unit: SubscriptionIntervalUnit) => {
     dispatch({
       type: types.SET_CYCLE,
-      payload: {cycle: {quantity: state.cycle.quantity, unit}},
+      payload: {
+        cycle: new SubscriptionCycleInterval({
+          quantity: state.cycle.quantity,
+          unit,
+        }),
+      },
     });
   };
 
@@ -121,7 +136,7 @@ const SubDetailsForm = ({
     onScrollToEnd();
   };
 
-  const onSelectReminderQuantity = (newQuantity: number) => {
+  const onSelectReminderQuantity = (newQuantity: ReminderIntervalQuantity) => {
     let {unit} = state.reminderInterval;
 
     if (newQuantity === 0) {
@@ -132,11 +147,13 @@ const SubDetailsForm = ({
 
     dispatch({
       type: types.SET_REMINDER_INTERVAL,
-      payload: {reminderInterval: {quantity: newQuantity, unit}},
+      payload: {
+        reminderInterval: new ReminderInterval({quantity: newQuantity, unit}),
+      },
     });
   };
 
-  const onSelectReminderUnit = (newUnit: string) => {
+  const onSelectReminderUnit = (newUnit: ReminderIntervalUnit) => {
     let {quantity} = state.reminderInterval;
 
     if (newUnit === 'Same Day') {
@@ -147,7 +164,9 @@ const SubDetailsForm = ({
 
     dispatch({
       type: types.SET_REMINDER_INTERVAL,
-      payload: {reminderInterval: {quantity, unit: newUnit}},
+      payload: {
+        reminderInterval: new ReminderInterval({quantity, unit: newUnit}),
+      },
     });
   };
 
@@ -176,7 +195,7 @@ const SubDetailsForm = ({
           />
         </View>
       )}
-      <LineDivider leftSpace={15} color={theme.colors.soft1} />
+      <LineDivider leftSpace={15} color={theme.colors.soft2} />
       <FormDataRow
         isExpanded={state.enableCyclePicker}
         label={'Payment Cycle'}
@@ -194,7 +213,7 @@ const SubDetailsForm = ({
           />
         </View>
       )}
-      <LineDivider leftSpace={15} color={theme.colors.soft1} />
+      <LineDivider leftSpace={15} color={theme.colors.soft2} />
       <FormDataRow
         isExpanded={state.enableReminderPicker}
         label={'Remind Me'}
@@ -227,7 +246,7 @@ const SubDetailsForm = ({
           />
         </View>
       )}
-      <LineDivider leftSpace={15} color={theme.colors.soft1} />
+      <LineDivider leftSpace={15} color={theme.colors.soft2} />
     </>
   );
 };

@@ -34,6 +34,10 @@ const getters = remx.getters({
   exists(sid: string): boolean {
     return state.subscriptions[sid] !== undefined;
   },
+
+  getSubscriptionHasReminder(subID: string): boolean {
+    return state.subscriptions[subID].hasReminder;
+  },
 });
 
 const setters = remx.setters({

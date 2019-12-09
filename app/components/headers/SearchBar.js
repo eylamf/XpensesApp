@@ -79,7 +79,7 @@ const SearchBar = ({
           <Text style={theme.styles.text}>Done</Text>
         </TouchableOpacity>
       </Row>
-      {/* <LineDivider color={theme.colors.soft1} /> */}
+      {/* <LineDivider color={theme.colors.soft2} /> */}
     </Animated.View>
   );
 };

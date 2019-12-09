@@ -24,7 +24,7 @@ const FirstPaymentPicker = ({value, onChangeDate}: Props): Element<any> => {
         date={new Date(value)}
         onDateChange={onChangeDate}
         textColor={theme.id === 'dark' ? '#ffffff' : '#000'}
-        mode={'date'}
+        mode={'datetime'}
       />
     </>
   );

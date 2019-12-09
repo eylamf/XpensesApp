@@ -4,6 +4,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {SubscriptionsStore} from './Store';
 import Subscription from '../../class-models/Subscription';
 import Company from '../../class-models/Company';
+import * as NotificationActions from '../notifications/Actions';
+import Notification from '../../class-models/Notification';
 import {SUBSCRIPTIONS} from '../../utils/Data';
 
 /**
@@ -50,6 +52,7 @@ export const fetchSubscriptions = async () => {
 
       // TODO: add a stores comparator to use here
       keys.sort();
+      console.log(keys);
 
       // await AsyncStorage.multiRemove(keys);
     } else {
@@ -83,6 +86,8 @@ export const fetchSubscriptions = async () => {
         subscriptions[subscription.id] = subscription;
       });
 
+      console.log(subscriptions);
+
       SubscriptionsStore.setSubscriptions(subscriptions);
     } else {
       throw new Error('Could not get subscriptions');
@@ -103,6 +108,13 @@ export const removeSubscription = async (subID: string) => {
   try {
     await AsyncStorage.removeItem(`sub:${subID}`);
 
+    // Remove corresponding Notification if it exists
+    const hasReminder = SubscriptionsStore.getSubscriptionHasReminder(subID);
+
+    if (hasReminder) {
+      await NotificationActions.removeNotification(subID);
+    }
+
     SubscriptionsStore.deleteSubscription(subID);
   } catch (e) {
     console.warn('Subscription Actions: delete - error deleting', e);
@@ -119,6 +131,16 @@ export const addSubscription = async (subscription: Subscription) => {
       JSON.stringify(subscription),
     );
 
+    console.log('Subscription Actions: add subscription', subscription);
+
+    if (subscription.hasReminder) {
+      const notification = subscription.generateNotification();
+
+      console.log('Subscription Actions: notification', notification);
+
+      await NotificationActions.addNotification(notification);
+    }
+
     SubscriptionsStore.addSubscription(subscription);
   } catch (e) {
     console.warn('Subscription Actions: add - error adding', e);
@@ -131,6 +153,16 @@ export const updateSubscription = async (subscription: Subscription) => {
       `sub:${subscription.id}`,
       JSON.stringify(subscription),
     );
+
+    console.log('Subscription Actions: update - subscription', subscription);
+
+    if (subscription.hasReminder) {
+      const notification = subscription.generateNotification();
+
+      console.log('Subscription Actions: update - notification', notification);
+
+      await NotificationActions.updateNotification(notification);
+    }
 
     SubscriptionsStore.updateSubscription(subscription);
   } catch (e) {

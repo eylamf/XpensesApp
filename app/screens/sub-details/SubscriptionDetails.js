@@ -14,11 +14,9 @@ import {useSafeArea} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import stylesheet from './DetailsStyles';
 import {useTheme} from '../../utils/hooks/useTheme';
-import type {
-  ReducerAction,
-  ReminderInterval,
-  SubscriptionCycle,
-} from '../../utils/Types';
+import type {ReducerAction} from '../../utils/Types';
+import ReminderInterval from '../../class-models/ReminderInterval';
+import SubscriptionCycleInterval from '../../class-models/SubscriptionCycleInterval';
 import Subscription from '../../class-models/Subscription';
 import SubDetailsHeader from '../../components/headers/SubDetailsHeader';
 import SubDetailsForm from '../../components/SubDetailsForm';
@@ -34,7 +32,7 @@ type State = {
   cost: string,
   description: ?string,
   firstPayment: number,
-  cycle: SubscriptionCycle,
+  cycle: SubscriptionCycleInterval,
   hasReminder: boolean,
   reminderInterval: ReminderInterval,
   enableFirstPaymentPicker: boolean,
@@ -140,9 +138,15 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     cost: subscription.cost.toFixed(2).toString(),
     description: subscription.description,
     firstPayment: subscription.firstPayment,
-    cycle: subscription.cycle,
+    cycle: new SubscriptionCycleInterval({
+      quantity: subscription.cycle.quantity,
+      unit: subscription.cycle.unit,
+    }),
     hasReminder: subscription.hasReminder,
-    reminderInterval: subscription.reminderInterval,
+    reminderInterval: new ReminderInterval({
+      quantity: subscription.reminderInterval.quantity,
+      unit: subscription.reminderInterval.unit,
+    }),
     enableFirstPaymentPicker: false,
     enableCyclePicker: false,
     enableReminderPicker: false,
@@ -156,7 +160,14 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
 
   const onAction = useCallback(async () => {
     if (isAddMode) {
-      const updated = new Subscription({...subscription});
+      const updated = new Subscription({
+        ...subscription,
+        firstPayment: state.firstPayment,
+        description: state.description,
+        cycle: state.cycle,
+        reminderInterval: state.reminderInterval,
+        hasReminder: state.hasReminder,
+      });
 
       if (state.cost !== subscription.cost) {
         updated.setCost(Number(state.cost));

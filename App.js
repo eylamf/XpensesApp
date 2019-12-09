@@ -1,15 +1,16 @@
 // @flow
 
-import React, {useEffect} from 'react';
+import React, {useRef, useEffect} from 'react';
 import {StyleSheet, View, ActivityIndicator, YellowBox} from 'react-native';
 import 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {enableScreens} from 'react-native-screens';
 import {NavigationNativeContainer} from '@react-navigation/native';
+import {connect} from 'remx';
 import {Navigation} from './app/utils/Navigation';
 import {AppStateStore} from './app/stores/app-state/Store';
 import * as AppStateActions from './app/stores/app-state/Actions';
-import {connect} from 'remx';
+import {registerForPushNotifications, fetchNotifications} from './app/stores/notifications/Actions';
 
 enableScreens();
 
@@ -21,6 +22,16 @@ type Props = {
 };
 
 const App = ({loading, isNewUser}: Props): React$Node => {
+  const mounted = useRef(false);
+
+  useEffect(() => {
+    if (!mounted.current) {
+      fetchNotifications();
+      registerForPushNotifications();
+      mounted.current = true;
+    }
+  }, []);
+
   useEffect(() => {
     if (isNewUser) {
       AppStateActions.checkIfNewUser();

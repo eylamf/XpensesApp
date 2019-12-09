@@ -1,11 +1,11 @@
 // @flow
 
+import moment from 'moment';
 import Company from './Company';
-import type {
-  SubscriptionSource,
-  SubscriptionCycle,
-  ReminderInterval,
-} from '../utils/Types';
+import type {SubscriptionSource, RepeatType} from '../utils/Types';
+import ReminderInterval from './ReminderInterval';
+import SubscriptionCycleInterval from './SubscriptionCycleInterval';
+import Notification from './Notification';
 
 class Subscription {
   id: string;
@@ -13,7 +13,7 @@ class Subscription {
   description: ?string;
   cost: number;
   firstPayment: number;
-  cycle: SubscriptionCycle;
+  cycle: SubscriptionCycleInterval;
   hasReminder: boolean;
   reminderInterval: ReminderInterval;
 
@@ -32,10 +32,12 @@ class Subscription {
     this.company = company;
     this.description = description || null;
     this.cost = cost || 0;
-    this.firstPayment = firstPayment || Date.now();
-    this.cycle = cycle || {quantity: 1, unit: 'Month(s)'};
+    this.firstPayment = firstPayment || new Date().setMinutes(0, 0, 0);
+    this.cycle =
+      cycle || new SubscriptionCycleInterval({quantity: 1, unit: 'Month(s)'});
     this.hasReminder = hasReminder || false;
-    this.reminderInterval = reminderInterval || {quantity: 1, unit: 'Day(s)'};
+    this.reminderInterval =
+      reminderInterval || new ReminderInterval({quantity: 1, unit: 'Day(s)'});
   }
 
   getCompanyName(): string {
@@ -60,6 +62,61 @@ class Subscription {
 
   set(key: string, value: any) {
     this[key] = value;
+  }
+
+  generateNotification(): Notification {
+    const firstPaymentDate = moment(this.firstPayment);
+
+    let fireDate = firstPaymentDate;
+
+    let repeatType: RepeatType = this.reminderInterval.getFormattedUnit();
+
+    const {unit, quantity} = this.cycle;
+
+    // Set fire date
+    switch (unit) {
+      case 'Day(s)':
+        fireDate = firstPaymentDate.subtract(quantity, 'd');
+        break;
+      case 'Week(s)':
+        fireDate = firstPaymentDate.subtract(quantity, 'w');
+        break;
+      case 'Month(s)':
+        fireDate = firstPaymentDate.subtract(quantity, 'M');
+        break;
+      default:
+        break;
+    }
+
+    // Set repeat time if quantity > 1
+    let repeatTime = null;
+
+    if (quantity > 1) {
+      repeatType = 'time';
+      repeatTime = this._convertIntervalToMillis();
+    }
+
+    const notification = new Notification({
+      subID: this.id,
+      title: 'Subscription Reminder',
+      message: `For ${this.getCompanyName()}`,
+      fireDate: fireDate.valueOf(),
+      repeatType: repeatType.toLowerCase(),
+      repeatTime,
+    });
+
+    return notification;
+  }
+
+  // Get milliseconds of reminder interval for PushNotification's 'time' repeatType
+  _convertIntervalToMillis(): number {
+    const units = `${this.cycle.getFormattedUnit().toLowerCase()}s`;
+
+    const duration = moment.duration(this.cycle.quantity, units);
+
+    console.log('duration', duration, this.cycle.quantity, units);
+
+    return duration.asMilliseconds();
   }
 }
 

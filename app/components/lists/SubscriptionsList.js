@@ -40,7 +40,7 @@ const SubscriptionsList = ({
   };
 
   const renderSeparator = () => {
-    return <LineDivider leftSpace={15} color={theme.colors.soft1} />;
+    return <LineDivider leftSpace={15} color={theme.colors.soft2} />;
   };
 
   const fadeOpacity = Animated.interpolate(scrollY, {
@@ -55,7 +55,7 @@ const SubscriptionsList = ({
         pointerEvents={'none'}>
         <LinearGradient style={styles.gradient} colors={gradientColors} />
       </Animated.View>
-      {/* <LineDivider color={theme.colors.soft1} /> */}
+      {/* <LineDivider color={theme.colors.soft2} /> */}
       <AnimatedFlatList
         data={subscriptionIDs}
         keyExtractor={keyExtractor}
