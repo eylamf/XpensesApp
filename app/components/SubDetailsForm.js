@@ -18,6 +18,7 @@ import SubscriptionCycleInterval from '../class-models/SubscriptionCycleInterval
 import FormDataRow from './list-items/FormDataRow';
 import FirstPaymentPicker from './pickers/FirstPaymentPicker';
 import IntervalPicker from './pickers/IntervalPicker';
+import ReminderTimePicker from './pickers/ReminderTimePicker';
 import LineDivider from './LineDivider';
 
 type Props = {
@@ -37,6 +38,7 @@ type DetailsState = {
   enableFirstPaymentPicker: boolean,
   enableCyclePicker: boolean,
   enableReminderPicker: boolean,
+  enableReminderTimePicker: boolean,
 };
 
 const types = {
@@ -49,6 +51,7 @@ const types = {
   TOGGLE_PAYMENT_PICKER: 'TOGGLE_PAYMENT_PICKER',
   TOGGLE_CYCLE_PICKER: 'TOGGLE_CYCLE_PICKER',
   TOGGLE_REMINDER_PICKER: 'TOGGLE_REMINDER_PICKER',
+  TOGGLE_REMINDER_TIME_PICKER: 'TOGGLE_REMINDER_TIME_PICKER',
 };
 
 const SubDetailsForm = ({
@@ -170,6 +173,17 @@ const SubDetailsForm = ({
     });
   };
 
+  const onToggleReminderTimePicker = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+
+    dispatch({
+      type: types.TOGGLE_REMINDER_TIME_PICKER,
+      payload: null,
+    });
+
+    onScrollToEnd();
+  };
+
   console.log('details form render');
 
   return (
@@ -238,6 +252,21 @@ const SubDetailsForm = ({
             interval={state.reminderInterval}
             onSelectQuantity={onSelectReminderQuantity}
             onSelectUnit={onSelectReminderUnit}
+          />
+        </View>
+      )}
+      <LineDivider leftSpace={15} color={theme.colors.soft2} />
+      <FormDataRow
+        isExpanded={state.enableReminderTimePicker}
+        label={'Reminder Time'}
+        value={moment(state.firstPayment).format('hh:mm A')}
+        onPress={onToggleReminderTimePicker}
+      />
+      {state.enableReminderTimePicker && (
+        <View style={styles.picker}>
+          <ReminderTimePicker
+            value={state.firstPayment}
+            onChangeTime={onChangeFirstPayment}
           />
         </View>
       )}

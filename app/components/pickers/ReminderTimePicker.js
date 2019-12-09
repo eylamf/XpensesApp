@@ -5,26 +5,27 @@ import type {Element} from 'react';
 import {Text, StyleSheet} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {useTheme} from '../../utils/hooks/useTheme';
-// import Constants from '../../utils/Constants';
 import type {Theme} from '../../utils/Types';
 
 type Props = {
-  value: number, // Date in milliseconds
-  onChangeDate: (d: Date) => void,
+  value: number,
+  onChangeTime: (t: Date) => void,
 };
 
-const FirstPaymentPicker = ({value, onChangeDate}: Props): Element<any> => {
+const ReminderTimePicker = ({value, onChangeTime}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
 
   return (
     <>
-      <Text style={styles.label}>Start date for payments</Text>
+      <Text style={styles.label}>
+        Select a time to receive your reminder(s)
+      </Text>
       <DatePicker
         style={styles.picker}
         date={new Date(value)}
-        onDateChange={onChangeDate}
+        onDateChange={onChangeTime}
         textColor={theme.id === 'dark' ? '#ffffff' : '#000'}
-        mode={'date'}
+        mode={'time'}
       />
     </>
   );
@@ -42,4 +43,4 @@ const stylesheet = (theme: Theme) =>
     },
   });
 
-export default FirstPaymentPicker;
+export default ReminderTimePicker;

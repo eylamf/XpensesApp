@@ -38,6 +38,7 @@ type State = {
   enableFirstPaymentPicker: boolean,
   enableCyclePicker: boolean,
   enableReminderPicker: boolean,
+  enableReminderTimePicker: boolean,
 };
 
 const types = {
@@ -50,6 +51,7 @@ const types = {
   TOGGLE_PAYMENT_PICKER: 'TOGGLE_PAYMENT_PICKER',
   TOGGLE_CYCLE_PICKER: 'TOGGLE_CYCLE_PICKER',
   TOGGLE_REMINDER_PICKER: 'TOGGLE_REMINDER_PICKER',
+  TOGGLE_REMINDER_TIME_PICKER: 'TOGGLE_REMINDER_TIME_PICKER',
 };
 
 const reducer = (state: State, action: ReducerAction): State => {
@@ -74,6 +76,7 @@ const reducer = (state: State, action: ReducerAction): State => {
         enableReminderPicker: hasReminder,
         enableFirstPaymentPicker: false,
         enableCyclePicker: false,
+        enableReminderTimePicker: false,
       };
     }
 
@@ -86,6 +89,7 @@ const reducer = (state: State, action: ReducerAction): State => {
         enableFirstPaymentPicker: !state.enableFirstPaymentPicker,
         enableCyclePicker: false,
         enableReminderPicker: false,
+        enableReminderTimePicker: false,
       };
     }
 
@@ -95,6 +99,7 @@ const reducer = (state: State, action: ReducerAction): State => {
         enableFirstPaymentPicker: false,
         enableCyclePicker: !state.enableCyclePicker,
         enableReminderPicker: false,
+        enableReminderTimePicker: false,
       };
     }
 
@@ -113,9 +118,19 @@ const reducer = (state: State, action: ReducerAction): State => {
         enableFirstPaymentPicker: false,
         enableCyclePicker: false,
         enableReminderPicker: enabled,
+        enableReminderTimePicker: false,
         hasReminder,
       };
     }
+
+    case types.TOGGLE_REMINDER_TIME_PICKER:
+      return {
+        ...state,
+        enableFirstPaymentPicker: false,
+        enableCyclePicker: false,
+        enableReminderPicker: false,
+        enableReminderTimePicker: !state.enableReminderTimePicker,
+      };
 
     default:
       return state;
@@ -150,6 +165,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     enableFirstPaymentPicker: false,
     enableCyclePicker: false,
     enableReminderPicker: false,
+    enableReminderTimePicker: false,
   });
 
   const onClose = useCallback(() => {
@@ -235,6 +251,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
   const onScrollToEnd = () => {
     setTimeout(() => {
       scrollview.current && scrollview.current.scrollToEnd();
+      scrollview.current && scrollview.current.flashScrollIndicators();
     }, 0);
   };
 

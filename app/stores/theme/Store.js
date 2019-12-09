@@ -1,6 +1,5 @@
 // @flow
 
-import React, {useState, useEffect} from 'react';
 import * as remx from 'remx';
 import {generateTheme} from '../../utils/Theme';
 import type {Theme} from '../../utils/Types';
