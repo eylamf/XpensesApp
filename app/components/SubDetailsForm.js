@@ -170,13 +170,6 @@ const SubDetailsForm = ({
     });
   };
 
-  const reminderLabel =
-    state.reminderInterval.quantity === 0
-      ? 'Same Day'
-      : `${state.reminderInterval.quantity} ${
-          state.reminderInterval.unit
-        } before`;
-
   console.log('details form render');
 
   return (
@@ -199,7 +192,7 @@ const SubDetailsForm = ({
       <FormDataRow
         isExpanded={state.enableCyclePicker}
         label={'Payment Cycle'}
-        value={`Every ${state.cycle.quantity} ${state.cycle.unit}`}
+        value={state.cycle.toPretty()}
         onPress={onToggleCyclePicker}
       />
       {state.enableCyclePicker && (
@@ -232,7 +225,9 @@ const SubDetailsForm = ({
           // style={styles}
           activeOpacity={0.8}
           onPress={onToggleReminderPicker}>
-          <Text style={styles.reminderDate}>{reminderLabel}</Text>
+          <Text style={styles.reminderDate}>
+            {state.reminderInterval.toPretty()}
+          </Text>
         </TouchableOpacity>
       )}
       {state.enableReminderPicker && (

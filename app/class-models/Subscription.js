@@ -118,15 +118,13 @@ class Subscription {
     return notification;
   }
 
-  // Get milliseconds of reminder interval for PushNotification's 'time' repeatType
+  // Get milliseconds of reminder or cycle interval
   _convertIntervalToMillis(
     interval: ReminderInterval | SubscriptionCycleInterval,
   ): number {
     const units = `${interval.getFormattedUnit().toLowerCase()}s`;
 
     const duration = moment.duration(interval.quantity, units);
-
-    console.log('duration', duration, interval.quantity, units);
 
     return duration.asMilliseconds();
   }

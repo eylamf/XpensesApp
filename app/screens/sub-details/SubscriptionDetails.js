@@ -156,8 +156,6 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     navigation.goBack();
   }, [navigation]);
 
-  console.log(isAddMode);
-
   const onAction = useCallback(async () => {
     if (isAddMode) {
       const updated = new Subscription({

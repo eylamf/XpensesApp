@@ -5,6 +5,8 @@ import {SubscriptionsStore} from './Store';
 import Subscription from '../../class-models/Subscription';
 import Company from '../../class-models/Company';
 import * as NotificationActions from '../notifications/Actions';
+import ReminderInterval from '../../class-models/ReminderInterval';
+import SubscriptionCycleInterval from '../../class-models/SubscriptionCycleInterval';
 import Notification from '../../class-models/Notification';
 import {SUBSCRIPTIONS} from '../../utils/Data';
 
@@ -81,12 +83,14 @@ export const fetchSubscriptions = async () => {
         const subscription = new Subscription({
           ...json,
           company: new Company({...json.company}),
+          cycle: new SubscriptionCycleInterval({...json.cycle}),
+          reminderInterval: new ReminderInterval({...json.reminderInterval}),
         });
 
         subscriptions[subscription.id] = subscription;
       });
 
-      console.log(subscriptions);
+      console.log('Subscription Actions: subscriptions', subscriptions);
 
       SubscriptionsStore.setSubscriptions(subscriptions);
     } else {
@@ -134,7 +138,7 @@ export const addSubscription = async (subscription: Subscription) => {
     console.log('Subscription Actions: add subscription', subscription);
 
     if (subscription.hasReminder) {
-      const notification = subscription.generateNotification();
+      const notification: Notification = subscription.generateNotification();
 
       console.log('Subscription Actions: notification', notification);
 
@@ -157,11 +161,24 @@ export const updateSubscription = async (subscription: Subscription) => {
     console.log('Subscription Actions: update - subscription', subscription);
 
     if (subscription.hasReminder) {
-      const notification = subscription.generateNotification();
+      const old: Subscription = SubscriptionsStore.getSubscriptionByID(
+        subscription.id,
+      );
 
-      console.log('Subscription Actions: update - notification', notification);
+      if (
+        !old.cycle.isEqual(subscription.cycle) ||
+        !old.reminderInterval.isEqual(subscription.reminderInterval) ||
+        old.firstPayment !== subscription.firstPayment
+      ) {
+        const notification: Notification = subscription.generateNotification();
 
-      await NotificationActions.updateNotification(notification);
+        console.log(
+          'Subscription Actions: update - notification',
+          notification,
+        );
+
+        await NotificationActions.updateNotification(notification);
+      }
     }
 
     SubscriptionsStore.updateSubscription(subscription);

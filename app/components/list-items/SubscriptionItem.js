@@ -54,7 +54,7 @@ const SubscriptionItem = ({
         </View>
         <View style={styles.costContainer}>
           <Text style={styles.costLabel}>${cost}</Text>
-          <Text style={styles.interval}>{'Monthly'}</Text>
+          <Text style={styles.interval}>{subscription.cycle.toPretty()}</Text>
         </View>
       </Row>
     </RectButton>
