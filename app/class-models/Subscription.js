@@ -73,16 +73,26 @@ class Subscription {
 
     const {unit, quantity} = this.cycle;
 
+    const reminderMillisInAdvance = this._convertIntervalToMillis(
+      this.reminderInterval,
+    );
+
     // Set fire date
     switch (unit) {
       case 'Day(s)':
-        fireDate = firstPaymentDate.subtract(quantity, 'd');
+        fireDate = firstPaymentDate
+          .add(quantity, 'd')
+          .subtract(reminderMillisInAdvance, 'ms');
         break;
       case 'Week(s)':
-        fireDate = firstPaymentDate.subtract(quantity, 'w');
+        fireDate = firstPaymentDate
+          .add(quantity, 'w')
+          .subtract(reminderMillisInAdvance, 'ms');
         break;
       case 'Month(s)':
-        fireDate = firstPaymentDate.subtract(quantity, 'M');
+        fireDate = firstPaymentDate
+          .add(quantity, 'M')
+          .subtract(reminderMillisInAdvance, 'ms');
         break;
       default:
         break;
@@ -93,7 +103,7 @@ class Subscription {
 
     if (quantity > 1) {
       repeatType = 'time';
-      repeatTime = this._convertIntervalToMillis();
+      repeatTime = this._convertIntervalToMillis(this.cycle);
     }
 
     const notification = new Notification({
@@ -109,12 +119,14 @@ class Subscription {
   }
 
   // Get milliseconds of reminder interval for PushNotification's 'time' repeatType
-  _convertIntervalToMillis(): number {
-    const units = `${this.cycle.getFormattedUnit().toLowerCase()}s`;
+  _convertIntervalToMillis(
+    interval: ReminderInterval | SubscriptionCycleInterval,
+  ): number {
+    const units = `${interval.getFormattedUnit().toLowerCase()}s`;
 
-    const duration = moment.duration(this.cycle.quantity, units);
+    const duration = moment.duration(interval.quantity, units);
 
-    console.log('duration', duration, this.cycle.quantity, units);
+    console.log('duration', duration, interval.quantity, units);
 
     return duration.asMilliseconds();
   }
