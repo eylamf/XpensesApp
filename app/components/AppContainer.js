@@ -2,7 +2,7 @@
 
 import React, {useLayoutEffect, useCallback, useRef} from 'react';
 import type {Element} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Animated, {Easing} from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import {connect} from 'remx';
@@ -17,7 +17,7 @@ type Props = {
   children: React$Node,
 };
 
-const SHEET_SNAP_POINTS = [340, 0];
+const SHEET_SNAP_POINTS = [440, 0];
 
 const AppContainer = ({bottomSheetEnabled, children}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
@@ -45,8 +45,11 @@ const AppContainer = ({bottomSheetEnabled, children}: Props): Element<any> => {
   }, []);
 
   const onSheetClose = useCallback(() => {
-    console.log('on sheet close');
     AppStateStore.setBottomSheetEnabled(false);
+  }, []);
+
+  const onCloseSheet = useCallback(() => {
+    bottomSheet.current && bottomSheet.current.snapTo(1);
   }, []);
 
   const sheetOpacity = Animated.interpolate(sheetPosn, {
@@ -59,8 +62,14 @@ const AppContainer = ({bottomSheetEnabled, children}: Props): Element<any> => {
       {children}
       <Animated.View
         style={[styles.overlay, {opacity: sheetOpacity}]}
-        pointerEvents={bottomSheetEnabled ? 'auto' : 'none'}
-      />
+        pointerEvents={bottomSheetEnabled ? 'box-none' : 'none'}>
+        <TouchableOpacity
+          style={theme.styles.flexOne}
+          activeOpacity={1}
+          onPress={onCloseSheet}
+          disabled={!bottomSheetEnabled}
+        />
+      </Animated.View>
       <BottomSheet
         ref={bottomSheet}
         snapPoints={SHEET_SNAP_POINTS}

@@ -3,7 +3,7 @@
 import React, {useState} from 'react';
 import type {Element} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
-import {RectButton} from 'react-native-gesture-handler';
+import {RectButton, TouchableOpacity} from 'react-native-gesture-handler';
 import {connect} from 'remx';
 import {AppStateStore} from '../../stores/app-state/Store';
 import {useTheme} from '../../utils/hooks/useTheme';
@@ -27,6 +27,7 @@ const DETAILS = {
   Remaining: 'Shows a total of the bills you have left to pay in this period.',
   Total: 'Shows a total of the bills you have in this entire period.',
 };
+const INTERVALS = ['Weekly', 'Monthly', 'Yearly'];
 
 const CHECK = require('../../../assets/Checkmark.png');
 
@@ -40,39 +41,63 @@ const SubscriptionsPaymentFilterSheet = ({
     AppStateStore.setCostTypeFilter(filterType);
   };
 
+  const onChangeInterval = (interval: CostIntervalFilter) => {
+    AppStateStore.setCostIntervalFilter(interval);
+  };
+
   return (
     <View style={styles.container}>
-      {COST_TYPE_FILTER_KEYS.map((filterType, index) => (
-        <View key={filterType}>
-          <RectButton
-            style={styles.item}
-            activeOpacity={0.9}
-            underlayColor={theme.colors.soft}
-            rippleColor={theme.colors.soft}
-            onPress={() => onChangeCostTypeFilter(filterType)}>
-            <Row alignment={'flex-start'}>
-              <View style={styles.checkContainer}>
-                {filterType === costTypeFilter && (
-                  <Image
-                    style={styles.checkmark}
-                    source={CHECK}
-                    resizeMode={'cover'}
-                  />
-                )}
-              </View>
-              <View style={theme.styles.flexOne}>
-                <Text style={styles.label}>{filterType} Expenses</Text>
-                <Text style={theme.styles.lightText}>
-                  {DETAILS[filterType]}
-                </Text>
-              </View>
-            </Row>
-          </RectButton>
-          {index !== COST_TYPE_FILTER_KEYS.length - 1 && (
+      <Text style={styles.sectionLabel}>Choose a filter</Text>
+      <View style={styles.types}>
+        {COST_TYPE_FILTER_KEYS.map((filterType, index) => (
+          <View key={filterType}>
+            <RectButton
+              style={styles.item}
+              activeOpacity={0.9}
+              underlayColor={theme.colors.soft}
+              rippleColor={theme.colors.soft}
+              onPress={() => onChangeCostTypeFilter(filterType)}>
+              <Row alignment={'flex-start'}>
+                <View style={styles.checkContainer}>
+                  {filterType === costTypeFilter && (
+                    <Image
+                      style={styles.checkmark}
+                      source={CHECK}
+                      resizeMode={'cover'}
+                    />
+                  )}
+                </View>
+                <View style={theme.styles.flexOne}>
+                  <Text style={styles.label}>{filterType} Expenses</Text>
+                  <Text style={theme.styles.lightText}>
+                    {DETAILS[filterType]}
+                  </Text>
+                </View>
+              </Row>
+            </RectButton>
             <LineDivider leftSpace={15} color={theme.colors.soft2} />
-          )}
-        </View>
-      ))}
+          </View>
+        ))}
+      </View>
+      <Text style={styles.sectionLabel}>Choose a payment period</Text>
+      <Row style={styles.intervals}>
+        {INTERVALS.map(interval => (
+          <TouchableOpacity
+            key={interval}
+            style={styles.intervalItem}
+            activeOpacity={0.8}
+            onPress={() => onChangeInterval(interval)}>
+            <Text
+              style={
+                interval === costIntervalFilter
+                  ? theme.styles.mdPrimaryText
+                  : theme.styles.mdText
+              }>
+              {interval}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </Row>
     </View>
   );
 };
@@ -80,9 +105,17 @@ const SubscriptionsPaymentFilterSheet = ({
 const stylesheet = (theme: Theme) =>
   StyleSheet.create({
     container: {
-      height: 300,
+      height: 400,
       backgroundColor: theme.colors.main,
+      // padding: 15,
     },
+
+    sectionLabel: {
+      marginLeft: 15,
+      ...theme.styles.smLightText,
+    },
+
+    types: {marginBottom: 15},
 
     item: {
       width: Constants.getWindowWidth(),
@@ -106,6 +139,17 @@ const stylesheet = (theme: Theme) =>
       marginBottom: 5,
       ...theme.styles.text,
       ...theme.styles.bold,
+    },
+
+    intervals: {
+      marginTop: 15,
+      paddingLeft: 50,
+      paddingRight: 15,
+    },
+
+    intervalItem: {
+      height: 40,
+      marginRight: 15,
     },
   });
 

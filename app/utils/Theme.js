@@ -121,6 +121,21 @@ function STYLES(id: 'light' | 'dark') {
       fontSize: 10,
     },
 
+    primaryText: {
+      color: COLORS[id].primary,
+      fontSize: 13,
+    },
+
+    smPrimaryText: {
+      color: COLORS[id].primary,
+      fontSize: 10,
+    },
+
+    mdPrimaryText: {
+      color: COLORS[id].primary,
+      fontSize: 18,
+    },
+
     bold: {fontWeight: '600'},
 
     bolder: {fontWeight: 'bold'},
