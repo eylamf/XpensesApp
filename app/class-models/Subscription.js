@@ -2,10 +2,17 @@
 
 import moment from 'moment';
 import Company from './Company';
-import type {SubscriptionSource, RepeatType} from '../utils/Types';
+import type {
+  SubscriptionSource,
+  RepeatType,
+  CostTypeFilter,
+  CostIntervalFilter,
+  SimpleCostIntervalFilter,
+} from '../utils/Types';
 import ReminderInterval from './ReminderInterval';
 import SubscriptionCycleInterval from './SubscriptionCycleInterval';
 import Notification from './Notification';
+import {daysInMonth, getDayInYear} from '../utils/DateUtils';
 
 class Subscription {
   id: string;
@@ -116,6 +123,137 @@ class Subscription {
     });
 
     return notification;
+  }
+
+  getCostForFilters(
+    filterType: CostTypeFilter,
+    filterInterval: CostIntervalFilter,
+  ): number {
+    const interval: SimpleCostIntervalFilter = filterInterval.split(' ')[1];
+
+    let result = 0;
+
+    const firstPaymentDayInYear = getDayInYear(new Date(this.firstPayment));
+
+    const dayInYear = getDayInYear();
+
+    console.log('days in year', firstPaymentDayInYear, dayInYear);
+
+    let cycleAsDays;
+
+    const now = new Date();
+
+    switch (interval) {
+      case 'Week':
+        if (filterType === 'Average') {
+          cycleAsDays = this.cycle.toDays();
+          result = this.cost * (7 / cycleAsDays);
+        } else if (filterType === 'Remaining') {
+          cycleAsDays = this.cycle.toDays(true);
+
+          if (cycleAsDays <= 7) {
+            const startDay = now.getDay();
+
+            result = this.cost * Math.floor((7 - startDay) / cycleAsDays);
+          }
+        } else if (filterType === 'Exact') {
+          cycleAsDays = this.cycle.toDays(true);
+
+          if (cycleAsDays <= 7) {
+            const originalStartDay = new Date(this.firstPayment).getDay();
+            const startDay = now.getDay();
+
+            if (Math.abs(originalStartDay - startDay) % 2 === 0) {
+              result = this.cost * Math.round(6 / cycleAsDays);
+            } else {
+              result = this.cost * Math.round(7 / cycleAsDays);
+            }
+          }
+        }
+        break;
+      case 'Month':
+        if (filterType === 'Average') {
+          cycleAsDays = this.cycle.toDays();
+          result = this.cost * (365 / 12 / cycleAsDays);
+        } else if (filterType === 'Remaining') {
+          // cycleAsDays = this.cycle.toDays(true);
+          // const daysDiff = moment().diff(
+          //   moment(this.firstPayment)
+          //     .hour(0)
+          //     .format('YYYY-MM-DD'),
+          //   'days',
+          // );
+          // const now = new Date();
+          // console.log(
+          //   'daysDiff mod cycleDays',
+          //   this.getCompanyName(),
+          //   daysDiff % cycleAsDays,
+          // );
+          // if (now.getDate() <= daysInMonth()) {
+          //   const mod = daysDiff % cycleAsDays;
+          //   if (mod % 2 === 0) {
+          //     if (mod === 0) {
+          //       result = this.cost;
+          //     } else {
+          //       result = this.cost * mod;
+          //     }
+          //   }
+          // }
+          // console.log('daysDiff for', this.company.name, daysDiff);
+        } else if (filterType === 'Exact') {
+          cycleAsDays = this.cycle.toDays(true);
+
+          const daysThisMonth = daysInMonth();
+
+          if (cycleAsDays <= daysThisMonth) {
+            result = this.cost * Math.round(daysThisMonth / cycleAsDays);
+          }
+        }
+        break;
+      case 'Year':
+        if (filterType === 'Average') {
+          cycleAsDays = this.cycle.toDays();
+          result = this.cost * Math.floor(365 / cycleAsDays);
+        } else if (filterType === 'Remaining') {
+          // cycleAsDays = this.cycle.toDays(true);
+          // const diffFromEndOfYear =
+          //   moment(`${now.getFullYear()}-12-31`)
+          //     .hour(0)
+          //     .diff(moment(now).hour(0), 'days') + 1;
+          // console.log(
+          //   'Remaining Year - diffFromEndOfYour',
+          //   this.getCompanyName(),
+          //   diffFromEndOfYear,
+          // );
+          // const intervals = diffFromEndOfYear % cycleAsDays;
+          // result = this.cost * intervals;
+        } else if (filterType === 'Exact') {
+          cycleAsDays = this.cycle.toDays(true);
+
+          const diffFromEndOfYear =
+            moment(`${now.getFullYear()}-12-31`)
+              .hour(0)
+              .diff(moment(this.firstPayment), 'days') + 1;
+
+          const intervals = Math.round(diffFromEndOfYear / cycleAsDays);
+
+          console.log(
+            'Exact Year for',
+            this.getCompanyName(),
+            diffFromEndOfYear,
+            intervals,
+            cycleAsDays,
+          );
+
+          result = this.cost * intervals;
+          console.log('Exact year cost', this.getCompanyName(), result);
+        }
+        break;
+      default:
+        break;
+    }
+
+    return result;
   }
 
   // Get milliseconds of reminder or cycle interval

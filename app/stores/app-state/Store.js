@@ -3,12 +3,20 @@
 import * as remx from 'remx';
 import type {CostTypeFilter, CostIntervalFilter} from '../../utils/Types';
 
-const initialState = {
+type InitialState = {
+  loading: boolean,
+  isNewUser: boolean,
+  bottomSheetEnabled: boolean,
+  costTypeFilter: CostTypeFilter,
+  costIntervalFilter: CostIntervalFilter,
+};
+
+const initialState: InitialState = {
   loading: true,
   isNewUser: true,
   bottomSheetEnabled: false,
-  costTypeFilter: 'Total',
-  costIntervalFilter: 'Monthly',
+  costTypeFilter: 'Exact',
+  costIntervalFilter: 'This Month',
 };
 
 const state = remx.state(initialState);

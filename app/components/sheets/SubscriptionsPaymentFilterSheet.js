@@ -11,23 +11,26 @@ import type {
   Theme,
   CostTypeFilter,
   CostIntervalFilter,
+  SimpleCostIntervalFilter,
 } from '../../utils/Types';
 import Constants from '../../utils/Constants';
 import Row from '../Row';
 import LineDivider from '../LineDivider';
+import * as AppStateActions from '../../stores/app-state/Actions';
 
 type Props = {
   costTypeFilter: CostTypeFilter,
   costIntervalFilter: CostIntervalFilter,
 };
 
-const COST_TYPE_FILTER_KEYS = ['Average', 'Remaining', 'Total'];
+const COST_TYPE_FILTER_KEYS = ['Average', 'Remaining', 'Exact'];
 const DETAILS = {
-  Average: 'Divides the total of all bills into the period of your choosing.',
-  Remaining: 'Shows a total of the bills you have left to pay in this period.',
-  Total: 'Shows a total of the bills you have in this entire period.',
+  Average: 'Shows the average amount due for the period of your choosing.',
+  Remaining:
+    'Shows the amount due between now and the end of the selected period.',
+  Exact: 'Shows the exact amount due within the selected period.',
 };
-const INTERVALS = ['Weekly', 'Monthly', 'Yearly'];
+const INTERVALS = ['Week', 'Month', 'Year'];
 
 const CHECK = require('../../../assets/Checkmark.png');
 
@@ -38,11 +41,31 @@ const SubscriptionsPaymentFilterSheet = ({
   const [theme, styles] = useTheme(stylesheet);
 
   const onChangeCostTypeFilter = (filterType: CostTypeFilter) => {
+    if (filterType === 'Average') {
+      AppStateStore.setCostIntervalFilter(
+        `Per ${costIntervalFilter.split(' ')[1]}`,
+      );
+    } else {
+      AppStateStore.setCostIntervalFilter(
+        `This ${costIntervalFilter.split(' ')[1]}`,
+      );
+    }
+
+    AppStateActions.adjustFinalCost(filterType, costIntervalFilter);
     AppStateStore.setCostTypeFilter(filterType);
   };
 
-  const onChangeInterval = (interval: CostIntervalFilter) => {
-    AppStateStore.setCostIntervalFilter(interval);
+  const onChangeInterval = (interval: SimpleCostIntervalFilter) => {
+    let adjusted: CostIntervalFilter;
+
+    if (costTypeFilter === 'Average') {
+      adjusted = `Per ${interval}`;
+    } else {
+      adjusted = `This ${interval}`;
+    }
+
+    AppStateActions.adjustFinalCost(costTypeFilter, adjusted);
+    AppStateStore.setCostIntervalFilter(adjusted);
   };
 
   return (
@@ -68,7 +91,7 @@ const SubscriptionsPaymentFilterSheet = ({
                   )}
                 </View>
                 <View style={theme.styles.flexOne}>
-                  <Text style={styles.label}>{filterType} Expenses</Text>
+                  <Text style={styles.label}>{filterType}</Text>
                   <Text style={theme.styles.lightText}>
                     {DETAILS[filterType]}
                   </Text>
@@ -81,7 +104,7 @@ const SubscriptionsPaymentFilterSheet = ({
       </View>
       <Text style={styles.sectionLabel}>Choose a payment period</Text>
       <Row style={styles.intervals}>
-        {INTERVALS.map(interval => (
+        {INTERVALS.map((interval, index) => (
           <TouchableOpacity
             key={interval}
             style={styles.intervalItem}
@@ -89,7 +112,8 @@ const SubscriptionsPaymentFilterSheet = ({
             onPress={() => onChangeInterval(interval)}>
             <Text
               style={
-                interval === costIntervalFilter
+                `This ${interval}` === costIntervalFilter ||
+                `Per ${interval}` === costIntervalFilter
                   ? theme.styles.mdPrimaryText
                   : theme.styles.mdText
               }>

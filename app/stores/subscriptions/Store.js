@@ -5,7 +5,14 @@ import Subscription from '../../class-models/Subscription';
 
 type SubscriptionsMap = {[key: string]: Subscription};
 
-const initialState = {
+type InitialState = {
+  loading: boolean,
+  ids: string[],
+  subscriptions: SubscriptionsMap,
+  totalCost: number,
+};
+
+const initialState: InitialState = {
   loading: true,
   ids: [],
   subscriptions: {},
@@ -21,6 +28,10 @@ const getters = remx.getters({
 
   getIDs(): string[] {
     return state.ids;
+  },
+
+  getSubscriptions(): SubscriptionsMap {
+    return state.subscriptions;
   },
 
   getSubscriptionByID(sid: string): Subscription {
@@ -75,6 +86,10 @@ const setters = remx.setters({
     state.totalCost -= state.subscriptions[subscription.id].cost;
     state.subscriptions[subscription.id] = subscription;
     state.totalCost += subscription.cost;
+  },
+
+  setTotalCost(c: number) {
+    state.totalCost = c;
   },
 });
 
