@@ -10,10 +10,6 @@ import {connect} from 'remx';
 import {Navigation} from './app/utils/Navigation';
 import {AppStateStore} from './app/stores/app-state/Store';
 import * as AppStateActions from './app/stores/app-state/Actions';
-import {
-  registerForPushNotifications,
-  fetchNotifications,
-} from './app/stores/notifications/Actions';
 import AppContainer from './app/components/AppContainer';
 
 enableScreens();
@@ -22,25 +18,24 @@ YellowBox.ignoreWarnings(['Warning: componentWillMount']);
 
 type Props = {
   loading: boolean,
-  isNewUser: boolean,
 };
 
-const App = ({loading, isNewUser}: Props): React$Node => {
+const App = ({loading}: Props): React$Node => {
   const mounted = useRef(false);
 
   useEffect(() => {
     if (!mounted.current) {
-      fetchNotifications();
-      registerForPushNotifications();
+      AppStateActions.initialize();
+
       mounted.current = true;
     }
   }, []);
 
-  useEffect(() => {
-    if (isNewUser) {
-      AppStateActions.checkIfNewUser();
-    }
-  }, [isNewUser]);
+  // useEffect(() => {
+  //   if (isNewUser) {
+  //     AppStateActions.initialize();
+  //   }
+  // }, [isNewUser]);
 
   return (
     <View style={styles.container}>

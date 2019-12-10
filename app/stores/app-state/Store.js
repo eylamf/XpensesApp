@@ -63,6 +63,11 @@ const setters = remx.setters({
   setCostIntervalFilter(interval: CostIntervalFilter) {
     state.costIntervalFilter = interval;
   },
+
+  setCostFilters(type: CostTypeFilter, interval: CostIntervalFilter) {
+    state.costTypeFilter = type;
+    state.costIntervalFilter = interval;
+  },
 });
 
 export const AppStateStore = {

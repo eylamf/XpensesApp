@@ -3,9 +3,24 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import {AppStateStore} from './Store';
 import {SubscriptionsStore} from '../subscriptions/Store';
-import * as SubscriptionActions from '../subscriptions/Actions';
 import Subscription from '../../class-models/Subscription';
 import type {CostTypeFilter, CostIntervalFilter} from '../../utils/Types';
+import * as SubscriptionActions from '../subscriptions/Actions';
+import * as NotificationActions from '../notifications/Actions';
+
+export const initialize = async () => {
+  await checkIfNewUser();
+
+  await fetchCostFilters();
+
+  await SubscriptionActions.fetchSubscriptions();
+
+  await NotificationActions.fetchNotifications();
+
+  NotificationActions.registerForPushNotifications();
+
+  AppStateStore.setLoading(false);
+};
 
 export const checkIfNewUser = async () => {
   try {
@@ -14,19 +29,39 @@ export const checkIfNewUser = async () => {
     if (response !== null) {
       const isNew = JSON.parse(response);
 
-      console.log('App State Actions: isNew', isNew);
-
       AppStateStore.setIsNewUser(isNew);
     } else {
+      // Set initial value
       await AsyncStorage.setItem('isNewUser', 'false');
     }
-
-    await SubscriptionActions.fetchSubscriptions();
-
-    AppStateStore.setLoading(false);
   } catch (e) {
     console.warn('App State Actions: error checking if new user', e);
-    AppStateStore.setLoading(false);
+  }
+};
+
+export const fetchCostFilters = async () => {
+  try {
+    const response = await AsyncStorage.multiGet([
+      'costTypeFilter',
+      'costIntervalFilter',
+    ]);
+
+    if (response[0][1] != null && response[1][1] != null) {
+      const costTypeFilter = response[0][1];
+      const costIntervalFilter = response[1][1];
+
+      AppStateStore.setCostFilters(costTypeFilter, costIntervalFilter);
+    } else {
+      // Set initial values
+      const keyPairs = [
+        ['costTypeFilter', 'Exact'],
+        ['costIntervalFilter', 'This Month'],
+      ];
+
+      await AsyncStorage.multiSet(keyPairs);
+    }
+  } catch (e) {
+    console.warn('AppState Actions: error fetching cost filters', e);
   }
 };
 
@@ -42,38 +77,6 @@ export const adjustFinalCost = (
     finalCost += sub.getCostForFilters(filterType, filterInterval);
   });
 
-  console.log(
-    'AppState Actions: Cost interval',
-    filterType,
-    filterInterval,
-    finalCost,
-  );
-
-  // let finalCost = 0;
-
-  // const subscriptions = Object.values(SubscriptionsStore.getSubscriptions());
-
-  // let exp1 = 0;
-
-  // subscriptions.forEach(sub => {
-  //   const daysInMonth = 365 / 12;
-  // });
-
-  // switch (filterType) {
-  //   case 'Average':
-
-  //     break;
-  //   case 'Remaining':
-  //     break;
-
-  //   case 'Total':
-  //     // finalCost = subscriptions.reduce((a, b) => a + b.cost, 0);
-  //     break;
-  //   default:
-  //     console.warn('AppState Actions: invalid filter type', filterType);
-  //     break;
-  // }
-
-  // AppStateStore.setCostTypeFilter(filterType);
+  AppStateStore.setCostFilters(filterType, filterInterval);
   SubscriptionsStore.setTotalCost(finalCost);
 };

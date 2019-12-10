@@ -52,7 +52,6 @@ const SubscriptionsPaymentFilterSheet = ({
     }
 
     AppStateActions.adjustFinalCost(filterType, costIntervalFilter);
-    AppStateStore.setCostTypeFilter(filterType);
   };
 
   const onChangeInterval = (interval: SimpleCostIntervalFilter) => {
@@ -65,7 +64,6 @@ const SubscriptionsPaymentFilterSheet = ({
     }
 
     AppStateActions.adjustFinalCost(costTypeFilter, adjusted);
-    AppStateStore.setCostIntervalFilter(adjusted);
   };
 
   return (

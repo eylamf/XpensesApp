@@ -174,7 +174,7 @@ class Subscription {
       case 'Month':
         if (filterType === 'Average') {
           cycleAsDays = this.cycle.toDays();
-          result = this.cost * (365 / 12 / cycleAsDays);
+          result = this.cost * Math.round(365 / 12 / cycleAsDays);
         } else if (filterType === 'Remaining') {
           cycleAsDays = this.cycle.toDays(true);
 
