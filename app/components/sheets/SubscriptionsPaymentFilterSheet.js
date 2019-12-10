@@ -5,7 +5,7 @@ import type {Element} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import {RectButton, TouchableOpacity} from 'react-native-gesture-handler';
 import {connect} from 'remx';
-import {AppStateStore} from '../../stores/app-state/Store';
+import {SubscriptionsStore} from '../../stores/subscriptions/Store';
 import {useTheme} from '../../utils/hooks/useTheme';
 import type {
   Theme,
@@ -16,7 +16,6 @@ import type {
 import Constants from '../../utils/Constants';
 import Row from '../Row';
 import LineDivider from '../LineDivider';
-import * as AppStateActions from '../../stores/app-state/Actions';
 
 type Props = {
   costTypeFilter: CostTypeFilter,
@@ -42,16 +41,18 @@ const SubscriptionsPaymentFilterSheet = ({
 
   const onChangeCostTypeFilter = (filterType: CostTypeFilter) => {
     if (filterType === 'Average') {
-      AppStateStore.setCostIntervalFilter(
+      SubscriptionsStore.setCostFilters(
+        filterType,
         `Per ${costIntervalFilter.split(' ')[1]}`,
       );
     } else {
-      AppStateStore.setCostIntervalFilter(
+      SubscriptionsStore.setCostFilters(
+        filterType,
         `This ${costIntervalFilter.split(' ')[1]}`,
       );
     }
 
-    AppStateActions.adjustFinalCost(filterType, costIntervalFilter);
+    SubscriptionsStore.adjustTotalCost();
   };
 
   const onChangeInterval = (interval: SimpleCostIntervalFilter) => {
@@ -63,7 +64,9 @@ const SubscriptionsPaymentFilterSheet = ({
       adjusted = `This ${interval}`;
     }
 
-    AppStateActions.adjustFinalCost(costTypeFilter, adjusted);
+    SubscriptionsStore.setCostIntervalFilter(adjusted);
+
+    SubscriptionsStore.adjustTotalCost();
   };
 
   return (
@@ -176,8 +179,8 @@ const stylesheet = (theme: Theme) =>
   });
 
 const mapStateToProps = () => ({
-  costTypeFilter: AppStateStore.getCostTypeFilter(),
-  costIntervalFilter: AppStateStore.getCostIntervalFilter(),
+  costTypeFilter: SubscriptionsStore.getCostTypeFilter(),
+  costIntervalFilter: SubscriptionsStore.getCostIntervalFilter(),
 });
 
 export default connect(mapStateToProps)(SubscriptionsPaymentFilterSheet);

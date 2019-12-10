@@ -9,6 +9,7 @@ import ReminderInterval from '../../class-models/ReminderInterval';
 import SubscriptionCycleInterval from '../../class-models/SubscriptionCycleInterval';
 import Notification from '../../class-models/Notification';
 import {SUBSCRIPTIONS} from '../../utils/Data';
+import type {CostTypeFilter, CostIntervalFilter} from '../../utils/Types';
 
 /**
  * Set fixed subscriptions for first-time-users.
@@ -93,6 +94,7 @@ export const fetchSubscriptions = async () => {
       console.log('Subscription Actions: subscriptions', subscriptions);
 
       SubscriptionsStore.setSubscriptions(subscriptions);
+      SubscriptionsStore.adjustTotalCost();
     } else {
       throw new Error('Could not get subscriptions');
     }
@@ -119,7 +121,8 @@ export const removeSubscription = async (subID: string) => {
       await NotificationActions.removeNotification(subID);
     }
 
-    SubscriptionsStore.deleteSubscription(subID);
+    SubscriptionsStore.removeSubscription(subID);
+    SubscriptionsStore.adjustTotalCost();
   } catch (e) {
     console.warn('Subscription Actions: delete - error deleting', e);
   }
@@ -146,6 +149,7 @@ export const addSubscription = async (subscription: Subscription) => {
     }
 
     SubscriptionsStore.addSubscription(subscription);
+    SubscriptionsStore.adjustTotalCost();
   } catch (e) {
     console.warn('Subscription Actions: add - error adding', e);
   }
@@ -160,11 +164,11 @@ export const updateSubscription = async (subscription: Subscription) => {
 
     console.log('Subscription Actions: update - subscription', subscription);
 
-    if (subscription.hasReminder) {
-      const old: Subscription = SubscriptionsStore.getSubscriptionByID(
-        subscription.id,
-      );
+    const old: Subscription = SubscriptionsStore.getSubscriptionByID(
+      subscription.id,
+    );
 
+    if (subscription.hasReminder) {
       if (
         !old.cycle.isEqual(subscription.cycle) ||
         !old.reminderInterval.isEqual(subscription.reminderInterval) ||
@@ -182,7 +186,41 @@ export const updateSubscription = async (subscription: Subscription) => {
     }
 
     SubscriptionsStore.updateSubscription(subscription);
+
+    if (
+      subscription.cost !== old.cost ||
+      subscription.firstPayment !== old.firstPayment ||
+      !subscription.cycle.isEqual(old.cycle)
+    ) {
+      SubscriptionsStore.adjustTotalCost();
+    }
   } catch (e) {
     console.warn('Subscription Actions: update - error updating', e);
+  }
+};
+
+export const fetchCostFilters = async () => {
+  try {
+    const response = await AsyncStorage.multiGet([
+      'costTypeFilter',
+      'costIntervalFilter',
+    ]);
+
+    if (response[0][1] != null && response[1][1] != null) {
+      const costTypeFilter = response[0][1];
+      const costIntervalFilter = response[1][1];
+
+      SubscriptionsStore.setCostFilters(costTypeFilter, costIntervalFilter);
+    } else {
+      // Set initial values
+      const keyPairs = [
+        ['costTypeFilter', 'Exact'],
+        ['costIntervalFilter', 'This Month'],
+      ];
+
+      await AsyncStorage.multiSet(keyPairs);
+    }
+  } catch (e) {
+    console.warn('AppState Actions: error fetching cost filters', e);
   }
 };

@@ -179,8 +179,8 @@ const stylesheet = (theme: Theme) =>
 
 const mapStateToProps = () => ({
   totalCost: SubscriptionsStore.getTotalCost(),
-  costTypeFilter: AppStateStore.getCostTypeFilter(),
-  costIntervalFilter: AppStateStore.getCostIntervalFilter(),
+  costTypeFilter: SubscriptionsStore.getCostTypeFilter(),
+  costIntervalFilter: SubscriptionsStore.getCostIntervalFilter(),
 });
 
 export default connect(mapStateToProps)(SubscriptionsCostFooter);
