@@ -151,11 +151,32 @@ class Subscription {
         } else if (filterType === 'Remaining') {
           cycleAsDays = this.cycle.toDays(true);
 
-          if (cycleAsDays <= 7) {
-            const startDay = now.getDay();
+          const dayInWeek = now.getDay();
+          const diff = 7 - dayInWeek;
+          const endOfWeekDayInYear = getDayInYear(
+            moment()
+              .add(diff, 'd')
+              .toDate(),
+          );
 
-            result = this.cost * Math.floor((7 - startDay) / cycleAsDays);
+          let intervals = 0;
+
+          if (firstPaymentDayInYear === dayInYear) {
+            intervals = -1;
           }
+
+          let incrementedDayOfYear = firstPaymentDayInYear;
+
+          while (incrementedDayOfYear < dayInYear) {
+            incrementedDayOfYear += cycleAsDays;
+          }
+
+          while (incrementedDayOfYear <= endOfWeekDayInYear) {
+            intervals++;
+            incrementedDayOfYear += cycleAsDays;
+          }
+
+          result = this.cost * intervals;
         } else if (filterType === 'Exact') {
           cycleAsDays = this.cycle.toDays(true);
 
@@ -174,7 +195,14 @@ class Subscription {
       case 'Month':
         if (filterType === 'Average') {
           cycleAsDays = this.cycle.toDays();
-          result = this.cost * Math.round(365 / 12 / cycleAsDays);
+
+          if (this.cycle.getFormattedUnit() === 'Month') {
+            cycleAsDays = this.cycle.quantity * 30;
+
+            result = this.cost * (30 / cycleAsDays);
+          } else {
+            result = this.cost * (365 / 12 / cycleAsDays);
+          }
         } else if (filterType === 'Remaining') {
           cycleAsDays = this.cycle.toDays(true);
 
@@ -189,10 +217,7 @@ class Subscription {
 
           let intervals = 0;
 
-          if (
-            firstPaymentDayInYear >= getDayInYear() &&
-            firstPaymentDayInYear <= endOfMonthDayInYear
-          ) {
+          if (firstPaymentDayInYear === dayInYear) {
             intervals = -1;
           }
 
@@ -202,35 +227,12 @@ class Subscription {
             incrementedDayOfYear += cycleAsDays;
           }
 
-          while (incrementedDayOfYear <= endOfMonthDayInYear) {
+          while (incrementedDayOfYear < endOfMonthDayInYear) {
             intervals++;
             incrementedDayOfYear += cycleAsDays;
           }
 
           result = this.cost * intervals;
-          // let startDayInYear = getDayInYear();
-
-          // // incorrect when dec 11th, 1-month interval
-          // if (startDayInYear < firstPaymentDayInYear) {
-          //   startDayInYear = firstPaymentDayInYear;
-          // }
-
-          // if (
-          //   startDayInYear > endOfMonthDayInYear ||
-          //   startDayInYear + cycleAsDays > endOfMonthDayInYear
-          // ) {
-          //   break;
-          // } else {
-          //   let intervals = 0;
-
-          //   while (startDayInYear <= endOfMonthDayInYear) {
-          //     intervals++;
-
-          //     startDayInYear += cycleAsDays;
-          //   }
-
-          //   result = this.cost * intervals;
-          // }
         } else if (filterType === 'Exact') {
           cycleAsDays = this.cycle.toDays(true);
 
@@ -255,10 +257,7 @@ class Subscription {
 
           let intervals = 0;
 
-          if (
-            firstPaymentDayInYear >= getDayInYear() &&
-            firstPaymentDayInYear <= 365
-          ) {
+          if (firstPaymentDayInYear === getDayInYear()) {
             intervals = -1;
           }
 
@@ -274,23 +273,6 @@ class Subscription {
           }
 
           result = this.cost * intervals;
-
-          // let startDay = getDayInYear();
-
-          // if (startDay < firstPaymentDayInYear) {
-          //   startDay = firstPaymentDayInYear;
-          // }
-
-          // if (startDay + cycleAsDays <= 365) {
-          //   let intervals = 0;
-
-          //   while (startDay <= 365) {
-          //     intervals++;
-          //     startDay += cycleAsDays;
-          //   }
-
-          //   result = this.cost * intervals;
-          // }
         } else if (filterType === 'Exact') {
           cycleAsDays = this.cycle.toDays(true);
 
