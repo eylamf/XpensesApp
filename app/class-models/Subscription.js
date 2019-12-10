@@ -133,7 +133,7 @@ class Subscription {
 
     let result = 0;
 
-    const firstPaymentDayInYear = getDayInYear(new Date(this.firstPayment));
+    let firstPaymentDayInYear = getDayInYear(new Date(this.firstPayment));
 
     const dayInYear = getDayInYear();
 
@@ -148,7 +148,6 @@ class Subscription {
         if (filterType === 'Average') {
           cycleAsDays = this.cycle.toDays();
           result = this.cost * (7 / cycleAsDays);
-          console.log('CYCLE', cycleAsDays);
         } else if (filterType === 'Remaining') {
           cycleAsDays = this.cycle.toDays(true);
 
@@ -177,30 +176,32 @@ class Subscription {
           cycleAsDays = this.cycle.toDays();
           result = this.cost * (365 / 12 / cycleAsDays);
         } else if (filterType === 'Remaining') {
-          // cycleAsDays = this.cycle.toDays(true);
-          // const daysDiff = moment().diff(
-          //   moment(this.firstPayment)
-          //     .hour(0)
-          //     .format('YYYY-MM-DD'),
-          //   'days',
-          // );
-          // const now = new Date();
-          // console.log(
-          //   'daysDiff mod cycleDays',
-          //   this.getCompanyName(),
-          //   daysDiff % cycleAsDays,
-          // );
-          // if (now.getDate() <= daysInMonth()) {
-          //   const mod = daysDiff % cycleAsDays;
-          //   if (mod % 2 === 0) {
-          //     if (mod === 0) {
-          //       result = this.cost;
-          //     } else {
-          //       result = this.cost * mod;
-          //     }
-          //   }
-          // }
-          // console.log('daysDiff for', this.company.name, daysDiff);
+          cycleAsDays = this.cycle.toDays(true);
+
+          const dayInMonth = now.getDate();
+          const daysInThisMonth = daysInMonth();
+          const diff = daysInThisMonth - dayInMonth;
+          const endOfMonthDayInYear = getDayInYear(
+            moment()
+              .add(diff, 'd')
+              .toDate(),
+          );
+
+          let startDayInYear = getDayInYear();
+
+          if (startDayInYear > endOfMonthDayInYear) {
+            break;
+          } else {
+            let intervals = -1;
+
+            while (startDayInYear <= endOfMonthDayInYear) {
+              intervals++;
+
+              startDayInYear += cycleAsDays;
+            }
+
+            result = this.cost * intervals;
+          }
         } else if (filterType === 'Exact') {
           cycleAsDays = this.cycle.toDays(true);
 
@@ -225,12 +226,6 @@ class Subscription {
 
           let startDay = getDayInYear();
 
-          console.log(
-            'Remaining in year: start day of year = ' +
-              this.getCompanyName() +
-              startDay,
-          );
-
           let intervals = -1;
 
           while (startDay <= 365) {
@@ -238,42 +233,33 @@ class Subscription {
             startDay += cycleAsDays;
           }
 
-          console.log(
-            'Remaining in year',
-            this.getCompanyName(),
-            'startDayOfYear: ' + startDay,
-            'intervals: ' + intervals,
-          );
-
           result = this.cost * intervals;
         } else if (filterType === 'Exact') {
-          /**
-          cycleAsDays = this.cycle.toDays(true);
+          // cycleAsDays = this.cycle.toDays(true);
 
-          let startDayOfYear = getDayInYear(new Date(this.firstPayment));
+          // let startDayOfYear = getDayInYear(new Date(this.firstPayment));
 
-          console.log(
-            'Remaining in year: start day of year = ' +
-              this.getCompanyName() +
-              startDayOfYear,
-          );
+          // console.log(
+          //   'Remaining in year: start day of year = ' +
+          //     this.getCompanyName() +
+          //     startDayOfYear,
+          // );
 
-          let intervals = -1;
+          // let intervals = -1;
 
-          while (startDayOfYear <= 365) {
-            intervals++;
-            startDayOfYear += cycleAsDays;
-          }
+          // while (startDayOfYear <= 365) {
+          //   intervals++;
+          //   startDayOfYear += cycleAsDays;
+          // }
 
-          console.log(
-            'Remaining in year',
-            this.getCompanyName(),
-            'startDayOfYear: ' + startDayOfYear,
-            'intervals: ' + intervals,
-          );
+          // console.log(
+          //   'Remaining in year',
+          //   this.getCompanyName(),
+          //   'startDayOfYear: ' + startDayOfYear,
+          //   'intervals: ' + intervals,
+          // );
 
-          result = this.cost * intervals;
-           */
+          // result = this.cost * intervals;
 
           cycleAsDays = this.cycle.toDays(true);
 
@@ -282,7 +268,7 @@ class Subscription {
               .hour(0)
               .diff(moment(this.firstPayment), 'days') + 1;
 
-          const intervals = Math.round(diffFromEndOfYear / cycleAsDays);
+          const intervals = diffFromEndOfYear / cycleAsDays;
 
           result = this.cost * intervals;
         }

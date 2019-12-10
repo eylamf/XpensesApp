@@ -36,36 +36,17 @@ class SubscriptionCycleInterval {
     return this.unit === other.unit && this.quantity === other.quantity;
   }
 
+  // TODO: get exact day count
   toDays(exact?: boolean = false): number {
     const unit = this.getFormattedUnit();
 
-    // if (unit === 'Day') {
-    //   return this.quantity;
-    // } else if (unit === 'Week') {
-    //   return this.quantity * 7;
-    // } else if (unit === 'Month') {
-    //   if (exact) {
-    //     const now = new Date();
-    //     const daysInCurrentMonth = new Date(
-    //       now.getFullYear(),
-    //       now.getMonth() + 1,
-    //       0,
-    //     ).getDate();
-
-    //     console.log(
-    //       'SubsctionCycleInterval: number of days in this month',
-    //       daysInCurrentMonth,
-    //     );
-
-    //     /**
-    //      * TODO: build array and get daysInMonths for this.quantitiy - 1...0
-    //      */
-    //     return this.quantity * daysInCurrentMonth;
+    // if (exact) {
+    //   if (unit === 'Day') {
+    //     return this.quantity;
+    //   } else if (unit === 'Week') {
+    //     this.quantity * 7;
+    //   } else if (unit === 'Month') {
     //   }
-
-    //   return this.quantity * (365 / 12);
-    // } else if (unit === 'Year') {
-    //   return 365;
     // }
 
     return moment.duration(this.quantity, this.getFormattedUnit()).asDays();
