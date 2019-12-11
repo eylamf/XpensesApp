@@ -105,7 +105,7 @@ const FixedSubscriptionsList = ({
         pointerEvents={'none'}>
         <LinearGradient style={styles.gradient} colors={gradientColors} />
       </Animated.View>
-      <LineDivider color={theme.colors.soft2} />
+      {/* <LineDivider color={theme.colors.soft2} /> */}
       <AnimatedFlatList
         data={state.ids}
         keyExtractor={keyExtractor}
@@ -119,6 +119,7 @@ const FixedSubscriptionsList = ({
             useNativeDriver: true,
           },
         )}
+        keyboardDismissMode={'interactive'}
       />
     </View>
   );

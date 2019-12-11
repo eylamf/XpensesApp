@@ -69,7 +69,7 @@ const SearchBar = ({
             onSubmitEditing={onSearch}
             returnKeyType={'search'}
             selectionColor={theme.colors.primary}
-            autoFocus
+            // autoFocus
           />
         </View>
         <TouchableOpacity

@@ -1,13 +1,12 @@
 // @flow
 
 import React from 'react';
-import {Text} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createStackNavigator} from '@react-navigation/stack';
 import {useTheme} from './hooks/useTheme';
 import MySubscriptions from '../screens/my-subscriptions/MySubscriptions';
 import FixedSubscriptions from '../screens/fixed-subscriptions/FixedSubscriptions';
 import SubscriptionDetails from '../screens/sub-details/SubscriptionDetails';
+import CreateSubscription from '../screens/create-sub/CreateSubscription';
 
 const SearchStack = createNativeStackNavigator();
 
@@ -30,6 +29,13 @@ const FixedSubscriptionsNav = (): React$Node => (
         headerTintColor: 'rgb(255, 255, 255)',
         headerTitle: '',
         headerBackTitle: 'All',
+      }}
+    />
+    <SearchStack.Screen
+      name={'CreateNew'}
+      component={CreateSubscription}
+      options={{
+        headerTitle: 'Custom',
       }}
     />
   </SearchStack.Navigator>

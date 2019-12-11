@@ -12,10 +12,8 @@ const stylesheet = (theme: Theme) =>
       ...theme.styles.center,
     },
 
-    listContent: {backgroundColor: theme.colors.main},
-
     top: {
-      paddingTop: Constants.getStatusBarHeight() + Constants.getNavbarHeight(),
+      paddingTop: 30,
       ...theme.styles.center,
     },
 

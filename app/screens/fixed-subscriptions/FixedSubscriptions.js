@@ -8,6 +8,7 @@ import {useTheme} from '../../utils/hooks/useTheme';
 import Subscription from '../../class-models/Subscription';
 import SearchBar from '../../components/headers/SearchBar';
 import FixedSubscriptionsList from '../../components/lists/FixedSubscriptionsList';
+import CreateNewSubscriptionFooter from '../../components/headers/CreateNewSubscriptionFooter';
 
 type Props = {
   navigation: any,
@@ -28,6 +29,10 @@ const MySubscriptions = ({navigation, route}: Props): Element<any> => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onCreateNewPress = () => {
+    navigation.navigate('CreateNew');
+  };
+
   return (
     <>
       <StatusBar barStyle={`${theme.oppositeID}-content`} animated />
@@ -39,6 +44,7 @@ const MySubscriptions = ({navigation, route}: Props): Element<any> => {
           onSearch={onSearch}
         />
         <FixedSubscriptionsList onItemPress={onSubscriptionPress} />
+        <CreateNewSubscriptionFooter onPress={onCreateNewPress} />
       </View>
     </>
   );
