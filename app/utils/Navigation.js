@@ -77,6 +77,14 @@ export const Navigation = (): React$Node => {
           presentation: 'modal',
         }}
       />
+      <NavStack.Screen
+        name={'ColorGrid'}
+        component={ColorGrid}
+        options={{
+          headerTitle: 'Colors',
+          presentation: 'modal',
+        }}
+      />
     </NavStack.Navigator>
   );
 };

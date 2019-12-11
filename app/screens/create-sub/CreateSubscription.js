@@ -10,11 +10,13 @@ import type {ReducerAction, ColorGroup} from '../../utils/Types';
 import SubscriptionCycleInterval from '../../class-models/SubscriptionCycleInterval';
 import ReminderInterval from '../../class-models/ReminderInterval';
 import Subscription from '../../class-models/Subscription';
+import Company from '../../class-models/Company';
 import Row from '../../components/Row';
 import LineDivider from '../../components/LineDivider';
 import CustomLogo from '../../components/CustomLogo';
 import SubDetailsForm from '../../components/SubDetailsForm';
 import FormDataRow from '../../components/list-items/FormDataRow';
+import * as SubscriptionActions from '../../stores/subscriptions/Actions';
 
 type Props = {
   navigation: any,
@@ -26,9 +28,7 @@ type State = {
   name: string,
   description: ?string,
   logoURI: string,
-  color: string,
-  tint1: string,
-  tint2: string,
+  colorGroup: ColorGroup,
   cost: string,
   firstPayment: number,
   cycle: SubscriptionCycleInterval,
@@ -67,13 +67,11 @@ const reducer = (state: State, action: ReducerAction): State => {
       return {...state, cost: action.payload.cost};
 
     case types.SET_COLOR: {
-      const {color} = action.payload;
+      const {colorGroup} = action.payload;
 
       return {
         ...state,
-        color: color.color,
-        tint1: color.tint1,
-        tint2: color.tint2,
+        colorGroup,
       };
     }
 
@@ -161,9 +159,11 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
     name: '',
     description: null,
     logoURI: '',
-    color: theme.id === 'light' ? theme.colors.soft1 : theme.colors.soft,
-    tint1: theme.id === 'light' ? theme.colors.soft2 : theme.colors.main,
-    tint2: theme.colors.soft3,
+    colorGroup: {
+      color: theme.id === 'light' ? theme.colors.soft1 : theme.colors.soft,
+      tint1: theme.id === 'light' ? theme.colors.soft2 : theme.colors.main,
+      tint2: theme.colors.soft3,
+    },
     cost: '',
     firstPayment: new Date().setHours(0, 0, 0, 0),
     cycle: new SubscriptionCycleInterval({quantity: 1, unit: 'Month(s)'}),
@@ -175,9 +175,34 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
     enableReminderTimePicker: false,
   });
 
-  const onAdd = useCallback(() => {
-    alert('Add pressed');
-  }, []);
+  const onAdd = useCallback(async () => {
+    const {name, colorGroup, logoURI} = state;
+
+    const company = new Company({
+      id: state.name.toLowerCase(),
+      name,
+      logoURI,
+      colorGroup,
+    });
+
+    const subscription = new Subscription({
+      id: state.name.toLowerCase(),
+      company,
+      description: state.description,
+      cost: Number(state.cost),
+      firstPayment: state.firstPayment,
+      cycle: state.cycle,
+      hasReminder: state.hasReminder,
+      reminderInterval: state.reminderInterval,
+      custom: true,
+    });
+
+    console.log('CreateSubscription: new custom', '=>', subscription);
+
+    await SubscriptionActions.addSubscription(subscription);
+
+    navigation.goBack();
+  }, [state, navigation]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -219,24 +244,25 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
 
   const onGoToColorSelect = () => {
     navigation.navigate('ColorGrid', {
-      selectedColor: state.color,
-      onSelectColor: (color: ColorGroup) =>
+      selectedColor: state.colorGroup.color,
+      onSelectColor: (colorGroup: ColorGroup) =>
         dispatch({
           type: types.SET_COLOR,
-          payload: {color},
+          payload: {colorGroup},
         }),
+      isModal: false,
     });
   };
 
   return (
     <View style={theme.styles.container}>
       <ScrollView ref={scrollview}>
-        <View style={[styles.top, {backgroundColor: state.color}]}>
-          <CustomLogo uri={state.logoURI} onAddPhoto={onAddPhoto} />
+        <View style={[styles.top, {backgroundColor: state.colorGroup.color}]}>
+          <CustomLogo uri={state.logoURI} onAddPhoto={onAddPhoto} isAddMode />
           <TextInput
             style={styles.name}
             placeholder={'Name'}
-            placeholderTextColor={state.tint2}
+            placeholderTextColor={state.colorGroup.tint2}
             value={state.name}
             selectionColor={theme.colors.white}
             onChangeText={(text: string) =>
@@ -246,7 +272,7 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
           <TextInput
             style={theme.styles.whiteText}
             placeholder={'Add a description'}
-            placeholderTextColor={state.tint2}
+            placeholderTextColor={state.colorGroup.tint2}
             onChangeText={(text: string) =>
               dispatch({type: types.SET_DESC, payload: {description: text}})
             }
@@ -254,13 +280,21 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
             selectionColor={theme.colors.white}
           />
         </View>
-        <Row style={[styles.costSection, {backgroundColor: state.color}]}>
-          <Row style={[styles.costContainer, {backgroundColor: state.tint1}]}>
+        <Row
+          style={[
+            styles.costSection,
+            {backgroundColor: state.colorGroup.color},
+          ]}>
+          <Row
+            style={[
+              styles.costContainer,
+              {backgroundColor: state.colorGroup.tint1},
+            ]}>
             <Text style={theme.styles.mdWhiteText}>$</Text>
             <TextInput
               style={styles.costInput}
               placeholder={'0.00'}
-              placeholderTextColor={state.tint2}
+              placeholderTextColor={state.colorGroup.tint2}
               value={state.cost}
               onChangeText={(text: string) =>
                 dispatch({type: types.SET_COST, payload: {cost: text}})
@@ -273,10 +307,10 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
         </Row>
         <SubDetailsForm
           switchTint={
-            state.color ===
+            state.colorGroup.color ===
             (theme.id === 'light' ? theme.colors.soft1 : theme.colors.soft)
               ? null
-              : state.color
+              : state.colorGroup.color
           }
           state={state}
           dispatch={dispatch}
@@ -286,7 +320,10 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
           label={'Color'}
           rightComponent={
             <View
-              style={[styles.colorPreview, {backgroundColor: state.color}]}
+              style={[
+                styles.colorPreview,
+                {backgroundColor: state.colorGroup.color},
+              ]}
             />
           }
           onPress={onGoToColorSelect}

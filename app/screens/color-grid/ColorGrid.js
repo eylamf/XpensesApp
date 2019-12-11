@@ -7,6 +7,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Constants from '../../utils/Constants';
 import {useTheme} from '../../utils/hooks/useTheme';
 import type {Theme, ColorGroup} from '../../utils/Types';
+import ColorGridHeader from '../../components/headers/ColorGridHeader';
 import ColorGridItem from '../../components/list-items/ColorGridItem';
 import {COLOR_GRID_VALUES} from '../../utils/Data';
 
@@ -30,26 +31,31 @@ const ColorGrid = ({navigation, route}: Props): Element<any> => {
     return COLOR_GRID_VALUES[index];
   });
 
+  const {isModal} = route.params;
+
   const onDone = useCallback(() => {
     route.params.onSelectColor(selected);
     navigation.goBack();
   }, [navigation, route.params, selected]);
 
   useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTintColor: theme.colors.primary,
-      headerBackTitle: 'Custom',
-      headerTitleStyle: {color: theme.colors.opposite},
-      headerRight: () => (
-        <TouchableOpacity
-          style={styles.headerRight}
-          activeOpacity={0.8}
-          onPress={onDone}>
-          <Text style={theme.styles.text}>Done</Text>
-        </TouchableOpacity>
-      ),
-    });
+    if (!isModal) {
+      navigation.setOptions({
+        headerTintColor: theme.colors.primary,
+        headerBackTitle: 'Custom',
+        headerTitleStyle: {color: theme.colors.opposite},
+        headerRight: () => (
+          <TouchableOpacity
+            style={styles.headerRight}
+            activeOpacity={0.8}
+            onPress={onDone}>
+            <Text style={theme.styles.text}>Done</Text>
+          </TouchableOpacity>
+        ),
+      });
+    }
   }, [
+    isModal,
     navigation,
     onDone,
     styles.headerRight,
@@ -57,6 +63,10 @@ const ColorGrid = ({navigation, route}: Props): Element<any> => {
     theme.colors.primary,
     theme.styles.text,
   ]);
+
+  const onClose = () => {
+    navigation.goBack();
+  };
 
   const keyExtractor = (item: ColorGroup) => item.color;
 
@@ -73,6 +83,7 @@ const ColorGrid = ({navigation, route}: Props): Element<any> => {
 
   return (
     <View style={theme.styles.container}>
+      {isModal && <ColorGridHeader onDone={onDone} onClose={onClose} />}
       <FlatList
         keyExtractor={keyExtractor}
         data={COLOR_GRID_VALUES}

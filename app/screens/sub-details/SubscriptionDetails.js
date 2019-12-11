@@ -14,13 +14,16 @@ import {useSafeArea} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import stylesheet from './DetailsStyles';
 import {useTheme} from '../../utils/hooks/useTheme';
-import type {ReducerAction} from '../../utils/Types';
+import type {ReducerAction, ColorGroup} from '../../utils/Types';
 import ReminderInterval from '../../class-models/ReminderInterval';
 import SubscriptionCycleInterval from '../../class-models/SubscriptionCycleInterval';
 import Subscription from '../../class-models/Subscription';
 import SubDetailsHeader from '../../components/headers/SubDetailsHeader';
 import SubDetailsForm from '../../components/SubDetailsForm';
 import Row from '../../components/Row';
+import CustomLogo from '../../components/CustomLogo';
+import FormDataRow from '../../components/list-items/FormDataRow';
+import LineDivider from '../../components/LineDivider';
 import * as SubscriptionActions from '../../stores/subscriptions/Actions';
 
 type Props = {
@@ -29,8 +32,10 @@ type Props = {
 };
 
 type State = {
+  name: string,
   cost: string,
   description: ?string,
+  colorGroup: ColorGroup,
   firstPayment: number,
   cycle: SubscriptionCycleInterval,
   hasReminder: boolean,
@@ -42,8 +47,10 @@ type State = {
 };
 
 const types = {
+  SET_NAME: 'SET_NAME',
   SET_COST: 'SET_COST',
   SET_DESC: 'SET_DESC',
+  SET_COLOR: 'SET_COLOR',
   SET_FIRST_PAYMENT: 'SET_FIRST_PAYMENT',
   TOGGLE_HAS_REMINDER: 'TOGGLE_HAS_REMINDER',
   SET_REMINDER_INTERVAL: 'SET_REMINDER_INTERVAL',
@@ -56,11 +63,17 @@ const types = {
 
 const reducer = (state: State, action: ReducerAction): State => {
   switch (action.type) {
+    case types.SET_NAME:
+      return {...state, name: action.payload.name};
+
     case types.SET_COST:
       return {...state, cost: action.payload.cost};
 
     case types.SET_DESC:
       return {...state, description: action.payload.description};
+
+    case types.SET_COLOR:
+      return {...state, colorGroup: action.payload.colorGroup};
 
     case types.SET_FIRST_PAYMENT:
       return {...state, firstPayment: action.payload.firstPayment};
@@ -150,8 +163,10 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
   }: {subscription: Subscription, isAddMode: boolean} = route.params;
 
   const [state, dispatch] = useReducer(reducer, {
+    name: subscription.company.name,
     cost: subscription.cost.toFixed(2).toString(),
     description: subscription.description,
+    colorGroup: subscription.company.colorGroup,
     firstPayment: subscription.firstPayment,
     cycle: new SubscriptionCycleInterval({
       quantity: subscription.cycle.quantity,
@@ -195,6 +210,10 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
 
       onClose();
     } else {
+      if (state.colorGroup.color !== subscription.company.colorGroup.color) {
+        subscription.company.setColorGroup(state.colorGroup);
+      }
+
       const updated = new Subscription({
         company: subscription.company,
         cost: Number(state.cost),
@@ -203,6 +222,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
         cycle: state.cycle,
         reminderInterval: state.reminderInterval,
         hasReminder: state.hasReminder,
+        custom: subscription.custom,
       });
 
       await SubscriptionActions.updateSubscription(updated);
@@ -212,12 +232,13 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
   }, [
     isAddMode,
     subscription,
-    state.cost,
     state.firstPayment,
     state.description,
     state.cycle,
     state.reminderInterval,
     state.hasReminder,
+    state.cost,
+    state.colorGroup,
     onClose,
   ]);
 
@@ -255,12 +276,22 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     }, 0);
   };
 
+  const onGoToColorSelect = () => {
+    navigation.navigate('ColorGrid', {
+      selectedColor: state.colorGroup.color,
+      onSelectColor: (colorGroup: ColorGroup) => {
+        dispatch({type: types.SET_COLOR, payload: {colorGroup}});
+      },
+      isModal: true,
+    });
+  };
+
   return (
     <>
       <StatusBar barStyle={'light-content'} animated />
       <View style={theme.styles.container}>
         <SubDetailsHeader
-          color={subscription.company.colorGroup.color}
+          color={state.colorGroup.color}
           title={subscription.company.name}
           isAddMode={isAddMode}
           onClose={onClose}
@@ -273,21 +304,30 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
             {paddingBottom: insets.bottom + 15},
           ]}
           stickyHeaderIndices={[1]}>
-          <View
-            style={[
-              styles.top,
-              {backgroundColor: subscription.company.colorGroup.color},
-            ]}>
-            <Image
+          <View style={[styles.top, {backgroundColor: state.colorGroup.color}]}>
+            <CustomLogo
               style={styles.logo}
-              source={{uri: subscription.company.logoURI}}
-              resizeMode={'cover'}
+              uri={subscription.company.logoURI}
+              initials={subscription.company.getInitials()}
+              isAddMode={
+                subscription.custom && !subscription.company.logoURI.length
+              }
             />
-            <Text style={styles.name}>{subscription.company.name}</Text>
+            <TextInput
+              style={styles.name}
+              placeholder={'Name'}
+              placeholderTextColor={state.colorGroup.tint1}
+              onChangeText={(text: string) =>
+                dispatch({type: types.SET_NAME, payload: {name: text}})
+              }
+              selectionColor={theme.colors.white}
+              value={state.name}
+              editable={subscription.custom}
+            />
             <TextInput
               style={theme.styles.whiteText}
               placeholder={'Add a description'}
-              placeholderTextColor={subscription.company.colorGroup.tint2}
+              placeholderTextColor={state.colorGroup.tint2}
               onChangeText={(text: string) =>
                 dispatch({type: types.SET_DESC, payload: {description: text}})
               }
@@ -298,18 +338,18 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
           <Row
             style={[
               styles.costSection,
-              {backgroundColor: subscription.company.colorGroup.color},
+              {backgroundColor: state.colorGroup.color},
             ]}>
             <Row
               style={[
                 styles.costContainer,
-                {backgroundColor: subscription.company.colorGroup.tint1},
+                {backgroundColor: state.colorGroup.tint1},
               ]}>
               <Text style={theme.styles.mdWhiteText}>$</Text>
               <TextInput
                 style={styles.costInput}
                 placeholder={'0.00'}
-                placeholderTextColor={subscription.company.colorGroup.tint2}
+                placeholderTextColor={state.colorGroup.tint2}
                 value={state.cost}
                 onChangeText={(text: string) =>
                   dispatch({type: types.SET_COST, payload: {cost: text}})
@@ -322,12 +362,29 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
           </Row>
           <SubDetailsForm
             switchTint={
-              subscription.company.forceTint ? null : subscription.company.colorGroup.color
+              subscription.company.forceTint ? null : state.colorGroup.color
             }
             state={state}
             dispatch={dispatch}
             onScrollToEnd={onScrollToEnd}
           />
+          {subscription.custom && (
+            <>
+              <FormDataRow
+                label={'Color'}
+                rightComponent={
+                  <View
+                    style={[
+                      styles.colorPreview,
+                      {backgroundColor: state.colorGroup.color},
+                    ]}
+                  />
+                }
+                onPress={onGoToColorSelect}
+              />
+              <LineDivider leftSpace={15} color={theme.colors.soft2} />
+            </>
+          )}
         </ScrollView>
       </View>
     </>

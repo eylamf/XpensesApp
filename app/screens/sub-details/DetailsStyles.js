@@ -51,6 +51,12 @@ const stylesheet = (theme: Theme) =>
       marginRight: -1,
       ...theme.styles.mdWhiteText,
     },
+
+    colorPreview: {
+      width: 30,
+      height: 30,
+      borderRadius: 15,
+    },
   });
 
 export default stylesheet;

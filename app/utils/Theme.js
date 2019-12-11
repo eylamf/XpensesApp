@@ -116,6 +116,11 @@ function STYLES(id: 'light' | 'dark') {
       fontSize: 13,
     },
 
+    mdOpText: {
+      color: COLORS[id].main,
+      fontSize: 18,
+    },
+
     smOpText: {
       color: COLORS[id].main,
       fontSize: 10,

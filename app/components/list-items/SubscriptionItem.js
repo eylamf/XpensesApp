@@ -10,6 +10,7 @@ import type {Theme} from '../../utils/Types';
 import Subscription from '../../class-models/Subscription';
 import {SubscriptionsStore} from '../../stores/subscriptions/Store';
 import Row from '../Row';
+import CustomLogo from '../CustomLogo';
 
 type Props = {
   subscriptionID: string,
@@ -36,15 +37,18 @@ const SubscriptionItem = ({
       rippleColor={theme.colors.soft}
       onPress={() => onPress(subscription)}>
       <Row style={theme.styles.padding}>
-        <Image
+        <CustomLogo
           style={[
             styles.logo,
-            subscription.company.forceTint
-              ? {tintColor: theme.colors.opposite}
+            !subscription.custom
+              ? subscription.company.forceTint
+                ? {tintColor: theme.colors.opposite}
+                : null
               : null,
           ]}
-          source={{uri: subscription.company.logoURI}}
-          resizeMode={'cover'}
+          uri={subscription.company.logoURI}
+          initials={subscription.company.getInitials()}
+          bgColor={subscription.company.colorGroup.color}
         />
         <View style={theme.styles.flexOne}>
           <Text style={styles.name}>{subscription.company.name}</Text>
@@ -100,7 +104,8 @@ const stylesheet = (theme: Theme) =>
 const mapStateToProps = (ownProps: Props) => ({
   subscription: SubscriptionsStore.getSubscriptionByID(ownProps.subscriptionID),
   cost: SubscriptionsStore.getSubscriptionByID(ownProps.subscriptionID).cost,
-  description: SubscriptionsStore.getSubscriptionByID(ownProps.subscriptionID).description,
+  description: SubscriptionsStore.getSubscriptionByID(ownProps.subscriptionID)
+    .description,
 });
 
 export default connect(mapStateToProps)(SubscriptionItem);

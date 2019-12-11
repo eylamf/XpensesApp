@@ -8,25 +8,67 @@ import {useTheme} from '../utils/hooks/useTheme';
 import type {Theme} from '../utils/Types';
 
 type Props = {
+  style: Object | Object[],
   uri: string,
   onAddPhoto: () => void,
+  isAddMode: boolean,
+  initials: string,
+  bgColor?: string,
 };
 
-const CustomLogo = ({uri, onAddPhoto}: Props): Element<any> => {
+const CustomLogo = ({
+  style,
+  uri,
+  onAddPhoto,
+  isAddMode,
+  initials,
+  bgColor,
+}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
 
   if (uri.length === 0) {
-    return (
-      <TouchableOpacity
-        style={styles.placeholder}
-        activeOpacity={0.8}
-        onPress={onAddPhoto}>
-        <Text style={styles.placeholderLabel}>Add Photo</Text>
-      </TouchableOpacity>
-    );
+    if (isAddMode) {
+      return (
+        <TouchableOpacity
+          style={styles.placeholder}
+          activeOpacity={0.8}
+          onPress={onAddPhoto}>
+          <Text style={styles.placeholderLabel}>Add Photo</Text>
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <View
+          style={StyleSheet.compose(
+            [styles.initialsPlaceholder, {backgroundColor: bgColor}],
+            style,
+          )}>
+          <Text style={theme.styles.mdOpText} allowFontScaling={false}>
+            {initials}
+          </Text>
+        </View>
+      );
+    }
   }
 
-  return <Image style={styles.logo} source={{uri}} resizeMode={'cover'} />;
+  return (
+    <Image
+      style={StyleSheet.compose(
+        styles.logo,
+        style,
+      )}
+      source={{uri}}
+      resizeMode={'cover'}
+    />
+  );
+};
+
+CustomLogo.defaultProps = {
+  style: {},
+  uri: '',
+  onAddPhoto: () => {},
+  isAddMode: false,
+  initials: '',
 };
 
 const stylesheet = (theme: Theme) =>
@@ -36,7 +78,8 @@ const stylesheet = (theme: Theme) =>
       height: 60,
       padding: 4,
       borderRadius: 30,
-      backgroundColor: theme.id === 'light' ? theme.colors.main : theme.colors.soft1,
+      backgroundColor:
+        theme.id === 'light' ? theme.colors.main : theme.colors.soft1,
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: theme.colors.soft3,
       marginBottom: 15,
@@ -51,7 +94,15 @@ const stylesheet = (theme: Theme) =>
     logo: {
       width: 60,
       height: 60,
-      marginBottom: 15,
+      // marginBottom: 15,
+    },
+
+    initialsPlaceholder: {
+      width: 60,
+      height: 60,
+      borderRadius: 30,
+      backgroundColor: theme.colors.soft1,
+      ...theme.styles.center,
     },
   });
 

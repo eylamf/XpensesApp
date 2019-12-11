@@ -23,6 +23,7 @@ class Subscription {
   cycle: SubscriptionCycleInterval;
   hasReminder: boolean;
   reminderInterval: ReminderInterval;
+  custom: boolean;
 
   constructor(source: SubscriptionSource) {
     const {
@@ -33,6 +34,7 @@ class Subscription {
       cycle,
       hasReminder,
       reminderInterval,
+      custom,
     } = source;
 
     this.id = company.id;
@@ -45,6 +47,7 @@ class Subscription {
     this.hasReminder = hasReminder || false;
     this.reminderInterval =
       reminderInterval || new ReminderInterval({quantity: 1, unit: 'Day(s)'});
+    this.custom = custom || false;
   }
 
   getCompanyName(): string {
