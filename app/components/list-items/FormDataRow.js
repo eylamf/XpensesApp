@@ -83,7 +83,11 @@ const FormDataRow = ({
   );
 };
 
-FormDataRow.defaultProps = {rightComponent: null};
+FormDataRow.defaultProps = {
+  rightComponent: null,
+  isExpanded: false,
+  value: '',
+};
 
 const stylesheet = (theme: Theme) =>
   StyleSheet.create({

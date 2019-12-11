@@ -260,7 +260,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
       <StatusBar barStyle={'light-content'} animated />
       <View style={theme.styles.container}>
         <SubDetailsHeader
-          color={subscription.company.color}
+          color={subscription.company.colorGroup.color}
           title={subscription.company.name}
           isAddMode={isAddMode}
           onClose={onClose}
@@ -274,7 +274,10 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
           ]}
           stickyHeaderIndices={[1]}>
           <View
-            style={[styles.top, {backgroundColor: subscription.company.color}]}>
+            style={[
+              styles.top,
+              {backgroundColor: subscription.company.colorGroup.color},
+            ]}>
             <Image
               style={styles.logo}
               source={{uri: subscription.company.logoURI}}
@@ -284,7 +287,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
             <TextInput
               style={theme.styles.whiteText}
               placeholder={'Add a description'}
-              placeholderTextColor={subscription.company.tint2}
+              placeholderTextColor={subscription.company.colorGroup.tint2}
               onChangeText={(text: string) =>
                 dispatch({type: types.SET_DESC, payload: {description: text}})
               }
@@ -295,18 +298,18 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
           <Row
             style={[
               styles.costSection,
-              {backgroundColor: subscription.company.color},
+              {backgroundColor: subscription.company.colorGroup.color},
             ]}>
             <Row
               style={[
                 styles.costContainer,
-                {backgroundColor: subscription.company.tint1},
+                {backgroundColor: subscription.company.colorGroup.tint1},
               ]}>
               <Text style={theme.styles.mdWhiteText}>$</Text>
               <TextInput
                 style={styles.costInput}
                 placeholder={'0.00'}
-                placeholderTextColor={subscription.company.tint2}
+                placeholderTextColor={subscription.company.colorGroup.tint2}
                 value={state.cost}
                 onChangeText={(text: string) =>
                   dispatch({type: types.SET_COST, payload: {cost: text}})
@@ -319,7 +322,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
           </Row>
           <SubDetailsForm
             switchTint={
-              subscription.company.forceTint ? null : subscription.company.color
+              subscription.company.forceTint ? null : subscription.company.colorGroup.color
             }
             state={state}
             dispatch={dispatch}

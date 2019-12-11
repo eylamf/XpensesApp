@@ -54,9 +54,9 @@ const CreateNewSubscriptionFooter = ({onPress}: Props): Element<any> => {
         rippleColor={theme.colors.soft}
         onPress={onPress}>
         <Row style={[styles.content, {paddingBottom: insets.bottom + 30}]}>
-          <View style={styles.iconContainer}>
+          {/* <View style={styles.iconContainer}>
             <Image style={styles.addIcon} source={PLUS} resizeMode={'cover'} />
-          </View>
+          </View> */}
           <Text style={styles.addLabel}>Create a custom subscription</Text>
         </Row>
       </RectButton>
@@ -71,6 +71,7 @@ const stylesheet = (theme: Theme) =>
     content: {
       paddingTop: 30,
       paddingHorizontal: 15,
+      ...theme.styles.center,
     },
 
     iconContainer: {

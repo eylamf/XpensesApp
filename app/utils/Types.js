@@ -122,9 +122,7 @@ export type CompanySource = $ReadOnly<{
   id: string,
   name: string,
   logoURI: string,
-  color: string,
-  tint1: string,
-  tint2: string,
+  colorGroup: ColorGroup,
   forceTint?: boolean,
 }>;
 
@@ -134,9 +132,9 @@ export type SubscriptionSource = $ReadOnly<{
   description?: ?string,
   cost?: number,
   firstPayment?: number,
-  cycle: ?SubscriptionCycleInterval,
+  cycle?: ?SubscriptionCycleInterval,
   hasReminder?: boolean,
-  reminderInterval: ?ReminderInterval,
+  reminderInterval?: ?ReminderInterval,
 }>;
 
 export type CostTypeFilter = 'Average' | 'Remaining' | 'Exact';
@@ -150,3 +148,9 @@ export type CostIntervalFilter =
   | 'This Year';
 
 export type SimpleCostIntervalFilter = 'Week' | 'Month' | 'Year';
+
+export type ColorGroup = {
+  color: string,
+  tint1: string,
+  tint2: string,
+};

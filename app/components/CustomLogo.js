@@ -36,7 +36,7 @@ const stylesheet = (theme: Theme) =>
       height: 60,
       padding: 4,
       borderRadius: 30,
-      backgroundColor: theme.colors.soft1,
+      backgroundColor: theme.id === 'light' ? theme.colors.main : theme.colors.soft1,
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: theme.colors.soft3,
       marginBottom: 15,

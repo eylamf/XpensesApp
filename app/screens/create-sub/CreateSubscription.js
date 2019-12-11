@@ -1,14 +1,20 @@
 // @flow
 
-import React, {useReducer, useLayoutEffect, useCallback} from 'react';
+import React, {useReducer, useRef, useLayoutEffect, useCallback} from 'react';
 import type {Element} from 'react';
 import {View, ScrollView, Image, TextInput, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import stylesheet from './CreateStyles';
 import {useTheme} from '../../utils/hooks/useTheme';
-import type {ReducerAction} from '../../utils/Types';
+import type {ReducerAction, ColorGroup} from '../../utils/Types';
+import SubscriptionCycleInterval from '../../class-models/SubscriptionCycleInterval';
+import ReminderInterval from '../../class-models/ReminderInterval';
+import Subscription from '../../class-models/Subscription';
 import Row from '../../components/Row';
+import LineDivider from '../../components/LineDivider';
 import CustomLogo from '../../components/CustomLogo';
+import SubDetailsForm from '../../components/SubDetailsForm';
+import FormDataRow from '../../components/list-items/FormDataRow';
 
 type Props = {
   navigation: any,
@@ -24,6 +30,14 @@ type State = {
   tint1: string,
   tint2: string,
   cost: string,
+  firstPayment: number,
+  cycle: SubscriptionCycleInterval,
+  hasReminder: boolean,
+  reminderInterval: ReminderInterval,
+  enableFirstPaymentPicker: boolean,
+  enableCyclePicker: boolean,
+  enableReminderPicker: boolean,
+  enableReminderTimePicker: boolean,
 };
 
 const types = {
@@ -31,8 +45,14 @@ const types = {
   SET_DESC: 'SET_DESC',
   SET_COST: 'SET_COST',
   SET_COLOR: 'SET_COLOR',
-  SET_TINT1: 'SET_TINT1',
-  SET_TINT2: 'SET_TINT2',
+  SET_FIRST_PAYMENT: 'SET_FIRST_PAYMENT',
+  TOGGLE_HAS_REMINDER: 'TOGGLE_HAS_REMINDER',
+  SET_REMINDER_INTERVAL: 'SET_REMINDER_INTERVAL',
+  SET_CYCLE: 'SET_CYCLE',
+  TOGGLE_PAYMENT_PICKER: 'TOGGLE_PAYMENT_PICKER',
+  TOGGLE_CYCLE_PICKER: 'TOGGLE_CYCLE_PICKER',
+  TOGGLE_REMINDER_PICKER: 'TOGGLE_REMINDER_PICKER',
+  TOGGLE_REMINDER_TIME_PICKER: 'TOGGLE_REMINDER_TIME_PICKER',
 };
 
 const reducer = (state: State, action: ReducerAction): State => {
@@ -46,14 +66,86 @@ const reducer = (state: State, action: ReducerAction): State => {
     case types.SET_COST:
       return {...state, cost: action.payload.cost};
 
-    case types.SET_COLOR:
-      return {...state, color: action.payload.color};
+    case types.SET_COLOR: {
+      const {color} = action.payload;
 
-    case types.SET_TINT1:
-      return {...state, tint1: action.payload.tint1};
+      return {
+        ...state,
+        color: color.color,
+        tint1: color.tint1,
+        tint2: color.tint2,
+      };
+    }
 
-    case types.SET_TINT2:
-      return {...state, tint2: action.payload.tint2};
+    case types.SET_FIRST_PAYMENT:
+      return {...state, firstPayment: action.payload.firstPayment};
+
+    case types.SET_CYCLE:
+      return {...state, cycle: action.payload.cycle};
+
+    case types.TOGGLE_HAS_REMINDER: {
+      const {hasReminder} = action.payload;
+      return {
+        ...state,
+        hasReminder,
+        enableReminderPicker: hasReminder,
+        enableFirstPaymentPicker: false,
+        enableCyclePicker: false,
+        enableReminderTimePicker: false,
+      };
+    }
+
+    case types.SET_REMINDER_INTERVAL:
+      return {...state, reminderInterval: action.payload.reminderInterval};
+
+    case types.TOGGLE_PAYMENT_PICKER: {
+      return {
+        ...state,
+        enableFirstPaymentPicker: !state.enableFirstPaymentPicker,
+        enableCyclePicker: false,
+        enableReminderPicker: false,
+        enableReminderTimePicker: false,
+      };
+    }
+
+    case types.TOGGLE_CYCLE_PICKER: {
+      return {
+        ...state,
+        enableFirstPaymentPicker: false,
+        enableCyclePicker: !state.enableCyclePicker,
+        enableReminderPicker: false,
+        enableReminderTimePicker: false,
+      };
+    }
+
+    case types.TOGGLE_REMINDER_PICKER: {
+      const enabled = !state.enableReminderPicker;
+      let hasReminder = state.hasReminder;
+
+      if (enabled) {
+        if (!hasReminder) {
+          hasReminder = true;
+        }
+      }
+
+      return {
+        ...state,
+        enableFirstPaymentPicker: false,
+        enableCyclePicker: false,
+        enableReminderPicker: enabled,
+        enableReminderTimePicker: false,
+        hasReminder,
+      };
+    }
+
+    case types.TOGGLE_REMINDER_TIME_PICKER:
+      return {
+        ...state,
+        enableFirstPaymentPicker: false,
+        enableCyclePicker: false,
+        enableReminderPicker: false,
+        enableReminderTimePicker: !state.enableReminderTimePicker,
+      };
 
     default:
       return state;
@@ -63,14 +155,24 @@ const reducer = (state: State, action: ReducerAction): State => {
 const CreateSubscription = ({navigation, route}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
 
+  const scrollview = useRef();
+
   const [state, dispatch] = useReducer(reducer, {
     name: '',
     description: null,
     logoURI: '',
-    color: theme.colors.soft,
-    tint1: theme.colors.soft1,
+    color: theme.id === 'light' ? theme.colors.soft1 : theme.colors.soft,
+    tint1: theme.id === 'light' ? theme.colors.soft2 : theme.colors.main,
     tint2: theme.colors.soft3,
     cost: '',
+    firstPayment: new Date().setHours(0, 0, 0, 0),
+    cycle: new SubscriptionCycleInterval({quantity: 1, unit: 'Month(s)'}),
+    hasReminder: false,
+    reminderInterval: new ReminderInterval({quantity: 1, unit: 'Day(s)'}),
+    enableFirstPaymentPicker: false,
+    enableCyclePicker: false,
+    enableReminderPicker: false,
+    enableReminderTimePicker: false,
   });
 
   const onAdd = useCallback(() => {
@@ -80,14 +182,14 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTintColor: theme.colors.primary,
-      headerTitleStyle: {color: null},
+      headerTitleStyle: {color: theme.colors.opposite},
       headerBackTitle: 'All',
       headerRight: () => (
         <TouchableOpacity
           style={styles.headerRight}
           activeOpacity={0.8}
           onPress={onAdd}>
-          <Text style={theme.styles.whiteText}>Add</Text>
+          <Text style={theme.styles.text}>Add</Text>
         </TouchableOpacity>
       ),
     });
@@ -96,7 +198,8 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
     onAdd,
     styles.headerRight,
     theme.colors.primary,
-    theme.styles.whiteText,
+    theme.colors.opposite,
+    theme.styles.text,
   ]);
 
   const onBlur = () => {
@@ -107,17 +210,35 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
 
   const onAddPhoto = () => {};
 
+  const onScrollToEnd = () => {
+    setTimeout(() => {
+      scrollview.current && scrollview.current.scrollToEnd();
+      scrollview.current && scrollview.current.flashScrollIndicators();
+    }, 0);
+  };
+
+  const onGoToColorSelect = () => {
+    navigation.navigate('ColorGrid', {
+      selectedColor: state.color,
+      onSelectColor: (color: ColorGroup) =>
+        dispatch({
+          type: types.SET_COLOR,
+          payload: {color},
+        }),
+    });
+  };
+
   return (
     <View style={theme.styles.container}>
-      <ScrollView>
+      <ScrollView ref={scrollview}>
         <View style={[styles.top, {backgroundColor: state.color}]}>
           <CustomLogo uri={state.logoURI} onAddPhoto={onAddPhoto} />
           <TextInput
             style={styles.name}
             placeholder={'Name'}
-            placeholderTextColor={theme.colors.soft3}
+            placeholderTextColor={state.tint2}
             value={state.name}
-            selectionColor={theme.colors.opposite}
+            selectionColor={theme.colors.white}
             onChangeText={(text: string) =>
               dispatch({type: types.SET_NAME, payload: {name: text}})
             }
@@ -150,6 +271,27 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
             />
           </Row>
         </Row>
+        <SubDetailsForm
+          switchTint={
+            state.color ===
+            (theme.id === 'light' ? theme.colors.soft1 : theme.colors.soft)
+              ? null
+              : state.color
+          }
+          state={state}
+          dispatch={dispatch}
+          onScrollToEnd={onScrollToEnd}
+        />
+        <FormDataRow
+          label={'Color'}
+          rightComponent={
+            <View
+              style={[styles.colorPreview, {backgroundColor: state.color}]}
+            />
+          }
+          onPress={onGoToColorSelect}
+        />
+        <LineDivider leftSpace={15} color={theme.colors.soft2} />
       </ScrollView>
     </View>
   );

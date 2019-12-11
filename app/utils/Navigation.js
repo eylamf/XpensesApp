@@ -7,6 +7,7 @@ import MySubscriptions from '../screens/my-subscriptions/MySubscriptions';
 import FixedSubscriptions from '../screens/fixed-subscriptions/FixedSubscriptions';
 import SubscriptionDetails from '../screens/sub-details/SubscriptionDetails';
 import CreateSubscription from '../screens/create-sub/CreateSubscription';
+import ColorGrid from '../screens/color-grid/ColorGrid';
 
 const SearchStack = createNativeStackNavigator();
 
@@ -36,6 +37,13 @@ const FixedSubscriptionsNav = (): React$Node => (
       component={CreateSubscription}
       options={{
         headerTitle: 'Custom',
+      }}
+    />
+    <SearchStack.Screen
+      name={'ColorGrid'}
+      component={ColorGrid}
+      options={{
+        headerTitle: 'Colors',
       }}
     />
   </SearchStack.Navigator>
