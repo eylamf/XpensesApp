@@ -140,8 +140,6 @@ class Subscription {
 
     const dayInYear = getDayInYear();
 
-    console.log('days in year', firstPaymentDayInYear, dayInYear);
-
     let cycleAsDays;
 
     const now = new Date();
@@ -183,16 +181,46 @@ class Subscription {
         } else if (filterType === 'Exact') {
           cycleAsDays = this.cycle.toDays(true);
 
-          if (cycleAsDays <= 7) {
-            const originalStartDay = new Date(this.firstPayment).getDay();
-            const startDay = now.getDay();
+          const dayInWeek = now.getDay();
+          const startOfWeekDayInYear = getDayInYear(
+            moment({hour: 0})
+              .subtract(dayInWeek, 'd')
+              .toDate(),
+          );
+          const endOfWeekDayInYear = getDayInYear(
+            moment()
+              .add(7 - dayInWeek, 'd')
+              .toDate(),
+          );
 
-            if (Math.abs(originalStartDay - startDay) % 2 === 0) {
-              result = this.cost * Math.round(6 / cycleAsDays);
-            } else {
-              result = this.cost * Math.round(7 / cycleAsDays);
-            }
+          let intervals = 0;
+
+          if (firstPaymentDayInYear === dayInYear) {
+            intervals = -1;
           }
+
+          let incrementedDayOfYear = firstPaymentDayInYear;
+
+          while (incrementedDayOfYear < startOfWeekDayInYear) {
+            incrementedDayOfYear += cycleAsDays;
+          }
+
+          while (incrementedDayOfYear <= endOfWeekDayInYear) {
+            intervals++;
+            incrementedDayOfYear += cycleAsDays;
+          }
+
+          result = this.cost * intervals;
+          // if (cycleAsDays <= 7) {
+          //   const originalStartDay = new Date(this.firstPayment).getDay();
+          //   const startDay = now.getDay();
+
+          //   if (Math.abs(originalStartDay - startDay) % 2 === 0) {
+          //     result = this.cost * Math.round(6 / cycleAsDays);
+          //   } else {
+          //     result = this.cost * Math.round(7 / cycleAsDays);
+          //   }
+          // }
         }
         break;
       case 'Month':
