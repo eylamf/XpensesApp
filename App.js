@@ -4,6 +4,7 @@ import React, {useRef, useEffect} from 'react';
 import {StyleSheet, View, ActivityIndicator, YellowBox} from 'react-native';
 import 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {AppearanceProvider} from 'react-native-appearance';
 import {enableScreens} from 'react-native-screens';
 import {NavigationNativeContainer} from '@react-navigation/native';
 import {connect} from 'remx';
@@ -45,11 +46,13 @@ const App = ({loading}: Props): React$Node => {
             <ActivityIndicator />
           </View>
         ) : (
-          <NavigationNativeContainer>
-            <AppContainer>
-              <Navigation />
-            </AppContainer>
-          </NavigationNativeContainer>
+          <AppearanceProvider>
+            <NavigationNativeContainer>
+              <AppContainer>
+                <Navigation />
+              </AppContainer>
+            </NavigationNativeContainer>
+          </AppearanceProvider>
         )}
       </SafeAreaProvider>
     </View>

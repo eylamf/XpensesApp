@@ -1,11 +1,12 @@
 // @flow
 
 import * as remx from 'remx';
+import {Appearance} from 'react-native-appearance';
 import {generateTheme} from '../../utils/Theme';
 import type {Theme} from '../../utils/Types';
 
 const initialState = {
-  theme: generateTheme('light'),
+  theme: generateTheme(Appearance.getColorScheme()),
 };
 
 const state = remx.state(initialState);
