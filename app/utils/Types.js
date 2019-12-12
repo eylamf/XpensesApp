@@ -17,6 +17,7 @@ type ColorSet = $Exact<{
   opposite: string,
   white: string,
   black: string,
+  alert: string,
 }>;
 
 export type ColorMap = $ReadOnly<{

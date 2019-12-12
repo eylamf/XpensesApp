@@ -112,8 +112,8 @@ const stylesheet = (theme: Theme) => {
 
     sheetHeader: {
       height: 40,
-      // borderTopLeftRadius: 15,
-      // borderTopRightRadius: 15,
+      borderTopLeftRadius: 15,
+      borderTopRightRadius: 15,
       backgroundColor: theme.colors.main,
       ...theme.styles.center,
     },

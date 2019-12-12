@@ -57,6 +57,12 @@ const stylesheet = (theme: Theme) =>
       height: 30,
       borderRadius: 15,
     },
+
+    deleteBtn: {
+      paddingVertical: 15,
+      backgroundColor: theme.colors.main,
+      ...theme.styles.center,
+    },
   });
 
 export default stylesheet;

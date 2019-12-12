@@ -288,6 +288,11 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     });
   };
 
+  const onRemove = async () => {
+    await SubscriptionActions.removeSubscription(subscription.id);
+    onClose();
+  };
+
   return (
     <>
       <StatusBar barStyle={'light-content'} animated />
@@ -395,6 +400,12 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
             </>
           )}
         </ScrollView>
+        <TouchableOpacity
+          style={[styles.deleteBtn, {paddingBottom: insets.bottom + 15}]}
+          activeOpacity={0.8}
+          onPress={onRemove}>
+          <Text style={theme.styles.lightText}>Delete Subscription</Text>
+        </TouchableOpacity>
       </View>
     </>
   );

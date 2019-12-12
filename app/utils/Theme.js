@@ -17,6 +17,7 @@ export const COLORS: ColorMap = {
     opposite: 'rgb(57, 60, 64)',
     white: 'rgb(255, 255, 255)',
     black: 'rgb(0, 0, 0)',
+    alert: 'rgb(235, 38, 67)',
   },
 
   dark: {
@@ -32,6 +33,7 @@ export const COLORS: ColorMap = {
     opposite: 'rgb(255, 255, 255)',
     white: 'rgb(255, 255, 255)',
     black: 'rgb(0, 0, 0)',
+    alert: 'rgb(235, 38, 67)',
   },
 };
 
@@ -139,6 +141,11 @@ function STYLES(id: 'light' | 'dark') {
     mdPrimaryText: {
       color: COLORS[id].primary,
       fontSize: 18,
+    },
+
+    alertText: {
+      color: COLORS[id].alert,
+      fontSize: 13,
     },
 
     bold: {fontWeight: '600'},
