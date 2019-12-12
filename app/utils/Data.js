@@ -22,9 +22,9 @@ const netflix = new Company({
   logoURI:
     'https://1000logos.net/wp-content/uploads/2017/11/Netflix-Logo-png.png',
   colorGroup: {
-    color: 'rgb(216, 31, 38)',
-    tint1: 'rgb(191, 23, 29)',
-    tint2: 'rgb(156, 12, 18)',
+    color: 'rgb(229, 9, 20)',
+    tint1: 'rgb(191, 6, 15)',
+    tint2: 'rgb(158, 5, 12)',
   },
 });
 
@@ -34,7 +34,7 @@ const spotify = new Company({
   logoURI:
     'https://static.spin.com/files/2018/05/Spotify-Logo-1526659588-640x469.png',
   colorGroup: {
-    color: 'rgb(30, 215, 97)',
+    color: 'rgb(30, 215, 96)',
     tint1: 'rgb(23, 189, 84)',
     tint2: 'rgb(17, 168, 72)',
   },
@@ -69,9 +69,9 @@ const att = new Company({
   logoURI:
     'https://www.stickpng.com/assets/images/5842905ca6515b1e0ad75ab9.png',
   colorGroup: {
-    color: 'rgb(0, 168, 224)',
-    tint1: 'rgb(0, 145, 190)',
-    tint2: 'rgb(0, 132, 179)',
+    color: 'rgb(58, 165, 220)',
+    tint1: 'rgb(42, 141, 191)',
+    tint2: 'rgb(30, 120, 166)',
   },
 });
 
@@ -87,6 +87,67 @@ const verizon = new Company({
   },
 });
 
+const hulu = new Company({
+  id: 'hulu',
+  name: 'Hulu',
+  logoURI:
+    'https://www.hulu.com/press/wp-content/uploads/2016/10/hulu-interactive-rgb-1-2-800x510.png',
+  colorGroup: {
+    color: 'rgb(28, 231, 131)',
+    tint1: 'rgb(20, 201, 111)',
+    tint2: 'rgb(13, 168, 91)',
+  },
+});
+
+const playstationNow = new Company({
+  id: 'playstationNow',
+  name: 'PlayStation Now',
+  logoURI:
+    'https://www.freepngimg.com/thumb/playstation/29129-8-playstation-transparent-background.png',
+  colorGroup: {
+    color: 'rgb(0, 112, 209)',
+    tint1: 'rgb(0, 98, 184)',
+    tint2: 'rgb(0, 81, 153)',
+  },
+});
+
+const github = new Company({
+  id: 'github',
+  name: 'GitHub',
+  logoURI:
+    'https://www.stickpng.com/assets/images/5847f98fcef1014c0b5e48c0.png',
+  colorGroup: {
+    color: 'rgb(36, 41, 46)',
+    tint1: 'rgb(26, 31, 36)',
+    tint2: 'rgb(4, 4, 5)',
+  },
+  forceTint: true,
+});
+
+const newYorkTimes = new Company({
+  id: 'newYorkTimes',
+  name: 'The New York Times',
+  logoURI:
+    'https://1000logos.net/wp-content/uploads/2017/04/Symbol-New-York-Times.png',
+  colorGroup: {
+    color: 'rgb(18, 18, 18)',
+    tint1: 'rgb(38, 37, 37)',
+    tint2: 'rgb(56, 53, 53)',
+  },
+  forceTint: true,
+});
+
+const amazonPrime = new Company({
+  id: 'amazonPrime',
+  name: 'Amazon Prime',
+  logoURI: 'https://myrealdomain.com/images/amazon-logo-png-8.png',
+  colorGroup: {
+    color: 'rgb(0, 169, 225)',
+    tint1: 'rgb(0, 147, 196)',
+    tint2: 'rgb(0, 126, 168)',
+  },
+});
+
 export const COMPANIES = {
   [xboxLive.id]: xboxLive,
   [netflix.id]: netflix,
@@ -95,6 +156,11 @@ export const COMPANIES = {
   [hbo.id]: hbo,
   [att.id]: att,
   [verizon.id]: verizon,
+  [hulu.id]: hulu,
+  [playstationNow.id]: playstationNow,
+  [github.id]: github,
+  [newYorkTimes.id]: newYorkTimes,
+  [amazonPrime.id]: amazonPrime,
 };
 
 export const SUBSCRIPTIONS = {
@@ -105,6 +171,11 @@ export const SUBSCRIPTIONS = {
   [hbo.id]: new Subscription({company: hbo}),
   [att.id]: new Subscription({company: att}),
   [verizon.id]: new Subscription({company: verizon}),
+  [hulu.id]: new Subscription({company: hulu}),
+  [playstationNow.id]: new Subscription({company: playstationNow}),
+  [github.id]: new Subscription({company: github}),
+  [newYorkTimes.id]: new Subscription({company: newYorkTimes}),
+  [amazonPrime.id]: new Subscription({company: amazonPrime}),
 };
 
 export const COLOR_GRID_VALUES: ColorGroup[] = [
@@ -265,3 +336,17 @@ export const COLOR_GRID_VALUES: ColorGroup[] = [
     tint2: 'rgb(173, 24, 71)',
   },
 ];
+
+// export const COMPANY_LOGOS = {
+//   xboxLive: require(''),
+//   netflix: require('../../assets/netflix_logo.png'),
+//   spotify: require('../../assets/spotify_logo.png'),
+//   adobe: require(''),
+//   hbo: require(''),
+//   att: require(''),
+//   verizon: require(''),
+//   hulu: require('../../assets/hulu_logo.png'),
+//   playstationNow: require(''),
+//   github: require('../../assets/github_logo.png'),
+//   newYorkTimes: require(''),
+// };
