@@ -239,7 +239,7 @@ const SubDetailsForm = ({
           // style={styles}
           activeOpacity={0.8}
           onPress={onToggleReminderPicker}>
-          <Text style={styles.reminderDate}>
+          <Text style={styles.reminderDate} maxFontSizeMultiplier={1.5}>
             {state.reminderInterval.toPretty()}
           </Text>
         </TouchableOpacity>

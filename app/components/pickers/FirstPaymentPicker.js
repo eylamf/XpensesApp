@@ -18,7 +18,9 @@ const FirstPaymentPicker = ({value, onChangeDate}: Props): Element<any> => {
 
   return (
     <>
-      <Text style={styles.label}>Start date for payments</Text>
+      <Text style={styles.label} maxFontSizeMultiplier={1.5}>
+        Start date for payments
+      </Text>
       <DatePicker
         style={styles.picker}
         date={new Date(value)}

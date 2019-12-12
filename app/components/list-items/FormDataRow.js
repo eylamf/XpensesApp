@@ -65,12 +65,16 @@ const FormDataRow = ({
       underlayColor={theme.colors.soft}
       rippleColor={theme.colors.soft}>
       <Row>
-        <Text style={styles.label}>{label}</Text>
+        <Text style={styles.label} maxFontSizeMultiplier={1.5}>
+          {label}
+        </Text>
         {rightComponent ? (
           rightComponent
         ) : (
           <Row>
-            <Text style={theme.styles.lightText}>{value}</Text>
+            <Text style={theme.styles.lightText} maxFontSizeMultiplier={1.5}>
+              {value}
+            </Text>
             <Animated.Image
               style={[styles.chevron, {transform: [{rotate}]}]}
               source={CHEVRON}

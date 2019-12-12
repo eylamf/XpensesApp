@@ -4,6 +4,7 @@ import React, {useState} from 'react';
 import type {Element} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import {RectButton, TouchableOpacity} from 'react-native-gesture-handler';
+import {useSafeArea} from 'react-native-safe-area-context';
 import {connect} from 'remx';
 import {SubscriptionsStore} from '../../stores/subscriptions/Store';
 import {useTheme} from '../../utils/hooks/useTheme';
@@ -20,6 +21,7 @@ import LineDivider from '../LineDivider';
 type Props = {
   costTypeFilter: CostTypeFilter,
   costIntervalFilter: CostIntervalFilter,
+  onHeightMeasured: (h: number) => void,
 };
 
 const COST_TYPE_FILTER_KEYS = ['Average', 'Remaining', 'Exact'];
@@ -36,8 +38,18 @@ const CHECK = require('../../../assets/Checkmark.png');
 const SubscriptionsPaymentFilterSheet = ({
   costTypeFilter,
   costIntervalFilter,
+  onHeightMeasured,
 }: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
+
+  const insets = useSafeArea();
+
+  // Allows for adjusting height according to user's accessibility settings (such as text size)
+  const onLayout = ({nativeEvent}) => {
+    const {height: h} = nativeEvent.layout;
+
+    onHeightMeasured(h);
+  };
 
   const onChangeCostTypeFilter = (filterType: CostTypeFilter) => {
     if (filterType === 'Average') {
@@ -70,8 +82,12 @@ const SubscriptionsPaymentFilterSheet = ({
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.sectionLabel}>Choose a filter</Text>
+    <View
+      style={[styles.container, {paddingBottom: insets.bottom + 15}]}
+      onLayout={onLayout}>
+      <Text style={styles.sectionLabel} maxFontSizeMultiplier={1.5}>
+        Choose a filter
+      </Text>
       <View style={styles.types}>
         {COST_TYPE_FILTER_KEYS.map((filterType, index) => (
           <View key={filterType}>
@@ -92,8 +108,12 @@ const SubscriptionsPaymentFilterSheet = ({
                   )}
                 </View>
                 <View style={theme.styles.flexOne}>
-                  <Text style={styles.label}>{filterType}</Text>
-                  <Text style={theme.styles.lightText}>
+                  <Text style={styles.label} maxFontSizeMultiplier={1.5}>
+                    {filterType}
+                  </Text>
+                  <Text
+                    style={theme.styles.lightText}
+                    maxFontSizeMultiplier={1.5}>
                     {DETAILS[filterType]}
                   </Text>
                 </View>
@@ -103,7 +123,9 @@ const SubscriptionsPaymentFilterSheet = ({
           </View>
         ))}
       </View>
-      <Text style={styles.sectionLabel}>Choose a payment period</Text>
+      <Text style={styles.sectionLabel} maxFontSizeMultiplier={1.5}>
+        Choose a payment period
+      </Text>
       <Row style={styles.intervals}>
         {INTERVALS.map((interval, index) => (
           <TouchableOpacity
@@ -117,7 +139,8 @@ const SubscriptionsPaymentFilterSheet = ({
                 `Per ${interval}` === costIntervalFilter
                   ? theme.styles.mdPrimaryText
                   : theme.styles.mdText
-              }>
+              }
+              maxFontSizeMultiplier={1.5}>
               {interval}
             </Text>
           </TouchableOpacity>
@@ -130,7 +153,6 @@ const SubscriptionsPaymentFilterSheet = ({
 const stylesheet = (theme: Theme) =>
   StyleSheet.create({
     container: {
-      height: 400,
       backgroundColor: theme.colors.main,
       // padding: 15,
     },

@@ -1,11 +1,12 @@
 // @flow
 
-import React, {useLayoutEffect, useCallback, useRef} from 'react';
+import React, {useLayoutEffect, useState, useCallback, useRef} from 'react';
 import type {Element} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Animated, {Easing} from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import {connect} from 'remx';
+import Constants from '../utils/Constants';
 import {convertColorToOpacity} from '../utils/Theme';
 import {useTheme} from '../utils/hooks/useTheme';
 import type {Theme} from '../utils/Types';
@@ -22,6 +23,11 @@ const SHEET_SNAP_POINTS = [440, 0];
 const AppContainer = ({bottomSheetEnabled, children}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
 
+  // Allows for adjusting height according to user's accessibility settings (such as text size)
+  const [sheetHeight, setSheetHeight] = useState(
+    Constants.getWindowHeight() - Constants.getNavbarHeight(),
+  );
+
   const bottomSheet = useRef();
 
   const sheetPosn = useRef(new Animated.Value(1)).current;
@@ -32,6 +38,11 @@ const AppContainer = ({bottomSheetEnabled, children}: Props): Element<any> => {
     }
   }, [bottomSheetEnabled]);
 
+  const onSheetHeightMeasured = (height: number) => {
+    console.log('AppContianer: Sheet height', height);
+    setSheetHeight(height + 40);
+  };
+
   const renderSheetHeader = useCallback(() => {
     return (
       <View style={styles.sheetHeader}>
@@ -41,7 +52,11 @@ const AppContainer = ({bottomSheetEnabled, children}: Props): Element<any> => {
   }, [styles.sheetHeader, styles.handle]);
 
   const renderSheetContent = useCallback(() => {
-    return <SubscriptionsPaymentFilterSheet />;
+    return (
+      <SubscriptionsPaymentFilterSheet
+        onHeightMeasured={onSheetHeightMeasured}
+      />
+    );
   }, []);
 
   const onSheetClose = useCallback(() => {
@@ -72,7 +87,7 @@ const AppContainer = ({bottomSheetEnabled, children}: Props): Element<any> => {
       </Animated.View>
       <BottomSheet
         ref={bottomSheet}
-        snapPoints={SHEET_SNAP_POINTS}
+        snapPoints={[sheetHeight, 0]}
         initialSnap={1}
         renderHeader={renderSheetHeader}
         renderContent={renderSheetContent}

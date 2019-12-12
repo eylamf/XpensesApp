@@ -17,7 +17,7 @@ const ReminderTimePicker = ({value, onChangeTime}: Props): Element<any> => {
 
   return (
     <>
-      <Text style={styles.label}>
+      <Text style={styles.label} maxFontSizeMultiplier={1.5}>
         Select a time to receive your reminder(s)
       </Text>
       <DatePicker

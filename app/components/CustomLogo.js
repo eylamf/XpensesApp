@@ -33,7 +33,9 @@ const CustomLogo = ({
           style={styles.placeholder}
           activeOpacity={0.8}
           onPress={onAddPhoto}>
-          <Text style={styles.placeholderLabel}>Add Photo</Text>
+          <Text style={styles.placeholderLabel} allowFontScaling={false}>
+            Add Photo
+          </Text>
         </TouchableOpacity>
       );
     } else {

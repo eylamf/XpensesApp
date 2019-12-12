@@ -250,7 +250,9 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
             style={styles.headerRight}
             activeOpacity={0.8}
             onPress={onAction}>
-            <Text style={theme.styles.whiteText}>Add</Text>
+            <Text style={theme.styles.whiteText} maxFontSizeMultiplier={1.3}>
+              Add
+            </Text>
           </TouchableOpacity>
         ),
       });
@@ -323,6 +325,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
               selectionColor={theme.colors.white}
               value={state.name}
               editable={subscription.custom}
+              maxFontSizeMultiplier={1.5}
             />
             <TextInput
               style={theme.styles.whiteText}
@@ -333,6 +336,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
               }
               value={state.description}
               selectionColor={theme.colors.white}
+              maxFontSizeMultiplier={1.5}
             />
           </View>
           <Row
@@ -345,7 +349,11 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
                 styles.costContainer,
                 {backgroundColor: state.colorGroup.tint1},
               ]}>
-              <Text style={theme.styles.mdWhiteText}>$</Text>
+              <Text
+                style={theme.styles.mdWhiteText}
+                maxFontSizeMultiplier={1.5}>
+                $
+              </Text>
               <TextInput
                 style={styles.costInput}
                 placeholder={'0.00'}
@@ -357,6 +365,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
                 onBlur={onBlur}
                 selectionColor={theme.colors.white}
                 keyboardType={'numeric'}
+                maxFontSizeMultiplier={1.5}
               />
             </Row>
           </Row>

@@ -5,7 +5,7 @@ import {generateTheme} from '../../utils/Theme';
 import type {Theme} from '../../utils/Types';
 
 const initialState = {
-  theme: generateTheme('dark'),
+  theme: generateTheme('light'),
 };
 
 const state = remx.state(initialState);

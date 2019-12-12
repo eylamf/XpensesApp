@@ -57,7 +57,9 @@ const CreateNewSubscriptionFooter = ({onPress}: Props): Element<any> => {
           {/* <View style={styles.iconContainer}>
             <Image style={styles.addIcon} source={PLUS} resizeMode={'cover'} />
           </View> */}
-          <Text style={styles.addLabel}>Create a custom subscription</Text>
+          <Text style={styles.addLabel} maxFontSizeMultiplier={1.5}>
+            Create a custom subscription
+          </Text>
         </Row>
       </RectButton>
     </Animated.View>

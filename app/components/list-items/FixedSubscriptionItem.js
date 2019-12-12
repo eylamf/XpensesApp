@@ -40,7 +40,9 @@ const FixedSubscriptionItem = ({
           source={{uri: subscription.company.logoURI}}
           resizeMode={'cover'}
         />
-        <Text style={styles.name}>{subscription.company.name}</Text>
+        <Text style={styles.name} maxFontSizeMultiplier={1.5}>
+          {subscription.company.name}
+        </Text>
         <Image style={styles.chevron} source={CHEVRON} resizeMode={'cover'} />
       </Row>
     </RectButton>

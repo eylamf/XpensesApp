@@ -7,7 +7,6 @@ import {
   Easing,
   TouchableOpacity,
   Text,
-  Image,
   StyleSheet,
 } from 'react-native';
 // import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -32,7 +31,6 @@ type Props = {
   costIntervalFilter: CostIntervalFilter,
 };
 
-const CHEVRON = require('../../../assets/Chevron.png');
 export const GRADIENT_TOP_PADDING = 150;
 
 const SubscriptionsCostFooter = ({
@@ -115,9 +113,13 @@ const SubscriptionsCostFooter = ({
           style={theme.styles.flexOne}
           activeOpacity={0.8}
           onPress={onShowFilterOptions}>
-          <Text style={theme.styles.mdText}>{costTypeFilter}</Text>
+          <Text style={theme.styles.mdText} maxFontSizeMultiplier={1.5}>
+            {costTypeFilter}
+          </Text>
           <Row style={styles.configure}>
-            <Text style={styles.filterInterval}>{costIntervalFilter}</Text>
+            <Text style={styles.filterInterval} maxFontSizeMultiplier={1.5}>
+              {costIntervalFilter}
+            </Text>
             {/* <Image
               style={styles.chevron}
               source={CHEVRON}
@@ -125,7 +127,9 @@ const SubscriptionsCostFooter = ({
             /> */}
           </Row>
         </TouchableOpacity>
-        <Animated.Text style={[styles.totalCost, {transform: [{scale}]}]}>
+        <Animated.Text
+          style={[styles.totalCost, {transform: [{scale}]}]}
+          maxFontSizeMultiplier={1.5}>
           ${totalCost}
         </Animated.Text>
       </Row>

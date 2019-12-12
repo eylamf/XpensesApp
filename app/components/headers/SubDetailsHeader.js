@@ -57,7 +57,9 @@ const SubDetailsHeader = React.memo<any>(
               style={styles.right}
               activeOpacity={0.8}
               onPress={onSave}>
-              <Text style={styles.actionLabel}>{'Save'}</Text>
+              <Text style={styles.actionLabel} maxFontSizeMultiplier={1.3}>
+                Save
+              </Text>
             </TouchableOpacity>
           </Row>
         )}

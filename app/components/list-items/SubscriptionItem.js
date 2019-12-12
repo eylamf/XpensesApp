@@ -51,14 +51,22 @@ const SubscriptionItem = ({
           bgColor={subscription.company.colorGroup.color}
         />
         <View style={theme.styles.flexOne}>
-          <Text style={styles.name}>{subscription.company.name}</Text>
+          <Text style={styles.name} maxFontSizeMultiplier={1.5}>
+            {subscription.company.name}
+          </Text>
           {subscription.hasDescription() && (
-            <Text style={styles.desc}>{description}</Text>
+            <Text style={styles.desc} maxFontSizeMultiplier={1.5}>
+              {description}
+            </Text>
           )}
         </View>
         <View style={styles.costContainer}>
-          <Text style={styles.costLabel}>${cost}</Text>
-          <Text style={styles.interval}>{subscription.cycle.toPretty()}</Text>
+          <Text style={styles.costLabel} maxFontSizeMultiplier={1.5}>
+            ${cost}
+          </Text>
+          <Text style={styles.interval} maxFontSizeMultiplier={1.5}>
+            {subscription.cycle.toPretty()}
+          </Text>
         </View>
       </Row>
     </RectButton>
@@ -77,7 +85,7 @@ const stylesheet = (theme: Theme) =>
 
     name: {
       ...theme.styles.text,
-      // ...theme.styles.bold,
+      ...theme.styles.bold,
     },
 
     desc: {

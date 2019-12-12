@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type {Element} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet} from 'react-native';
 import {useSafeArea} from 'react-native-safe-area-context';
 import {useTheme} from '../../utils/hooks/useTheme';
 import type {Theme} from '../../utils/Types';
@@ -25,7 +25,9 @@ const LargeTitle = React.memo<any>(
           styles.container,
           {paddingTop: insets.top + Constants.getNavbarHeight() / 2},
         ]}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title} maxFontSizeMultiplier={1.5}>
+          {title}
+        </Text>
         {rightComponent}
       </Row>
     );

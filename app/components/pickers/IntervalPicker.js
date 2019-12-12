@@ -43,7 +43,9 @@ const IntervalPicker = ({
 
   return (
     <>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={styles.label} maxFontSizeMultiplier={1.5}>
+        {label}
+      </Text>
       <Row style={styles.container}>
         <Picker
           style={theme.styles.flexOne}
