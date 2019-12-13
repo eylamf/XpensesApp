@@ -55,7 +55,10 @@ const SubscriptionItem = ({
             {subscription.company.name}
           </Text>
           {subscription.hasDescription() && (
-            <Text style={styles.desc} maxFontSizeMultiplier={1.5}>
+            <Text
+              style={styles.desc}
+              numberOfLines={1}
+              maxFontSizeMultiplier={1.5}>
               {description}
             </Text>
           )}
@@ -64,9 +67,12 @@ const SubscriptionItem = ({
           <Text style={styles.costLabel} maxFontSizeMultiplier={1.5}>
             ${cost}
           </Text>
-          <Text style={styles.interval} maxFontSizeMultiplier={1.5}>
-            {subscription.cycle.toPretty()}
+          <Text style={styles.interval}>
+            {subscription.getTimeUntilDueLabel()}
           </Text>
+          {/* <Text style={styles.interval} maxFontSizeMultiplier={1.5}>
+            {subscription.cycle.toPretty()}
+          </Text> */}
         </View>
       </Row>
     </RectButton>
@@ -84,7 +90,7 @@ const stylesheet = (theme: Theme) =>
     },
 
     name: {
-      ...theme.styles.text,
+      ...theme.styles.mdText,
       ...theme.styles.bold,
     },
 
@@ -99,7 +105,7 @@ const stylesheet = (theme: Theme) =>
     },
 
     costLabel: {
-      marginBottom: 3,
+      marginBottom: 8,
       ...theme.styles.text,
       // ...theme.styles.bold,
     },

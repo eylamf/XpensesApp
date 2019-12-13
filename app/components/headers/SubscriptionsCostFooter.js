@@ -113,7 +113,7 @@ const SubscriptionsCostFooter = ({
           style={theme.styles.flexOne}
           activeOpacity={0.8}
           onPress={onShowFilterOptions}>
-          <Text style={theme.styles.mdText} maxFontSizeMultiplier={1.5}>
+          <Text style={styles.filterType} maxFontSizeMultiplier={1.5}>
             {costTypeFilter}
           </Text>
           <Row style={styles.configure}>
@@ -167,6 +167,11 @@ const stylesheet = (theme: Theme) =>
 
     totalCost: {
       letterSpacing: 1,
+      ...theme.styles.mdText,
+      ...theme.styles.bold,
+    },
+
+    filterType: {
       ...theme.styles.mdText,
       ...theme.styles.bold,
     },

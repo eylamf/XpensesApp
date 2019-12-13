@@ -90,7 +90,7 @@ const FixedSubscriptionsList = ({
   );
 
   const renderSeparator = useCallback((): Element<any> => {
-    return <LineDivider leftSpace={15} color={theme.colors.soft2} />;
+    return <LineDivider leftSpace={15} color={theme.colors.soft1} />;
   }, [theme]);
 
   const fadeOpacity = Animated.interpolate(scrollY, {

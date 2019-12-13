@@ -350,6 +350,33 @@ class Subscription {
     return result;
   }
 
+  getTimeUntilDueLabel(): string {
+    const dayInYear = getDayInYear();
+    const firstPaymentDayInYear = getDayInYear(new Date(this.firstPayment));
+    const cycleAsDays = this.cycle.toDays(true);
+
+    let daysUntil, dueDate;
+
+    // TODO: Case - If its next year
+    // if () {
+    // }
+
+    let incrementedDayOfYear = firstPaymentDayInYear;
+
+    while (incrementedDayOfYear < dayInYear) {
+      incrementedDayOfYear += cycleAsDays;
+    }
+
+    if (incrementedDayOfYear === dayInYear) {
+      return 'Today';
+    }
+
+    daysUntil = Math.floor(incrementedDayOfYear - dayInYear);
+    dueDate = moment({hour: 0}).add(daysUntil, 'd');
+
+    return 'Billed ' + dueDate.fromNow();
+  }
+
   // Get milliseconds of reminder or cycle interval
   _convertIntervalToMillis(
     interval: ReminderInterval | SubscriptionCycleInterval,

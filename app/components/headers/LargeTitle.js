@@ -47,7 +47,9 @@ const stylesheet = (theme: Theme) =>
     title: {
       flex: 1,
       ...theme.styles.lgText,
-      ...theme.styles.bold,
+      ...theme.styles.bolder,
+      fontSize: 30,
+      paddingBottom: 5,
     },
   });
 

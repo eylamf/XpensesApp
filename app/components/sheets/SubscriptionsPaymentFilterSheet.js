@@ -119,7 +119,7 @@ const SubscriptionsPaymentFilterSheet = ({
                 </View>
               </Row>
             </RectButton>
-            <LineDivider leftSpace={15} color={theme.colors.soft2} />
+            <LineDivider leftSpace={50} color={theme.colors.soft1} />
           </View>
         ))}
       </View>

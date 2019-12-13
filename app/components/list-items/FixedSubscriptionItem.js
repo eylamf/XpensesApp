@@ -61,7 +61,7 @@ const stylesheet = (theme: Theme) =>
 
     name: {
       flex: 1,
-      ...theme.styles.text,
+      ...theme.styles.mdText,
       ...theme.styles.bold,
     },
 

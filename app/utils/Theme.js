@@ -65,7 +65,7 @@ function STYLES(id: 'light' | 'dark') {
 
     mdText: {
       color: COLORS[id].opposite,
-      fontSize: 18,
+      fontSize: 16,
     },
 
     lgText: {
@@ -85,7 +85,7 @@ function STYLES(id: 'light' | 'dark') {
 
     mdLightText: {
       color: COLORS[id].soft3,
-      fontSize: 18,
+      fontSize: 16,
     },
 
     lgLightText: {
@@ -100,7 +100,7 @@ function STYLES(id: 'light' | 'dark') {
 
     mdWhiteText: {
       color: COLORS[id].white,
-      fontSize: 18,
+      fontSize: 16,
     },
 
     smWhiteText: {
@@ -120,7 +120,7 @@ function STYLES(id: 'light' | 'dark') {
 
     mdOpText: {
       color: COLORS[id].main,
-      fontSize: 18,
+      fontSize: 16,
     },
 
     smOpText: {
@@ -140,7 +140,7 @@ function STYLES(id: 'light' | 'dark') {
 
     mdPrimaryText: {
       color: COLORS[id].primary,
-      fontSize: 18,
+      fontSize: 16,
     },
 
     alertText: {

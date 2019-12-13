@@ -40,7 +40,7 @@ const SubscriptionsList = ({
   };
 
   const renderSeparator = () => {
-    return <LineDivider leftSpace={15} color={theme.colors.soft2} />;
+    return <LineDivider leftSpace={15} color={theme.colors.soft1} />;
   };
 
   const fadeOpacity = Animated.interpolate(scrollY, {

@@ -202,7 +202,7 @@ const SubDetailsForm = ({
           />
         </View>
       )}
-      <LineDivider leftSpace={15} color={theme.colors.soft2} />
+      <LineDivider leftSpace={15} color={theme.colors.soft1} />
       <FormDataRow
         isExpanded={state.enableCyclePicker}
         label={'Payment Cycle'}
@@ -220,7 +220,7 @@ const SubDetailsForm = ({
           />
         </View>
       )}
-      <LineDivider leftSpace={15} color={theme.colors.soft2} />
+      <LineDivider leftSpace={15} color={theme.colors.soft1} />
       <FormDataRow
         isExpanded={state.enableReminderPicker}
         label={'Remind Me'}
@@ -255,7 +255,7 @@ const SubDetailsForm = ({
           />
         </View>
       )}
-      <LineDivider leftSpace={15} color={theme.colors.soft2} />
+      <LineDivider leftSpace={15} color={theme.colors.soft1} />
       <FormDataRow
         isExpanded={state.enableReminderTimePicker}
         label={'Reminder Time'}
@@ -270,7 +270,7 @@ const SubDetailsForm = ({
           />
         </View>
       )}
-      <LineDivider leftSpace={15} color={theme.colors.soft2} />
+      <LineDivider leftSpace={15} color={theme.colors.soft1} />
     </>
   );
 };

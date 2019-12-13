@@ -396,7 +396,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
                 }
                 onPress={onGoToColorSelect}
               />
-              <LineDivider leftSpace={15} color={theme.colors.soft2} />
+              <LineDivider leftSpace={15} color={theme.colors.soft1} />
             </>
           )}
         </ScrollView>

@@ -22,6 +22,10 @@ export function daysInMonth(month?: number, year?: number): number {
 // Taken from StackOverflow: https://stackoverflow.com/questions/8619879/javascript-calculate-the-day-of-the-year-1-366/8619946
 export function getDayInYear(d?: Date): number {
   const now = d || new Date();
+
+  // Start at beginning of day
+  // now.setHours(0, 0, 0, 0);
+
   const start = new Date(now.getFullYear(), 0, 0);
   const diff =
     now -

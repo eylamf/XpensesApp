@@ -46,7 +46,7 @@ const CreateNewSubscriptionFooter = ({onPress}: Props): Element<any> => {
 
   return (
     <Animated.View style={{transform: [{translateY}]}}>
-      <LineDivider color={theme.colors.soft2} />
+      <LineDivider color={theme.colors.soft1} />
       <RectButton
         style={styles.container}
         activeOpacity={0.9}
