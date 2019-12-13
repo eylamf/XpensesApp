@@ -8,6 +8,7 @@ import FixedSubscriptions from '../screens/fixed-subscriptions/FixedSubscription
 import SubscriptionDetails from '../screens/sub-details/SubscriptionDetails';
 import CreateSubscription from '../screens/create-sub/CreateSubscription';
 import ColorGrid from '../screens/color-grid/ColorGrid';
+import ReceiptModal from '../screens/receipt-modal/ReceiptModal';
 
 const SearchStack = createNativeStackNavigator();
 
@@ -83,6 +84,15 @@ export const Navigation = (): React$Node => {
         options={{
           headerTitle: 'Colors',
           presentation: 'modal',
+        }}
+      />
+      <NavStack.Screen
+        name={'ReceiptModal'}
+        component={ReceiptModal}
+        options={{
+          animation: 'fade',
+          presentation: 'transparentModal',
+          contentStyle: {backgroundColor: 'transparent'},
         }}
       />
     </NavStack.Navigator>

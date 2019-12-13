@@ -32,6 +32,10 @@ const MySubscriptions = ({navigation, route}: Props): Element<any> => {
     [navigation],
   );
 
+  const onShowReceipt = () => {
+    navigation.navigate('ReceiptModal');
+  };
+
   return (
     <View style={theme.styles.container}>
       <LargeTitle
@@ -49,7 +53,7 @@ const MySubscriptions = ({navigation, route}: Props): Element<any> => {
         Go to fixed
       </Text> */}
       <SubscriptionsList onItemPress={onSubscriptionPress} />
-      <SubscriptionsCostFooter />
+      <SubscriptionsCostFooter onShowReceipt={onShowReceipt} />
     </View>
   );
 };

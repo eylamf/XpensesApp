@@ -29,6 +29,7 @@ type Props = {
   totalCost: number,
   costTypeFilter: CostTypeFilter,
   costIntervalFilter: CostIntervalFilter,
+  onShowReceipt: () => void,
 };
 
 export const GRADIENT_TOP_PADDING = 150;
@@ -37,6 +38,7 @@ const SubscriptionsCostFooter = ({
   totalCost,
   costTypeFilter,
   costIntervalFilter,
+  onShowReceipt,
 }: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
 
@@ -120,18 +122,18 @@ const SubscriptionsCostFooter = ({
             <Text style={styles.filterInterval} maxFontSizeMultiplier={1.5}>
               {costIntervalFilter}
             </Text>
-            {/* <Image
-              style={styles.chevron}
-              source={CHEVRON}
-              resizeMode={'cover'}
-            /> */}
           </Row>
         </TouchableOpacity>
-        <Animated.Text
-          style={[styles.totalCost, {transform: [{scale}]}]}
-          maxFontSizeMultiplier={1.5}>
-          ${totalCost}
-        </Animated.Text>
+        <TouchableOpacity
+          style={styles.totalCostBtn}
+          activeOpacity={0.8}
+          onPress={onShowReceipt}>
+          <Animated.Text
+            style={[styles.totalCost, {transform: [{scale}]}]}
+            maxFontSizeMultiplier={1.5}>
+            ${totalCost}
+          </Animated.Text>
+        </TouchableOpacity>
       </Row>
     </Animated.View>
   );
@@ -183,6 +185,11 @@ const stylesheet = (theme: Theme) =>
     configure: {
       marginTop: 3,
       marginRight: 2,
+    },
+
+    totalCostBtn: {
+      paddingLeft: 30,
+      paddingVertical: 15,
     },
   });
 

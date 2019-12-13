@@ -2,7 +2,11 @@
 
 import * as remx from 'remx';
 import Subscription from '../../class-models/Subscription';
-import type {CostTypeFilter, CostIntervalFilter} from '../../utils/Types';
+import type {
+  CostTypeFilter,
+  CostIntervalFilter,
+  ReceiptMap,
+} from '../../utils/Types';
 
 type SubscriptionsMap = {[key: string]: Subscription};
 
@@ -13,6 +17,7 @@ type InitialState = {
   totalCost: number,
   costTypeFilter: CostTypeFilter,
   costIntervalFilter: CostIntervalFilter,
+  receipt: ReceiptMap,
 };
 
 const initialState: InitialState = {
@@ -22,6 +27,7 @@ const initialState: InitialState = {
   totalCost: 0,
   costTypeFilter: 'Exact',
   costIntervalFilter: 'This Month',
+  receipt: {},
 };
 
 const state = remx.state(initialState);
@@ -62,6 +68,10 @@ const getters = remx.getters({
   getCostIntervalFilter(): CostIntervalFilter {
     return state.costIntervalFilter;
   },
+
+  getReceipt(): ReceiptMap {
+    return state.receipt;
+  },
 });
 
 const setters = remx.setters({
@@ -100,15 +110,21 @@ const setters = remx.setters({
   adjustTotalCost() {
     let finalCost = 0;
 
+    const receipt = {};
+
     state.ids.forEach(id => {
       const sub: Subscription = state.subscriptions[id];
-
-      finalCost += sub.getCostForFilters(
+      const subCost = sub.getCostForFilters(
         state.costTypeFilter,
         state.costIntervalFilter,
       );
+
+      receipt[sub.id] = subCost;
+
+      finalCost += subCost;
     });
 
+    state.receipt = receipt;
     state.totalCost = finalCost;
   },
 
@@ -123,6 +139,10 @@ const setters = remx.setters({
   setCostFilters(type: CostTypeFilter, interval: CostIntervalFilter) {
     state.costTypeFilter = type;
     state.costIntervalFilter = interval;
+  },
+
+  setReceipt(receipt: ReceiptMap) {
+    state.receipt = receipt;
   },
 });
 

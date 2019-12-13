@@ -156,3 +156,6 @@ export type ColorGroup = {
   tint1: string,
   tint2: string,
 };
+
+// Subscription ID: cost (with filters applied)
+export type ReceiptMap = {[key: string]: number};
