@@ -9,11 +9,10 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
-// import {TouchableOpacity} from 'react-native-gesture-handler';
+import NumberFormat from 'react-number-format';
 import {useSafeArea} from 'react-native-safe-area-context';
 import {connect} from 'remx';
 import LinearGradient from 'react-native-linear-gradient';
-// import Constants from '../../utils/Constants';
 import {convertColorToOpacity} from '../../utils/Theme';
 import {useTheme} from '../../utils/hooks/useTheme';
 import {SubscriptionsStore} from '../../stores/subscriptions/Store';
@@ -128,11 +127,19 @@ const SubscriptionsCostFooter = ({
           style={styles.totalCostBtn}
           activeOpacity={0.8}
           onPress={onShowReceipt}>
-          <Animated.Text
-            style={[styles.totalCost, {transform: [{scale}]}]}
-            maxFontSizeMultiplier={1.5}>
-            ${totalCost}
-          </Animated.Text>
+          <NumberFormat
+            prefix={'$'}
+            value={totalCost}
+            displayType={'text'}
+            thousandSeparator
+            renderText={(value: string) => (
+              <Animated.Text
+                style={[styles.totalCost, {transform: [{scale}]}]}
+                maxFontSizeMultiplier={1.5}>
+                {value}
+              </Animated.Text>
+            )}
+          />
         </TouchableOpacity>
       </Row>
     </Animated.View>

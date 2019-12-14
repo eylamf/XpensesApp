@@ -2,7 +2,8 @@
 
 import React from 'react';
 import type {Element} from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
+import NumberFormat from 'react-number-format';
 import {RectButton} from 'react-native-gesture-handler';
 import {connect} from 'remx';
 import {useTheme} from '../../utils/hooks/useTheme';
@@ -65,9 +66,17 @@ const SubscriptionItem = ({
           )}
         </View>
         <View style={styles.costContainer}>
-          <Text style={styles.costLabel} maxFontSizeMultiplier={1.5}>
-            ${cost}
-          </Text>
+          <NumberFormat
+            prefix={'$'}
+            value={cost}
+            displayType={'text'}
+            thousandSeparator
+            renderText={(value: string) => (
+              <Text style={styles.costLabel} maxFontSizeMultiplier={1.5}>
+                {value}
+              </Text>
+            )}
+          />
           <Text style={styles.interval}>
             {subscription.getTimeUntilDueLabel()}
           </Text>

@@ -3,6 +3,7 @@
 import React from 'react';
 import type {Element} from 'react';
 import {FlatList, Text, StyleSheet} from 'react-native';
+import NumberFormat from 'react-number-format';
 import {connect} from 'remx';
 import {SubscriptionsStore} from '../../stores/subscriptions/Store';
 import {useTheme} from '../../utils/hooks/useTheme';
@@ -29,13 +30,24 @@ const ReceiptList = ({receipt}: Props): Element<any> => {
 
     return (
       <Row style={styles.item}>
-        <Text
-          style={
-            styles.name
-          }>{`${sub.getCompanyName()} ${intervalsLabel}`}</Text>
-        <Text style={cost === 0 ? styles.disabledCost : styles.cost}>
-          ${cost.toFixed(2)}
-        </Text>
+        <Row style={theme.styles.flexOne}>
+          <Text style={theme.styles.text}>{`${sub.getCompanyName()}`}</Text>
+          {intervals > 0 && (
+            <Text style={styles.intervals}>{`${intervalsLabel}`}</Text>
+          )}
+        </Row>
+        <NumberFormat
+          prefix={'$'}
+          value={cost}
+          decimalScale={2}
+          displayType={'text'}
+          thousandSeparator
+          renderText={(value: string) => (
+            <Text style={cost === 0 ? styles.disabledCost : styles.cost}>
+              {value}
+            </Text>
+          )}
+        />
       </Row>
     );
   };
@@ -59,8 +71,8 @@ const stylesheet = (theme: Theme) =>
       paddingHorizontal: 15,
     },
 
-    name: {
-      flex: 1,
+    intervals: {
+      marginLeft: 5,
       ...theme.styles.text,
     },
 
