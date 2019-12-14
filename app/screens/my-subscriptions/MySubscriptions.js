@@ -44,7 +44,8 @@ const MySubscriptions = ({navigation, route}: Props): Element<any> => {
           <TouchableOpacity
             style={styles.addBtn}
             activeOpacity={0.8}
-            onPress={onGoToFixed}>
+            onPress={onGoToFixed}
+            hitSlop={{left: 15, right: 15, top: 15, bottom: 15}}>
             <Image style={styles.addIcon} source={PLUS} resizeMode={'cover'} />
           </TouchableOpacity>
         }

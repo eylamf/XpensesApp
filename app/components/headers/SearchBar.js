@@ -77,7 +77,7 @@ const SearchBar = ({
           style={styles.doneBtn}
           activeOpacity={0.8}
           onPress={onDone}>
-          <Text style={theme.styles.text} maxFontSizeMultiplier={1.5}>
+          <Text style={theme.styles.primaryText} maxFontSizeMultiplier={1.5}>
             Done
           </Text>
         </TouchableOpacity>
