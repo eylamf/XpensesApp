@@ -13,6 +13,7 @@ type Props = {
   onAddPhoto: () => void,
   isAddMode: boolean,
   initials: string,
+  rounded: boolean,
   bgColor?: string,
 };
 
@@ -22,6 +23,7 @@ const CustomLogo = ({
   onAddPhoto,
   isAddMode,
   initials,
+  rounded,
   bgColor,
 }: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
@@ -56,7 +58,7 @@ const CustomLogo = ({
   return (
     <Image
       style={StyleSheet.compose(
-        styles.logo,
+        [styles.logo, rounded ? {borderRadius: 30} : null],
         style,
       )}
       source={{uri}}
@@ -71,6 +73,7 @@ CustomLogo.defaultProps = {
   onAddPhoto: () => {},
   isAddMode: false,
   initials: '',
+  rounded: false,
 };
 
 const stylesheet = (theme: Theme) =>
@@ -96,7 +99,6 @@ const stylesheet = (theme: Theme) =>
     logo: {
       width: 60,
       height: 60,
-      // marginBottom: 15,
     },
 
     initialsPlaceholder: {

@@ -22,7 +22,6 @@ const stylesheet = (theme: Theme) =>
     logo: {
       width: 60,
       height: 60,
-      tintColor: theme.colors.white,
       marginBottom: 15,
     },
 

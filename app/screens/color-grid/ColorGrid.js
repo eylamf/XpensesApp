@@ -41,7 +41,6 @@ const ColorGrid = ({navigation, route}: Props): Element<any> => {
   useLayoutEffect(() => {
     if (!isModal) {
       navigation.setOptions({
-        headerTintColor: theme.colors.primary,
         headerBackTitle: 'Custom',
         headerTitleStyle: {color: theme.colors.opposite},
         headerRight: () => (
@@ -49,7 +48,7 @@ const ColorGrid = ({navigation, route}: Props): Element<any> => {
             style={styles.headerRight}
             activeOpacity={0.8}
             onPress={onDone}>
-            <Text style={theme.styles.text} maxFontSizeMultiplier={1.3}>
+            <Text style={theme.styles.primaryText} maxFontSizeMultiplier={1.3}>
               Done
             </Text>
           </TouchableOpacity>

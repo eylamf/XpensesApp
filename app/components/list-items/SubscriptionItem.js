@@ -48,6 +48,7 @@ const SubscriptionItem = ({
           ]}
           uri={subscription.company.logoURI}
           initials={subscription.company.getInitials()}
+          rounded={subscription.custom}
           bgColor={subscription.company.colorGroup.color}
         />
         <View style={theme.styles.flexOne}>

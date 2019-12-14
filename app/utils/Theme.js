@@ -5,7 +5,7 @@ import type {Theme, ColorMap} from './Types';
 
 export const COLORS: ColorMap = {
   light: {
-    primary: 'rgb(110, 197, 235)',
+    primary: 'rgb(0, 62, 207)',
     primaryDark: 'rgb(204, 63, 87)',
     secondary: '',
     accent: '',
@@ -21,7 +21,7 @@ export const COLORS: ColorMap = {
   },
 
   dark: {
-    primary: 'rgb(110, 197, 235)',
+    primary: 'rgb(63, 150, 242)',
     primaryDark: 'rgb(204, 63, 87)',
     secondary: '',
     accent: '',

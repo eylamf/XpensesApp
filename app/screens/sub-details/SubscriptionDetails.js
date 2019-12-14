@@ -313,12 +313,16 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
           stickyHeaderIndices={[1]}>
           <View style={[styles.top, {backgroundColor: state.colorGroup.color}]}>
             <CustomLogo
-              style={styles.logo}
+              style={[
+                styles.logo,
+                !subscription.custom ? {tintColor: theme.colors.white} : null,
+              ]}
               uri={subscription.company.logoURI}
               initials={subscription.company.getInitials()}
               isAddMode={
                 subscription.custom && !subscription.company.logoURI.length
               }
+              rounded={subscription.custom}
             />
             <TextInput
               style={styles.name}

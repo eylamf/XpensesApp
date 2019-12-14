@@ -404,7 +404,9 @@ class Subscription {
     daysUntil = Math.floor(incrementedDayOfYear - dayInYear);
     dueDate = moment({hour: 0}).add(daysUntil, 'd');
 
-    return 'Billed ' + dueDate.fromNow();
+    const label = dueDate.fromNow(true);
+
+    return label.charAt(0).toUpperCase() + label.slice(1);
   }
 
   // Get milliseconds of reminder or cycle interval

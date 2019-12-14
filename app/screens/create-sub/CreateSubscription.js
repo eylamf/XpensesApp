@@ -2,11 +2,13 @@
 
 import React, {useReducer, useRef, useLayoutEffect, useCallback} from 'react';
 import type {Element} from 'react';
-import {View, ScrollView, Image, TextInput, Text} from 'react-native';
+import {View, ScrollView, TextInput, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import ImagePicker from 'react-native-image-crop-picker';
 import stylesheet from './CreateStyles';
 import {useTheme} from '../../utils/hooks/useTheme';
 import type {ReducerAction, ColorGroup} from '../../utils/Types';
+import Constants from '../../utils/Constants';
 import SubscriptionCycleInterval from '../../class-models/SubscriptionCycleInterval';
 import ReminderInterval from '../../class-models/ReminderInterval';
 import Subscription from '../../class-models/Subscription';
@@ -41,6 +43,7 @@ type State = {
 };
 
 const types = {
+  SET_LOGO: 'SET_LOGO',
   SET_NAME: 'SET_NAME',
   SET_DESC: 'SET_DESC',
   SET_COST: 'SET_COST',
@@ -57,6 +60,9 @@ const types = {
 
 const reducer = (state: State, action: ReducerAction): State => {
   switch (action.type) {
+    case types.SET_LOGO:
+      return {...state, logoURI: action.payload.logoURI};
+
     case types.SET_NAME:
       return {...state, name: action.payload.name};
 
@@ -206,7 +212,6 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTintColor: theme.colors.primary,
       headerTitleStyle: {color: theme.colors.opposite},
       headerBackTitle: 'All',
       headerRight: () => (
@@ -214,7 +219,7 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
           style={styles.headerRight}
           activeOpacity={0.8}
           onPress={onAdd}>
-          <Text style={theme.styles.text} maxFontSizeMultiplier={1.3}>
+          <Text style={theme.styles.primaryText} maxFontSizeMultiplier={1.3}>
             Add
           </Text>
         </TouchableOpacity>
@@ -226,7 +231,7 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
     styles.headerRight,
     theme.colors.primary,
     theme.colors.opposite,
-    theme.styles.text,
+    theme.styles.primaryText,
   ]);
 
   const onBlur = () => {
@@ -235,7 +240,19 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
     dispatch({type: types.SET_COST, payload: {cost: formatted.toString()}});
   };
 
-  const onAddPhoto = () => {};
+  const onAddPhoto = () => {
+    ImagePicker.openPicker({
+      width: Constants.getWindowWidth(),
+      height: Constants.getWindowWidth(),
+      cropping: true,
+      cropperCircleOverlay: true,
+    }).then(image => {
+      dispatch({
+        type: types.SET_LOGO,
+        payload: {logoURI: image.path},
+      });
+    });
+  };
 
   const onScrollToEnd = () => {
     setTimeout(() => {
@@ -260,7 +277,13 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
     <View style={theme.styles.container}>
       <ScrollView ref={scrollview}>
         <View style={[styles.top, {backgroundColor: state.colorGroup.color}]}>
-          <CustomLogo uri={state.logoURI} onAddPhoto={onAddPhoto} isAddMode />
+          <CustomLogo
+            style={styles.logo}
+            uri={state.logoURI}
+            onAddPhoto={onAddPhoto}
+            isAddMode
+            rounded
+          />
           <TextInput
             style={styles.name}
             placeholder={'Name'}
