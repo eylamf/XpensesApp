@@ -21,11 +21,14 @@ const ReceiptList = ({receipt}: Props): Element<any> => {
 
   const renderItem = ({item: subID}: {item: string}) => {
     const sub: Subscription = SubscriptionsStore.getSubscriptionByID(subID);
+    const cost = receipt[subID];
 
     return (
       <Row style={styles.item}>
         <Text style={styles.name}>{sub.getCompanyName()}</Text>
-        <Text style={styles.cost}>${receipt[subID].toFixed(2)}</Text>
+        <Text style={cost === 0 ? styles.disabledCost : styles.cost}>
+          ${cost.toFixed(2)}
+        </Text>
       </Row>
     );
   };
@@ -56,6 +59,11 @@ const stylesheet = (theme: Theme) =>
 
     cost: {
       ...theme.styles.text,
+      ...theme.styles.bold,
+    },
+
+    disabledCost: {
+      ...theme.styles.lightText,
       ...theme.styles.bold,
     },
   });

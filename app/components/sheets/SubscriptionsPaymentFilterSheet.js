@@ -152,10 +152,7 @@ const SubscriptionsPaymentFilterSheet = ({
 
 const stylesheet = (theme: Theme) =>
   StyleSheet.create({
-    container: {
-      backgroundColor: theme.colors.main,
-      // padding: 15,
-    },
+    container: {backgroundColor: theme.colors.main},
 
     sectionLabel: {
       marginLeft: 15,

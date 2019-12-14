@@ -73,7 +73,7 @@ const AppContainer = ({bottomSheetEnabled, children}: Props): Element<any> => {
   });
 
   return (
-    <View style={theme.styles.flexOne}>
+    <View style={styles.container}>
       {children}
       <Animated.View
         style={[styles.overlay, {opacity: sheetOpacity}]}
@@ -105,6 +105,12 @@ const stylesheet = (theme: Theme) => {
   const opacity = isLight ? 0.5 : 0.3;
 
   return StyleSheet.create({
+    container: {
+      flex: 1,
+      borderRadius: 5,
+      overflow: 'hidden',
+    },
+
     overlay: {
       backgroundColor: convertColorToOpacity(color, opacity),
       ...StyleSheet.absoluteFill,

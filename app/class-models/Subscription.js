@@ -267,11 +267,41 @@ class Subscription {
         } else if (filterType === 'Exact') {
           cycleAsDays = this.cycle.toDays(true);
 
+          const dayInMonth = now.getDate();
           const daysThisMonth = daysInMonth();
+          const startDayOfMonthDayInYear = getDayInYear(
+            moment({hour: 0})
+              .subtract(dayInMonth - 1, 'd')
+              .toDate(),
+          );
+          const diff = daysThisMonth - dayInMonth;
+          const endOfMonthDayInYear = getDayInYear(
+            moment({hour: 0})
+              .add(diff, 'd')
+              .toDate(),
+          );
 
-          if (cycleAsDays <= daysThisMonth) {
-            result = this.cost * Math.round(daysThisMonth / cycleAsDays);
+          let intervals = 0;
+
+          if (firstPaymentDayInYear === dayInYear) {
+            intervals = -1;
           }
+
+          let incrementedDayOfYear = firstPaymentDayInYear;
+
+          while (incrementedDayOfYear < startDayOfMonthDayInYear) {
+            incrementedDayOfYear += cycleAsDays;
+          }
+
+          while (incrementedDayOfYear <= endOfMonthDayInYear) {
+            intervals++;
+            incrementedDayOfYear += cycleAsDays;
+          }
+
+          result = this.cost * intervals;
+          // if (cycleAsDays <= daysThisMonth) {
+          //   result = this.cost * Math.round(daysThisMonth / cycleAsDays);
+          // }
         }
         break;
       case 'Year':

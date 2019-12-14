@@ -1,6 +1,6 @@
 // @flow
 
-import React, {useRef, useMemo, useCallback} from 'react';
+import React, {useRef, useMemo} from 'react';
 import type {Element} from 'react';
 import {View, FlatList, StyleSheet} from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -30,7 +30,10 @@ const SubscriptionsList = ({
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const gradientColors = useMemo(() => {
-    return [theme.colors.main, convertColorToOpacity(theme.colors.main, 0)];
+    return [
+      convertColorToOpacity(theme.colors.main, 0.8),
+      convertColorToOpacity(theme.colors.main, 0),
+    ];
   }, [theme.colors.main]);
 
   const keyExtractor = (item: string): string => item;
@@ -69,6 +72,7 @@ const SubscriptionsList = ({
             useNativeDriver: true,
           },
         )}
+        contentContainerStyle={styles.listContent}
       />
     </View>
   );
@@ -85,6 +89,8 @@ const stylesheet = (theme: Theme) =>
     },
 
     gradient: {height: 80},
+
+    listContent: {paddingBottom: 180}, // 100 from SubCostFooter - TODO: export it
   });
 
 const mapStateToProps = () => ({

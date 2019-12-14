@@ -13,7 +13,12 @@ import ReceiptModal from '../screens/receipt-modal/ReceiptModal';
 const SearchStack = createNativeStackNavigator();
 
 const FixedSubscriptionsNav = (): React$Node => (
-  <SearchStack.Navigator initialRouteName={'Search'}>
+  <SearchStack.Navigator
+    initialRouteName={'Search'}
+    screenOptions={{
+      borderRadius: 5,
+      overflow: 'hidden',
+    }}>
     <SearchStack.Screen
       name={'Search'}
       component={FixedSubscriptions}
@@ -57,7 +62,11 @@ const stylesheet = () => {};
 export const Navigation = (): React$Node => {
   const [theme] = useTheme(stylesheet);
   return (
-    <NavStack.Navigator initialRouteName={'Subscriptions'}>
+    <NavStack.Navigator
+      initialRouteName={'Subscriptions'}
+      screenOptions={{
+        contentStyle: {borderRadius: 5, overflow: 'hidden'},
+      }}>
       <NavStack.Screen
         name={'Subscriptions'}
         component={MySubscriptions}
@@ -92,7 +101,11 @@ export const Navigation = (): React$Node => {
         options={{
           animation: 'fade',
           presentation: 'transparentModal',
-          contentStyle: {backgroundColor: 'transparent'},
+          contentStyle: {
+            backgroundColor: 'transparent',
+            borderRadius: 5,
+            overflow: 'hidden',
+          },
         }}
       />
     </NavStack.Navigator>
