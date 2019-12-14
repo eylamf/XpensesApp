@@ -61,9 +61,9 @@ const FormDataRow = ({
     <RectButton
       style={styles.cycle}
       onPress={onPress}
-      activeOpacity={0.9}
-      underlayColor={theme.colors.soft}
-      rippleColor={theme.colors.soft}>
+      activeOpacity={0.6}
+      underlayColor={theme.colors.soft1}
+      rippleColor={theme.colors.soft1}>
       <Row>
         <Text style={styles.label} maxFontSizeMultiplier={1.5}>
           {label}

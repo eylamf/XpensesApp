@@ -6,26 +6,33 @@ import {FlatList, Text, StyleSheet} from 'react-native';
 import {connect} from 'remx';
 import {SubscriptionsStore} from '../../stores/subscriptions/Store';
 import {useTheme} from '../../utils/hooks/useTheme';
-import type {Theme, ReceiptMap} from '../../utils/Types';
+import type {Theme, ReceiptEntry} from '../../utils/Types';
 import Subscription from '../../class-models/Subscription';
 import Row from '../Row';
 
 type Props = {
-  receipt: ReceiptMap,
+  receipt: ReceiptEntry[],
 };
 
 const ReceiptList = ({receipt}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
 
-  const keyExtractor = (subID: string): string => subID;
+  const keyExtractor = (entry: ReceiptEntry): string => entry.subID;
 
-  const renderItem = ({item: subID}: {item: string}) => {
-    const sub: Subscription = SubscriptionsStore.getSubscriptionByID(subID);
-    const cost = receipt[subID];
+  const renderItem = ({item: entry}: {item: ReceiptEntry}) => {
+    const sub: Subscription = SubscriptionsStore.getSubscriptionByID(
+      entry.subID,
+    );
+    const {cost, intervals} = entry;
+
+    const intervalsLabel = intervals > 0 ? `(${intervals})` : '';
 
     return (
       <Row style={styles.item}>
-        <Text style={styles.name}>{sub.getCompanyName()}</Text>
+        <Text
+          style={
+            styles.name
+          }>{`${sub.getCompanyName()} ${intervalsLabel}`}</Text>
         <Text style={cost === 0 ? styles.disabledCost : styles.cost}>
           ${cost.toFixed(2)}
         </Text>
@@ -37,7 +44,7 @@ const ReceiptList = ({receipt}: Props): Element<any> => {
     <FlatList
       style={styles.list}
       keyExtractor={keyExtractor}
-      data={Object.keys(receipt)}
+      data={receipt}
       renderItem={renderItem}
     />
   );

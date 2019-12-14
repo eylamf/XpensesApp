@@ -55,7 +55,7 @@ function STYLES(id: 'light' | 'dark') {
 
     text: {
       color: COLORS[id].opposite,
-      fontSize: 13,
+      fontSize: 14,
     },
 
     smText: {
@@ -75,7 +75,7 @@ function STYLES(id: 'light' | 'dark') {
 
     lightText: {
       color: COLORS[id].soft3,
-      fontSize: 13,
+      fontSize: 14,
     },
 
     smLightText: {
@@ -95,7 +95,7 @@ function STYLES(id: 'light' | 'dark') {
 
     whiteText: {
       color: COLORS[id].white,
-      fontSize: 13,
+      fontSize: 14,
     },
 
     mdWhiteText: {
@@ -115,7 +115,7 @@ function STYLES(id: 'light' | 'dark') {
 
     opText: {
       color: COLORS[id].main,
-      fontSize: 13,
+      fontSize: 14,
     },
 
     mdOpText: {
@@ -130,7 +130,7 @@ function STYLES(id: 'light' | 'dark') {
 
     primaryText: {
       color: COLORS[id].primary,
-      fontSize: 13,
+      fontSize: 14,
     },
 
     smPrimaryText: {
@@ -145,7 +145,7 @@ function STYLES(id: 'light' | 'dark') {
 
     alertText: {
       color: COLORS[id].alert,
-      fontSize: 13,
+      fontSize: 14,
     },
 
     bold: {fontWeight: '600'},

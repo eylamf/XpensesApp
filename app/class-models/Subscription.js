@@ -8,6 +8,7 @@ import type {
   CostTypeFilter,
   CostIntervalFilter,
   SimpleCostIntervalFilter,
+  ReceiptEntry,
 } from '../utils/Types';
 import ReminderInterval from './ReminderInterval';
 import SubscriptionCycleInterval from './SubscriptionCycleInterval';
@@ -131,10 +132,14 @@ class Subscription {
   getCostForFilters(
     filterType: CostTypeFilter,
     filterInterval: CostIntervalFilter,
-  ): number {
+  ): ReceiptEntry {
     const interval: SimpleCostIntervalFilter = filterInterval.split(' ')[1];
 
-    let result = 0;
+    let result = {
+      subID: this.id,
+      cost: 0,
+      intervals: 0,
+    };
 
     let firstPaymentDayInYear = getDayInYear(new Date(this.firstPayment));
 
@@ -148,7 +153,7 @@ class Subscription {
       case 'Week':
         if (filterType === 'Average') {
           cycleAsDays = this.cycle.toDays();
-          result = this.cost * (7 / cycleAsDays);
+          result.cost = this.cost * (7 / cycleAsDays);
         } else if (filterType === 'Remaining') {
           cycleAsDays = this.cycle.toDays(true);
 
@@ -177,7 +182,8 @@ class Subscription {
             incrementedDayOfYear += cycleAsDays;
           }
 
-          result = this.cost * intervals;
+          result.cost = this.cost * intervals;
+          result.intervals = intervals;
         } else if (filterType === 'Exact') {
           cycleAsDays = this.cycle.toDays(true);
 
@@ -210,7 +216,8 @@ class Subscription {
             incrementedDayOfYear += cycleAsDays;
           }
 
-          result = this.cost * intervals;
+          result.cost = this.cost * intervals;
+          result.intervals = intervals;
           // if (cycleAsDays <= 7) {
           //   const originalStartDay = new Date(this.firstPayment).getDay();
           //   const startDay = now.getDay();
@@ -230,9 +237,9 @@ class Subscription {
           if (this.cycle.getFormattedUnit() === 'Month') {
             cycleAsDays = this.cycle.quantity * 30;
 
-            result = this.cost * (30 / cycleAsDays);
+            result.cost = this.cost * (30 / cycleAsDays);
           } else {
-            result = this.cost * (365 / 12 / cycleAsDays);
+            result.cost = this.cost * (365 / 12 / cycleAsDays);
           }
         } else if (filterType === 'Remaining') {
           cycleAsDays = this.cycle.toDays(true);
@@ -263,7 +270,8 @@ class Subscription {
             incrementedDayOfYear += cycleAsDays;
           }
 
-          result = this.cost * intervals;
+          result.cost = this.cost * intervals;
+          result.intervals = intervals;
         } else if (filterType === 'Exact') {
           cycleAsDays = this.cycle.toDays(true);
 
@@ -298,7 +306,8 @@ class Subscription {
             incrementedDayOfYear += cycleAsDays;
           }
 
-          result = this.cost * intervals;
+          result.cost = this.cost * intervals;
+          result.intervals = intervals;
           // if (cycleAsDays <= daysThisMonth) {
           //   result = this.cost * Math.round(daysThisMonth / cycleAsDays);
           // }
@@ -309,9 +318,9 @@ class Subscription {
           cycleAsDays = this.cycle.toDays();
           // Add 1 to compensate for decimal cycleAsDays (6 month * 2 could be > 365)
           if (cycleAsDays * 2 > 366) {
-            result = this.cost * Math.floor(365 / cycleAsDays);
+            result.cost = this.cost * Math.floor(365 / cycleAsDays);
           } else {
-            result = this.cost * Math.round(365 / cycleAsDays);
+            result.cost = this.cost * Math.round(365 / cycleAsDays);
           }
         } else if (filterType === 'Remaining') {
           cycleAsDays = this.cycle.toDays(true);
@@ -333,7 +342,8 @@ class Subscription {
             incrementedDayOfYear += cycleAsDays;
           }
 
-          result = this.cost * intervals;
+          result.cost = this.cost * intervals;
+          result.intervals = intervals;
         } else if (filterType === 'Exact') {
           cycleAsDays = this.cycle.toDays(true);
 
@@ -359,8 +369,8 @@ class Subscription {
             'intervals: ' + intervals,
           );
 
-          result = this.cost * intervals;
-
+          result.cost = this.cost * intervals;
+          result.intervals = intervals;
           // cycleAsDays = this.cycle.toDays(true);
 
           // const diffFromEndOfYear =

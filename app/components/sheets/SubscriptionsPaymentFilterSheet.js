@@ -93,9 +93,9 @@ const SubscriptionsPaymentFilterSheet = ({
           <View key={filterType}>
             <RectButton
               style={styles.item}
-              activeOpacity={0.9}
-              underlayColor={theme.colors.soft}
-              rippleColor={theme.colors.soft}
+              activeOpacity={0.6}
+              underlayColor={theme.colors.soft1}
+              rippleColor={theme.colors.soft1}
               onPress={() => onChangeCostTypeFilter(filterType)}>
               <Row alignment={'flex-start'}>
                 <View style={styles.checkContainer}>

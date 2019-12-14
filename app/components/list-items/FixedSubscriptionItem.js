@@ -25,9 +25,9 @@ const FixedSubscriptionItem = ({
   return (
     <RectButton
       style={styles.container}
-      activeOpacity={0.9}
-      underlayColor={theme.colors.soft}
-      rippleColor={theme.colors.soft}
+      activeOpacity={0.6}
+      underlayColor={theme.colors.soft1}
+      rippleColor={theme.colors.soft1}
       onPress={() => onPress(subscription)}>
       <Row style={theme.styles.padding}>
         <Image
