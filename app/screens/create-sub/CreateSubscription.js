@@ -166,9 +166,9 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
     description: null,
     logoURI: '',
     colorGroup: {
-      color: theme.id === 'light' ? theme.colors.soft1 : theme.colors.soft,
-      tint1: theme.id === 'light' ? theme.colors.soft2 : theme.colors.main,
-      tint2: theme.colors.soft3,
+      color: 'rgb(204, 209, 217)',
+      tint1: 'rgb(171, 177, 186)',
+      tint2: 'rgb(138, 144, 153)',
     },
     cost: '',
     firstPayment: new Date().setHours(0, 0, 0, 0),

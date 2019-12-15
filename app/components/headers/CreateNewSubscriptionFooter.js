@@ -2,7 +2,7 @@
 
 import React, {useEffect, useRef} from 'react';
 import type {Element} from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {Text, StyleSheet} from 'react-native';
 import Animated, {Easing} from 'react-native-reanimated';
 import {RectButton} from 'react-native-gesture-handler';
 import {useSafeArea} from 'react-native-safe-area-context';
@@ -14,8 +14,6 @@ import LineDivider from '../LineDivider';
 type Props = {
   onPress: () => void,
 };
-
-const PLUS = require('../../../assets/Plus.png');
 
 const CreateNewSubscriptionFooter = ({onPress}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
@@ -46,33 +44,35 @@ const CreateNewSubscriptionFooter = ({onPress}: Props): Element<any> => {
 
   return (
     <Animated.View style={{transform: [{translateY}]}}>
-      <LineDivider color={theme.colors.soft1} />
-      <RectButton
-        style={styles.container}
-        activeOpacity={0.6}
-        underlayColor={theme.colors.soft1}
-        rippleColor={theme.colors.soft1}
-        onPress={onPress}>
-        <Row style={[styles.content, {paddingBottom: insets.bottom + 30}]}>
-          {/* <View style={styles.iconContainer}>
-            <Image style={styles.addIcon} source={PLUS} resizeMode={'cover'} />
-          </View> */}
+      <Row style={[styles.content, {paddingBottom: insets.bottom + 20}]}>
+        <RectButton
+          style={styles.container}
+          activeOpacity={0.6}
+          underlayColor={theme.colors.soft1}
+          rippleColor={theme.colors.soft1}
+          onPress={onPress}>
           <Text style={styles.addLabel} maxFontSizeMultiplier={1.5}>
-            Create a custom subscription
+            Create Your Own
           </Text>
-        </Row>
-      </RectButton>
+        </RectButton>
+      </Row>
     </Animated.View>
   );
 };
 
 const stylesheet = (theme: Theme) =>
   StyleSheet.create({
-    container: {backgroundColor: theme.colors.main},
+    container: {
+      paddingHorizontal: 30,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: theme.colors.primary,
+      ...theme.styles.center,
+    },
 
     content: {
-      paddingTop: 30,
-      paddingHorizontal: 15,
+      paddingTop: 15,
+      // paddingHorizontal: 15,
       ...theme.styles.center,
     },
 
@@ -92,8 +92,8 @@ const stylesheet = (theme: Theme) =>
     },
 
     addLabel: {
-      ...theme.styles.mdText,
-      // ...theme.styles.bold,
+      ...theme.styles.whiteText,
+      ...theme.styles.bold,
     },
   });
 

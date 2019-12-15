@@ -121,6 +121,11 @@ const FixedSubscriptionsList = ({
         )}
         keyboardDismissMode={'interactive'}
       />
+      <LinearGradient
+        style={styles.footerGradient}
+        colors={gradientColors}
+        pointerEvents={'none'}
+      />
     </View>
   );
 };
@@ -137,8 +142,13 @@ const stylesheet = (theme: Theme) =>
 
     gradient: {height: 80},
 
-    content: {
-      // paddingTop: 15,
+    footerGradient: {
+      height: 80,
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      transform: [{scale: -1}], // In order to use the same memoized gradient colors as the top gradient
     },
   });
 
