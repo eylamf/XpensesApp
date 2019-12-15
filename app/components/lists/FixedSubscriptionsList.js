@@ -120,6 +120,7 @@ const FixedSubscriptionsList = ({
           },
         )}
         keyboardDismissMode={'interactive'}
+        contentContainerStyle={styles.listContent}
       />
       <LinearGradient
         style={styles.footerGradient}
@@ -150,6 +151,8 @@ const stylesheet = (theme: Theme) =>
       right: 0,
       transform: [{scale: -1}], // In order to use the same memoized gradient colors as the top gradient
     },
+
+    listContent: {paddingBottom: 80},
   });
 
 const mapStateToProps = () => ({

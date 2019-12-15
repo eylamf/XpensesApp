@@ -23,6 +23,8 @@ export const COMPANY_LOGOS = {
   // nintendoSwitchOnline: require(''),
   youtubePremium: require('../../assets/youtube_logo.png'),
   tmobile: require('../../assets/t_mobile_logo.png'),
+  twitch: require('../../assets/twitch_logo.png'),
+  mixer: require('../../assets/mixer_logo.png'),
 };
 
 const xboxLive = new Company({
@@ -275,6 +277,28 @@ const tmobile = new Company({
   },
 });
 
+const twitch = new Company({
+  id: 'twitch',
+  name: 'Twitch',
+  logoURI: COMPANY_LOGOS.twitch,
+  colorGroup: {
+    color: 'rgb(130, 5, 180)',
+    tint1: 'rgb(112, 3, 156)',
+    tint2: 'rgb(84, 1, 120)',
+  },
+});
+
+const mixer = new Company({
+  id: 'mixer',
+  name: 'Mixer',
+  logoURI: COMPANY_LOGOS.mixer,
+  colorGroup: {
+    color: 'rgb(0, 120, 215)',
+    tint1: 'rgb(2, 103, 184)',
+    tint2: 'rgb(2, 87, 156)',
+  },
+});
+
 export const COMPANIES = {
   [xboxLive.id]: xboxLive,
   [netflix.id]: netflix,
@@ -297,6 +321,8 @@ export const COMPANIES = {
   [amazonAWS.id]: amazonAWS,
   [sprint.id]: sprint,
   [tmobile.id]: tmobile,
+  [twitch.id]: twitch,
+  [mixer.id]: mixer,
 };
 
 export const SUBSCRIPTIONS = {
@@ -321,6 +347,8 @@ export const SUBSCRIPTIONS = {
   [amazonAWS.id]: new Subscription({company: amazonAWS}),
   [sprint.id]: new Subscription({company: sprint}),
   [tmobile.id]: new Subscription({company: tmobile}),
+  [twitch.id]: new Subscription({company: twitch}),
+  [mixer.id]: new Subscription({company: mixer}),
 };
 
 export const COLOR_GRID_VALUES: ColorGroup[] = [

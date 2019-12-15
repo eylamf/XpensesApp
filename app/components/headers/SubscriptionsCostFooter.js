@@ -109,7 +109,7 @@ const SubscriptionsCostFooter = ({
         locations={[0.01, 1]}
         pointerEvents={'none'}
       />
-      <Row style={[styles.content, {paddingBottom: insets.bottom + 30}]}>
+      <Row style={[styles.content, {paddingBottom: insets.bottom + 20}]}>
         <TouchableOpacity
           style={theme.styles.flexOne}
           activeOpacity={0.8}
