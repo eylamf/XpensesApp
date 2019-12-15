@@ -56,8 +56,8 @@ const FixedSubscriptionsList = ({
   const [theme, styles] = useTheme(stylesheet);
 
   const [state, dispatch] = useReducer(reducer, {
-    ids: Object.keys(SUBSCRIPTIONS),
-    allIDs: Object.keys(SUBSCRIPTIONS),
+    ids: Object.keys(SUBSCRIPTIONS).sort(),
+    allIDs: Object.keys(SUBSCRIPTIONS).sort(),
   });
 
   useEffect(() => {

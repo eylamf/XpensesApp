@@ -319,9 +319,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
               ]}
               uri={subscription.company.logoURI}
               initials={subscription.company.getInitials()}
-              isAddMode={
-                subscription.custom && !subscription.company.logoURI.length
-              }
+              isAddMode={subscription.custom && !subscription.company.logoURI}
               rounded={subscription.custom}
             />
             <TextInput

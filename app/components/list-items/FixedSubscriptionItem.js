@@ -8,6 +8,7 @@ import {useTheme} from '../../utils/hooks/useTheme';
 import type {Theme} from '../../utils/Types';
 import Subscription from '../../class-models/Subscription';
 import Row from '../Row';
+import CustomLogo from '../CustomLogo';
 
 type Props = {
   subscription: Subscription,
@@ -30,15 +31,14 @@ const FixedSubscriptionItem = ({
       rippleColor={theme.colors.soft1}
       onPress={() => onPress(subscription)}>
       <Row style={theme.styles.padding}>
-        <Image
+        <CustomLogo
           style={[
             styles.logo,
             subscription.company.forceTint
               ? {tintColor: theme.colors.opposite}
               : null,
           ]}
-          source={{uri: subscription.company.logoURI}}
-          resizeMode={'cover'}
+          uri={subscription.company.logoURI}
         />
         <Text style={styles.name} maxFontSizeMultiplier={1.5}>
           {subscription.company.name}

@@ -122,7 +122,7 @@ export type NotificationSource = $ReadOnly<{
 export type CompanySource = $ReadOnly<{
   id: string,
   name: string,
-  logoURI: string,
+  logoURI: number | string,
   colorGroup: ColorGroup,
   forceTint?: boolean,
 }>;

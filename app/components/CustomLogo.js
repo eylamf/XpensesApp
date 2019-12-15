@@ -9,7 +9,7 @@ import type {Theme} from '../utils/Types';
 
 type Props = {
   style: Object | Object[],
-  uri: string,
+  uri: number | string,
   onAddPhoto: () => void,
   isAddMode: boolean,
   initials: string,
@@ -28,7 +28,7 @@ const CustomLogo = ({
 }: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
 
-  if (uri.length === 0) {
+  if (typeof uri === 'string' && uri.length === 0) {
     if (isAddMode) {
       return (
         <TouchableOpacity
@@ -61,7 +61,7 @@ const CustomLogo = ({
         [styles.logo, rounded ? {borderRadius: 30} : null],
         style,
       )}
-      source={{uri}}
+      source={typeof uri === 'number' ? uri : {uri}}
       resizeMode={'cover'}
     />
   );
@@ -69,7 +69,7 @@ const CustomLogo = ({
 
 CustomLogo.defaultProps = {
   style: {},
-  uri: '',
+  uri: {uri: ''},
   onAddPhoto: () => {},
   isAddMode: false,
   initials: '',

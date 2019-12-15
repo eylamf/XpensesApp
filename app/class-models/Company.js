@@ -5,7 +5,7 @@ import type {CompanySource, ColorGroup} from '../utils/Types';
 class Company {
   id: string;
   name: string;
-  logoURI: string;
+  logoURI: number | string;
   colorGroup: ColorGroup;
   forceTint: boolean;
 

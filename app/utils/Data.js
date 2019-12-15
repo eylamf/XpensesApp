@@ -4,6 +4,26 @@ import Subscription from '../class-models/Subscription';
 import Company from '../class-models/Company';
 import type {ColorGroup} from './Types';
 
+export const COMPANY_LOGOS = {
+  // xboxLive: require(''),
+  netflix: require('../../assets/netflix_logo.png'),
+  spotify: require('../../assets/spotify_logo.png'),
+  // adobe: require(''),
+  // hbo: require(''),
+  // att: require(''),
+  // verizon: require(''),
+  hulu: require('../../assets/hulu_logo.png'),
+  // playstationNow: require(''),
+  github: require('../../assets/github_logo.png'),
+  // newYorkTimes: require(''),
+  // amazonPrime: require(''),
+  // appleTV: require(''),
+  // appleMusic: require(''),
+  wix: require('../../assets/wix_logo.png'),
+  // nintendoSwitchOnline: require(''),
+  youtubePremium: require('../../assets/youtube_logo.png'),
+};
+
 const xboxLive = new Company({
   id: 'xboxLive',
   name: 'Xbox Live',
@@ -19,8 +39,8 @@ const xboxLive = new Company({
 const netflix = new Company({
   id: 'netflix',
   name: 'Netflix',
-  logoURI:
-    'https://1000logos.net/wp-content/uploads/2017/11/Netflix-Logo-png.png',
+  logoURI: COMPANY_LOGOS.netflix,
+  // 'https://1000logos.net/wp-content/uploads/2017/11/Netflix-Logo-png.png',
   colorGroup: {
     color: 'rgb(229, 9, 20)',
     tint1: 'rgb(191, 6, 15)',
@@ -31,8 +51,8 @@ const netflix = new Company({
 const spotify = new Company({
   id: 'spotify',
   name: 'Spotify',
-  logoURI:
-    'https://static.spin.com/files/2018/05/Spotify-Logo-1526659588-640x469.png',
+  logoURI: COMPANY_LOGOS.spotify,
+  // 'https://static.spin.com/files/2018/05/Spotify-Logo-1526659588-640x469.png',
   colorGroup: {
     color: 'rgb(30, 215, 96)',
     tint1: 'rgb(23, 189, 84)',
@@ -90,8 +110,7 @@ const verizon = new Company({
 const hulu = new Company({
   id: 'hulu',
   name: 'Hulu',
-  logoURI:
-    'https://www.hulu.com/press/wp-content/uploads/2016/10/hulu-interactive-rgb-1-2-800x510.png',
+  logoURI: COMPANY_LOGOS.hulu,
   colorGroup: {
     color: 'rgb(28, 231, 131)',
     tint1: 'rgb(20, 201, 111)',
@@ -114,8 +133,7 @@ const playstationNow = new Company({
 const github = new Company({
   id: 'github',
   name: 'GitHub',
-  logoURI:
-    'https://www.stickpng.com/assets/images/5847f98fcef1014c0b5e48c0.png',
+  logoURI: COMPANY_LOGOS.github,
   colorGroup: {
     color: 'rgb(36, 41, 46)',
     tint1: 'rgb(26, 31, 36)',
@@ -148,6 +166,80 @@ const amazonPrime = new Company({
   },
 });
 
+const appleTV = new Company({
+  id: 'appleTV',
+  name: 'Apple TV',
+  logoURI:
+    'https://www.stickpng.com/assets/images/580b57fcd9996e24bc43c516.png',
+  colorGroup: {
+    color: 'rgb(34, 35, 36)',
+    tint1: 'rgb(28, 29, 31)',
+    tint2: 'rgb(14, 15, 15)',
+  },
+  forceTint: true,
+});
+
+const appleMusic = new Company({
+  id: 'appleMusic',
+  name: 'Apple Music',
+  logoURI:
+    'https://www.stickpng.com/assets/images/580b57fcd9996e24bc43c516.png',
+  colorGroup: {
+    color: 'rgb(34, 35, 36)',
+    tint1: 'rgb(28, 29, 31)',
+    tint2: 'rgb(14, 15, 15)',
+  },
+  forceTint: true,
+});
+
+const steam = new Company({
+  id: 'steam',
+  name: 'Steam',
+  logoURI: 'https://cdn.freebiesupply.com/logos/thumbs/2x/steam-icon-logo.png',
+  colorGroup: {
+    color: 'rgb(34, 35, 36)',
+    tint1: 'rgb(28, 29, 31)',
+    tint2: 'rgb(14, 15, 15)',
+  },
+  forceTint: true,
+});
+
+const wix = new Company({
+  id: 'wix',
+  name: 'Wix',
+  logoURI: COMPANY_LOGOS.wix,
+  colorGroup: {
+    color: 'rgb(58, 121, 246)',
+    tint1: 'rgb(38, 96, 212)',
+    tint2: 'rgb(26, 78, 184)',
+  },
+  forceTint: true,
+});
+
+const nintendoSwitchOnline = new Company({
+  id: 'nintendoSwitchOnline',
+  name: 'Nintendo Switch Online',
+  logoURI:
+    'https://upload.wikimedia.org/wikipedia/commons/3/3b/Nintendo_Switch_logo_transparent.png',
+  colorGroup: {
+    color: 'rgb(228, 0, 15)',
+    tint1: 'rgb(201, 0, 13)',
+    tint2: 'rgb(173, 2, 13)',
+  },
+  forceTint: true,
+});
+
+const youtubePremium = new Company({
+  id: 'youtubePremium',
+  name: 'Youtube Premium',
+  logoURI: COMPANY_LOGOS.youtubePremium,
+  colorGroup: {
+    color: 'rgb(255, 0, 0)',
+    tint1: 'rgb(224, 0, 0)',
+    tint2: 'rgb(180, 0, 0)',
+  },
+});
+
 export const COMPANIES = {
   [xboxLive.id]: xboxLive,
   [netflix.id]: netflix,
@@ -161,6 +253,12 @@ export const COMPANIES = {
   [github.id]: github,
   [newYorkTimes.id]: newYorkTimes,
   [amazonPrime.id]: amazonPrime,
+  [appleTV.id]: appleTV,
+  [appleMusic.id]: appleMusic,
+  [steam.id]: steam,
+  [wix.id]: wix,
+  [nintendoSwitchOnline.id]: nintendoSwitchOnline,
+  [youtubePremium.id]: youtubePremium,
 };
 
 export const SUBSCRIPTIONS = {
@@ -176,6 +274,12 @@ export const SUBSCRIPTIONS = {
   [github.id]: new Subscription({company: github}),
   [newYorkTimes.id]: new Subscription({company: newYorkTimes}),
   [amazonPrime.id]: new Subscription({company: amazonPrime}),
+  [appleTV.id]: new Subscription({company: appleTV}),
+  [appleMusic.id]: new Subscription({company: appleMusic}),
+  [steam.id]: new Subscription({company: steam}),
+  [wix.id]: new Subscription({company: wix}),
+  [nintendoSwitchOnline.id]: new Subscription({company: nintendoSwitchOnline}),
+  [youtubePremium.id]: new Subscription({company: youtubePremium}),
 };
 
 export const COLOR_GRID_VALUES: ColorGroup[] = [
@@ -336,17 +440,3 @@ export const COLOR_GRID_VALUES: ColorGroup[] = [
     tint2: 'rgb(173, 24, 71)',
   },
 ];
-
-// export const COMPANY_LOGOS = {
-//   xboxLive: require(''),
-//   netflix: require('../../assets/netflix_logo.png'),
-//   spotify: require('../../assets/spotify_logo.png'),
-//   adobe: require(''),
-//   hbo: require(''),
-//   att: require(''),
-//   verizon: require(''),
-//   hulu: require('../../assets/hulu_logo.png'),
-//   playstationNow: require(''),
-//   github: require('../../assets/github_logo.png'),
-//   newYorkTimes: require(''),
-// };

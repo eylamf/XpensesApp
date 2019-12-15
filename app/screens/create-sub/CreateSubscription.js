@@ -29,7 +29,7 @@ type Props = {
 type State = {
   name: string,
   description: ?string,
-  logoURI: string,
+  logoURI: number | string,
   colorGroup: ColorGroup,
   cost: string,
   firstPayment: number,
