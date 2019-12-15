@@ -22,6 +22,7 @@ export const COMPANY_LOGOS = {
   wix: require('../../assets/wix_logo.png'),
   // nintendoSwitchOnline: require(''),
   youtubePremium: require('../../assets/youtube_logo.png'),
+  tmobile: require('../../assets/t_mobile_logo.png'),
 };
 
 const xboxLive = new Company({
@@ -240,6 +241,40 @@ const youtubePremium = new Company({
   },
 });
 
+const amazonAWS = new Company({
+  id: 'amazonAWS',
+  name: 'Amazon AWS',
+  logoURI:
+    'https://www.stickpng.com/assets/images/586aaf811fdce414493f5105.png',
+  colorGroup: {
+    color: 'rgb(255, 153, 0)',
+    tint1: 'rgb(230, 139, 2)',
+    tint2: 'rgb(196, 119, 2)',
+  },
+});
+
+const sprint = new Company({
+  id: 'sprint',
+  name: 'Sprint',
+  logoURI: 'http://logok.org/wp-content/uploads/2014/11/Sprint-logo.png',
+  colorGroup: {
+    color: 'rgb(254, 225, 0)',
+    tint1: 'rgb(227, 201, 2)',
+    tint2: 'rgb(204, 181, 4)',
+  },
+});
+
+const tmobile = new Company({
+  id: 'tmobile',
+  name: 'T-Mobile',
+  logoURI: COMPANY_LOGOS.tmobile,
+  colorGroup: {
+    color: 'rgb(234, 10, 142)',
+    tint1: 'rgb(181, 7, 110)',
+    tint2: 'rgb(148, 4, 91)',
+  },
+});
+
 export const COMPANIES = {
   [xboxLive.id]: xboxLive,
   [netflix.id]: netflix,
@@ -259,6 +294,9 @@ export const COMPANIES = {
   [wix.id]: wix,
   [nintendoSwitchOnline.id]: nintendoSwitchOnline,
   [youtubePremium.id]: youtubePremium,
+  [amazonAWS.id]: amazonAWS,
+  [sprint.id]: sprint,
+  [tmobile.id]: tmobile,
 };
 
 export const SUBSCRIPTIONS = {
@@ -280,6 +318,9 @@ export const SUBSCRIPTIONS = {
   [wix.id]: new Subscription({company: wix}),
   [nintendoSwitchOnline.id]: new Subscription({company: nintendoSwitchOnline}),
   [youtubePremium.id]: new Subscription({company: youtubePremium}),
+  [amazonAWS.id]: new Subscription({company: amazonAWS}),
+  [sprint.id]: new Subscription({company: sprint}),
+  [tmobile.id]: new Subscription({company: tmobile}),
 };
 
 export const COLOR_GRID_VALUES: ColorGroup[] = [
