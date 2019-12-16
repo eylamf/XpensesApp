@@ -70,7 +70,6 @@ const SearchBar = ({
             returnKeyType={'search'}
             selectionColor={theme.colors.primary}
             maxFontSizeMultiplier={1.5}
-            // autoFocus
           />
         </View>
         <TouchableOpacity

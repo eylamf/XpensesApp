@@ -24,11 +24,12 @@ import {SUBSCRIPTIONS} from '../../utils/Data';
 type Props = {
   subbedIDs: string[],
   onItemPress: (sub: Subscription) => void,
+  query: string,
 };
 
 type State = {
   ids: string[],
-  allIDs: string[],
+  unsubbedIDs: string[],
 };
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
@@ -52,21 +53,47 @@ const reducer = (state: State, action: ReducerAction): State => {
 const FixedSubscriptionsList = ({
   subbedIDs,
   onItemPress,
+  query,
 }: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
 
-  const [state, dispatch] = useReducer(reducer, {
-    ids: Object.keys(SUBSCRIPTIONS).sort(),
-    allIDs: Object.keys(SUBSCRIPTIONS).sort(),
-  });
+  const [state, dispatch] = useReducer(
+    reducer,
+    {ids: [], unsubbedIDs: []},
+    () => {
+      const allSorted = Object.keys(SUBSCRIPTIONS).sort();
+      const unsubbedIDs = allSorted.filter(id => {
+        return !SubscriptionsStore.exists(id);
+      });
+
+      return {
+        ids: unsubbedIDs,
+        unsubbedIDs,
+      };
+    },
+  );
+
+  // Set unsubbed IDs
+  useEffect(() => {
+    const ids = state.unsubbedIDs.filter(
+      (id: string) => !SubscriptionsStore.exists(id),
+    );
+    dispatch({type: 'SET_IDS', payload: {ids}});
+  }, [subbedIDs, state.unsubbedIDs]);
 
   useEffect(() => {
-    const ids = state.allIDs.filter(id => !SubscriptionsStore.exists(id));
+    if (query.length > 0) {
+      const filtered = state.unsubbedIDs.filter((id: string) => {
+        const sub: Subscription = SUBSCRIPTIONS[id];
 
-    dispatch({type: 'SET_IDS', payload: {ids}});
+        return sub.getCompanyName().indexOf(query) > -1;
+      });
 
-    console.log('called');
-  }, [subbedIDs, state.allIDs]);
+      dispatch({type: 'SET_IDS', payload: {ids: filtered}});
+    } else {
+      dispatch({type: 'SET_IDS', payload: {ids: state.unsubbedIDs}});
+    }
+  }, [query, state.unsubbedIDs]);
 
   const scrollY = useRef(new Animated.Value(0)).current;
 

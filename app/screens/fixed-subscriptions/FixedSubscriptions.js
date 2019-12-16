@@ -43,7 +43,10 @@ const MySubscriptions = ({navigation, route}: Props): Element<any> => {
           onDone={onClose}
           onSearch={onSearch}
         />
-        <FixedSubscriptionsList onItemPress={onSubscriptionPress} />
+        <FixedSubscriptionsList
+          query={query}
+          onItemPress={onSubscriptionPress}
+        />
         <CreateNewSubscriptionFooter onPress={onCreateNewPress} />
       </View>
     </>
