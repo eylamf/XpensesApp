@@ -28,7 +28,7 @@ export const COMPANY_LOGOS = {
 };
 
 const xboxLive = new Company({
-  id: 'xboxLive',
+  id: 'xbox_live',
   name: 'Xbox Live',
   logoURI:
     'https://carlisletheacarlisletheatre.org/images/xbox-logo-png-svg.png',
@@ -87,7 +87,7 @@ const hbo = new Company({
 });
 
 const att = new Company({
-  id: 'att',
+  id: 'at&t',
   name: 'AT&T',
   logoURI:
     'https://www.stickpng.com/assets/images/5842905ca6515b1e0ad75ab9.png',
@@ -122,7 +122,7 @@ const hulu = new Company({
 });
 
 const playstationNow = new Company({
-  id: 'playstationNow',
+  id: 'playstation_now',
   name: 'PlayStation Now',
   logoURI:
     'https://www.freepngimg.com/thumb/playstation/29129-8-playstation-transparent-background.png',
@@ -146,7 +146,7 @@ const github = new Company({
 });
 
 const newYorkTimes = new Company({
-  id: 'newYorkTimes',
+  id: 'the_new_york_times',
   name: 'The New York Times',
   logoURI:
     'https://1000logos.net/wp-content/uploads/2017/04/Symbol-New-York-Times.png',
@@ -159,7 +159,7 @@ const newYorkTimes = new Company({
 });
 
 const amazonPrime = new Company({
-  id: 'amazonPrime',
+  id: 'amazon_prime',
   name: 'Amazon Prime',
   logoURI: 'https://myrealdomain.com/images/amazon-logo-png-8.png',
   colorGroup: {
@@ -170,7 +170,7 @@ const amazonPrime = new Company({
 });
 
 const appleTV = new Company({
-  id: 'appleTV',
+  id: 'apple_tv',
   name: 'Apple TV',
   logoURI:
     'https://www.stickpng.com/assets/images/580b57fcd9996e24bc43c516.png',
@@ -183,7 +183,7 @@ const appleTV = new Company({
 });
 
 const appleMusic = new Company({
-  id: 'appleMusic',
+  id: 'apple_music',
   name: 'Apple Music',
   logoURI:
     'https://www.stickpng.com/assets/images/580b57fcd9996e24bc43c516.png',
@@ -220,7 +220,7 @@ const wix = new Company({
 });
 
 const nintendoSwitchOnline = new Company({
-  id: 'nintendoSwitchOnline',
+  id: 'nintendo_switch_online',
   name: 'Nintendo Switch Online',
   logoURI:
     'https://upload.wikimedia.org/wikipedia/commons/3/3b/Nintendo_Switch_logo_transparent.png',
@@ -233,7 +233,7 @@ const nintendoSwitchOnline = new Company({
 });
 
 const youtubePremium = new Company({
-  id: 'youtubePremium',
+  id: 'youtube_premium',
   name: 'Youtube Premium',
   logoURI: COMPANY_LOGOS.youtubePremium,
   colorGroup: {
@@ -244,7 +244,7 @@ const youtubePremium = new Company({
 });
 
 const amazonAWS = new Company({
-  id: 'amazonAWS',
+  id: 'amazon_aws',
   name: 'Amazon AWS',
   logoURI:
     'https://www.stickpng.com/assets/images/586aaf811fdce414493f5105.png',
@@ -267,7 +267,7 @@ const sprint = new Company({
 });
 
 const tmobile = new Company({
-  id: 'tmobile',
+  id: 't-mobile',
   name: 'T-Mobile',
   logoURI: COMPANY_LOGOS.tmobile,
   colorGroup: {

@@ -157,8 +157,20 @@ export type ColorGroup = {
   tint2: string,
 };
 
-export type ReceiptEntry = {
+export type ReceiptEntry = $ReadOnly<{
   subID: string, // Points to Subscription ID
   cost: number,
   intervals: number,
-};
+}>;
+
+type AlertAction = $ReadOnly<{
+  text: string,
+  onPress: () => void,
+  style?: string,
+}>;
+
+export type AlertConfig = $Exact<{
+  title: string,
+  message: string,
+  actions: AlertAction[],
+}>;

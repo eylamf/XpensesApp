@@ -86,7 +86,12 @@ const FixedSubscriptionsList = ({
       const filtered = state.unsubbedIDs.filter((id: string) => {
         const sub: Subscription = SUBSCRIPTIONS[id];
 
-        return sub.getCompanyName().indexOf(query) > -1;
+        return (
+          sub
+            .getCompanyName()
+            .toLowerCase()
+            .indexOf(query.toLowerCase()) > -1
+        );
       });
 
       dispatch({type: 'SET_IDS', payload: {ids: filtered}});

@@ -2,6 +2,7 @@
 
 import AsyncStorage from '@react-native-community/async-storage';
 import {SubscriptionsStore} from './Store';
+import ErrorHandler from '../../utils/ErrorHandler';
 import Subscription from '../../class-models/Subscription';
 import Company from '../../class-models/Company';
 import * as NotificationActions from '../notifications/Actions';
@@ -9,7 +10,6 @@ import ReminderInterval from '../../class-models/ReminderInterval';
 import SubscriptionCycleInterval from '../../class-models/SubscriptionCycleInterval';
 import Notification from '../../class-models/Notification';
 import {SUBSCRIPTIONS} from '../../utils/Data';
-import type {CostTypeFilter, CostIntervalFilter} from '../../utils/Types';
 
 /**
  * Set fixed subscriptions for first-time-users.
@@ -131,7 +131,26 @@ export const removeSubscription = async (subID: string) => {
 /**
  * Add a subscription.
  */
-export const addSubscription = async (subscription: Subscription) => {
+export const addSubscription = async (
+  subscription: Subscription,
+): Promise<?boolean> => {
+  const exists = SubscriptionsStore.exists(subscription.id);
+
+  if (exists) {
+    ErrorHandler.showAlert({
+      title: 'Oops',
+      message: 'Looks like a subscription with the same name already exists.',
+      actions: [
+        {
+          text: 'OK',
+          onPress: () => {},
+        },
+      ],
+    });
+
+    return false;
+  }
+
   try {
     await AsyncStorage.setItem(
       `sub:${subscription.id}`,
@@ -150,6 +169,8 @@ export const addSubscription = async (subscription: Subscription) => {
 
     SubscriptionsStore.addSubscription(subscription);
     SubscriptionsStore.adjustTotalCost();
+
+    return true;
   } catch (e) {
     console.warn('Subscription Actions: add - error adding', e);
   }

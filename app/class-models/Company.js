@@ -12,7 +12,7 @@ class Company {
   constructor(source: CompanySource) {
     const {id, name, logoURI, colorGroup, forceTint} = source;
 
-    this.id = id;
+    this.id = this._formatID(id);
     this.name = name;
     this.logoURI = logoURI;
     this.colorGroup = colorGroup;
@@ -34,6 +34,16 @@ class Company {
 
   setColorGroup(colorGroup: ColorGroup) {
     this.colorGroup = colorGroup;
+  }
+
+  _formatID(passedID: string): string {
+    const split = passedID.split(' ');
+
+    if (split.length === 1) {
+      return passedID;
+    }
+
+    return split.join('_');
   }
 }
 

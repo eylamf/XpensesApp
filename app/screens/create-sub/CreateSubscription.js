@@ -192,7 +192,7 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
     });
 
     const subscription = new Subscription({
-      id: state.name.toLowerCase(),
+      id: company.id,
       company,
       description: state.description,
       cost: Number(state.cost),
@@ -205,9 +205,13 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
 
     console.log('CreateSubscription: new custom', '=>', subscription);
 
-    await SubscriptionActions.addSubscription(subscription);
+    const accepted = await SubscriptionActions.addSubscription(subscription);
 
-    navigation.goBack();
+    console.log('accepted', accepted);
+
+    if (accepted) {
+      navigation.goBack();
+    }
   }, [state, navigation]);
 
   useLayoutEffect(() => {
