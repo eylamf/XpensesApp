@@ -5,33 +5,32 @@ import Company from '../class-models/Company';
 import type {ColorGroup} from './Types';
 
 export const COMPANY_LOGOS = {
-  // xboxLive: require(''),
+  xboxLive: require('../../assets/xbox.png'),
   netflix: require('../../assets/netflix_logo.png'),
   spotify: require('../../assets/spotify_logo.png'),
-  // adobe: require(''),
-  // hbo: require(''),
-  // att: require(''),
+  adobe: require('../../assets/adobe.png'),
+  hbo: require('../../assets/hbo.png'),
+  att: require('../../assets/att.png'),
   // verizon: require(''),
-  hulu: require('../../assets/hulu_logo.png'),
-  // playstationNow: require(''),
+  hulu: require('../../assets/hulu/hulu_logo.png'),
+  playstationNow: require('../../assets/ps4/playstation.png'),
   github: require('../../assets/github_logo.png'),
   // newYorkTimes: require(''),
   // amazonPrime: require(''),
   // appleTV: require(''),
   // appleMusic: require(''),
-  wix: require('../../assets/wix_logo.png'),
+  wix: require('../../assets/wix/wix_dark.png'),
   // nintendoSwitchOnline: require(''),
-  youtubePremium: require('../../assets/youtube_logo.png'),
-  tmobile: require('../../assets/t_mobile_logo.png'),
-  twitch: require('../../assets/twitch_logo.png'),
-  mixer: require('../../assets/mixer_logo.png'),
+  youtubePremium: require('../../assets/youtube/youtube_filled.png'),
+  tmobile: require('../../assets/tmobile/tmobile.png'),
+  twitch: require('../../assets/twitch/twitch_filled.png'),
+  mixer: require('../../assets/mixer/mixer_logo.png'),
 };
 
 const xboxLive = new Company({
   id: 'xbox_live',
   name: 'Xbox Live',
-  logoURI:
-    'https://carlisletheacarlisletheatre.org/images/xbox-logo-png-svg.png',
+  logoURI: COMPANY_LOGOS.xboxLive,
   colorGroup: {
     color: 'rgb(14, 122, 13)',
     tint1: 'rgb(9, 94, 8)',
@@ -43,7 +42,6 @@ const netflix = new Company({
   id: 'netflix',
   name: 'Netflix',
   logoURI: COMPANY_LOGOS.netflix,
-  // 'https://1000logos.net/wp-content/uploads/2017/11/Netflix-Logo-png.png',
   colorGroup: {
     color: 'rgb(229, 9, 20)',
     tint1: 'rgb(191, 6, 15)',
@@ -55,7 +53,6 @@ const spotify = new Company({
   id: 'spotify',
   name: 'Spotify',
   logoURI: COMPANY_LOGOS.spotify,
-  // 'https://static.spin.com/files/2018/05/Spotify-Logo-1526659588-640x469.png',
   colorGroup: {
     color: 'rgb(30, 215, 96)',
     tint1: 'rgb(23, 189, 84)',
@@ -66,7 +63,7 @@ const spotify = new Company({
 const adobe = new Company({
   id: 'adobe',
   name: 'Adobe',
-  logoURI: 'https://1000logos.net/wp-content/uploads/2016/10/Adobe-Logo.png',
+  logoURI: COMPANY_LOGOS.adobe,
   colorGroup: {
     color: 'rgb(255, 0, 0)',
     tint1: 'rgb(224, 0, 0)',
@@ -77,7 +74,7 @@ const adobe = new Company({
 const hbo = new Company({
   id: 'hbo',
   name: 'HBO',
-  logoURI: 'https://cdn.iconscout.com/icon/free/png-512/hbo-1-555167.png',
+  logoURI: COMPANY_LOGOS.hbo,
   colorGroup: {
     color: 'rgb(40, 40, 40)',
     tint1: 'rgb(30, 30, 30)',
@@ -89,8 +86,7 @@ const hbo = new Company({
 const att = new Company({
   id: 'at&t',
   name: 'AT&T',
-  logoURI:
-    'https://www.stickpng.com/assets/images/5842905ca6515b1e0ad75ab9.png',
+  logoURI: COMPANY_LOGOS.att,
   colorGroup: {
     color: 'rgb(58, 165, 220)',
     tint1: 'rgb(42, 141, 191)',
@@ -124,10 +120,9 @@ const hulu = new Company({
 const playstationNow = new Company({
   id: 'playstation_now',
   name: 'PlayStation Now',
-  logoURI:
-    'https://www.freepngimg.com/thumb/playstation/29129-8-playstation-transparent-background.png',
+  logoURI: COMPANY_LOGOS.playstationNow,
   colorGroup: {
-    color: 'rgb(0, 112, 209)',
+    color: 'rgb(0, 112, 204)',
     tint1: 'rgb(0, 98, 184)',
     tint2: 'rgb(0, 81, 153)',
   },
