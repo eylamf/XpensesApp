@@ -10,21 +10,23 @@ export const COMPANY_LOGOS = {
   spotify: require('../../assets/spotify_logo.png'),
   adobe: require('../../assets/adobe.png'),
   hbo: require('../../assets/hbo.png'),
-  att: require('../../assets/att.png'),
-  // verizon: require(''),
+  att: require('../../assets/att/att.png'),
+  verizon: require('../../assets/verizon.png'),
   hulu: require('../../assets/hulu/hulu_logo.png'),
   playstationNow: require('../../assets/ps4/playstation.png'),
   github: require('../../assets/github_logo.png'),
-  // newYorkTimes: require(''),
-  // amazonPrime: require(''),
-  // appleTV: require(''),
-  // appleMusic: require(''),
+  newYorkTimes: require('../../assets/new_york_times/new_york_times.png'),
+  amazonPrime: require('../../assets/amazon_prime/amazon_prime.png'),
+  amazonAWS: require('../../assets/amazon_aws/amazon_aws.png'),
+  apple: require('../../assets/apple_icon.png'),
   wix: require('../../assets/wix/wix_dark.png'),
-  // nintendoSwitchOnline: require(''),
+  nintendoSwitch: require('../../assets/nintendo_switch/nintendo_switch.png'),
   youtubePremium: require('../../assets/youtube/youtube_filled.png'),
   tmobile: require('../../assets/tmobile/tmobile.png'),
   twitch: require('../../assets/twitch/twitch_filled.png'),
   mixer: require('../../assets/mixer/mixer_logo.png'),
+  steam: require('../../assets/steam_logo.png'),
+  sprint: require('../../assets/sprint/sprint_logo.png'),
 };
 
 const xboxLive = new Company({
@@ -97,8 +99,7 @@ const att = new Company({
 const verizon = new Company({
   id: 'verizon',
   name: 'Verizon',
-  logoURI:
-    'https://www.androidcentral.com/sites/androidcentral.com/files/article_images/2019/05/verizon-logo-check-cropped.png?itok=js3aGW7u',
+  logoURI: COMPANY_LOGOS.verizon,
   colorGroup: {
     color: 'rgb(239, 29, 29)',
     tint1: 'rgb(209, 19, 19)',
@@ -143,8 +144,7 @@ const github = new Company({
 const newYorkTimes = new Company({
   id: 'the_new_york_times',
   name: 'The New York Times',
-  logoURI:
-    'https://1000logos.net/wp-content/uploads/2017/04/Symbol-New-York-Times.png',
+  logoURI: COMPANY_LOGOS.newYorkTimes,
   colorGroup: {
     color: 'rgb(18, 18, 18)',
     tint1: 'rgb(38, 37, 37)',
@@ -156,7 +156,7 @@ const newYorkTimes = new Company({
 const amazonPrime = new Company({
   id: 'amazon_prime',
   name: 'Amazon Prime',
-  logoURI: 'https://myrealdomain.com/images/amazon-logo-png-8.png',
+  logoURI: COMPANY_LOGOS.amazonPrime,
   colorGroup: {
     color: 'rgb(0, 169, 225)',
     tint1: 'rgb(0, 147, 196)',
@@ -167,8 +167,7 @@ const amazonPrime = new Company({
 const appleTV = new Company({
   id: 'apple_tv',
   name: 'Apple TV',
-  logoURI:
-    'https://www.stickpng.com/assets/images/580b57fcd9996e24bc43c516.png',
+  logoURI: COMPANY_LOGOS.apple,
   colorGroup: {
     color: 'rgb(34, 35, 36)',
     tint1: 'rgb(28, 29, 31)',
@@ -180,8 +179,7 @@ const appleTV = new Company({
 const appleMusic = new Company({
   id: 'apple_music',
   name: 'Apple Music',
-  logoURI:
-    'https://www.stickpng.com/assets/images/580b57fcd9996e24bc43c516.png',
+  logoURI: COMPANY_LOGOS.apple,
   colorGroup: {
     color: 'rgb(34, 35, 36)',
     tint1: 'rgb(28, 29, 31)',
@@ -193,7 +191,7 @@ const appleMusic = new Company({
 const steam = new Company({
   id: 'steam',
   name: 'Steam',
-  logoURI: 'https://cdn.freebiesupply.com/logos/thumbs/2x/steam-icon-logo.png',
+  logoURI: COMPANY_LOGOS.steam,
   colorGroup: {
     color: 'rgb(34, 35, 36)',
     tint1: 'rgb(28, 29, 31)',
@@ -217,8 +215,7 @@ const wix = new Company({
 const nintendoSwitchOnline = new Company({
   id: 'nintendo_switch_online',
   name: 'Nintendo Switch Online',
-  logoURI:
-    'https://upload.wikimedia.org/wikipedia/commons/3/3b/Nintendo_Switch_logo_transparent.png',
+  logoURI: COMPANY_LOGOS.nintendoSwitch,
   colorGroup: {
     color: 'rgb(228, 0, 15)',
     tint1: 'rgb(201, 0, 13)',
@@ -241,8 +238,7 @@ const youtubePremium = new Company({
 const amazonAWS = new Company({
   id: 'amazon_aws',
   name: 'Amazon AWS',
-  logoURI:
-    'https://www.stickpng.com/assets/images/586aaf811fdce414493f5105.png',
+  logoURI: COMPANY_LOGOS.amazonAWS,
   colorGroup: {
     color: 'rgb(255, 153, 0)',
     tint1: 'rgb(230, 139, 2)',
@@ -253,7 +249,7 @@ const amazonAWS = new Company({
 const sprint = new Company({
   id: 'sprint',
   name: 'Sprint',
-  logoURI: 'http://logok.org/wp-content/uploads/2014/11/Sprint-logo.png',
+  logoURI: COMPANY_LOGOS.sprint,
   colorGroup: {
     color: 'rgb(254, 225, 0)',
     tint1: 'rgb(227, 201, 2)',
