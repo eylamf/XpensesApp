@@ -123,6 +123,7 @@ export type CompanySource = $ReadOnly<{
   id: string,
   name: string,
   logoURI: number | string,
+  filledLogo?: ?number,
   colorGroup: ColorGroup,
   forceTint?: boolean,
 }>;

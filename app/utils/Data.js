@@ -22,8 +22,10 @@ export const COMPANY_LOGOS = {
   wix: require('../../assets/wix/wix_dark.png'),
   nintendoSwitch: require('../../assets/nintendo_switch/nintendo_switch.png'),
   youtubePremium: require('../../assets/youtube/youtube_filled.png'),
+  youtubePremiumFilled: require('../../assets/youtube/youtube.png'),
   tmobile: require('../../assets/tmobile/tmobile.png'),
   twitch: require('../../assets/twitch/twitch_filled.png'),
+  twitchFilled: require('../../assets/twitch/twitch.png'),
   mixer: require('../../assets/mixer/mixer_logo.png'),
   steam: require('../../assets/steam_logo.png'),
   sprint: require('../../assets/sprint/sprint_logo.png'),
@@ -228,6 +230,7 @@ const youtubePremium = new Company({
   id: 'youtube_premium',
   name: 'Youtube Premium',
   logoURI: COMPANY_LOGOS.youtubePremium,
+  filledLogo: COMPANY_LOGOS.youtubePremiumFilled,
   colorGroup: {
     color: 'rgb(255, 0, 0)',
     tint1: 'rgb(224, 0, 0)',
@@ -272,6 +275,7 @@ const twitch = new Company({
   id: 'twitch',
   name: 'Twitch',
   logoURI: COMPANY_LOGOS.twitch,
+  filledLogo: COMPANY_LOGOS.twitchFilled,
   colorGroup: {
     color: 'rgb(130, 5, 180)',
     tint1: 'rgb(112, 3, 156)',

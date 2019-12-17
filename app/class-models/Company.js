@@ -6,15 +6,18 @@ class Company {
   id: string;
   name: string;
   logoURI: number | string;
+  filledLogo: ?number;
   colorGroup: ColorGroup;
   forceTint: boolean;
+  useFilled: boolean;
 
   constructor(source: CompanySource) {
-    const {id, name, logoURI, colorGroup, forceTint} = source;
+    const {id, name, logoURI, filledLogo, colorGroup, forceTint} = source;
 
     this.id = this._formatID(id);
     this.name = name;
     this.logoURI = logoURI;
+    this.filledLogo = filledLogo || null;
     this.colorGroup = colorGroup;
     this.forceTint = forceTint || false;
   }
@@ -34,6 +37,10 @@ class Company {
 
   setColorGroup(colorGroup: ColorGroup) {
     this.colorGroup = colorGroup;
+  }
+
+  hasFilledLogo(): boolean {
+    return this.filledLogo != null;
   }
 
   _formatID(passedID: string): string {

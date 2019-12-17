@@ -37,7 +37,10 @@ const SubDetailsHeader = React.memo<any>(
     console.log('details header render');
 
     return (
-      <LinearGradient style={styles.container} colors={gradientColor}>
+      <LinearGradient
+        style={styles.container}
+        colors={gradientColor}
+        pointerEvents={'box-none'}>
         {!isAddMode && (
           <Row style={styles.content}>
             <TouchableOpacity
@@ -82,8 +85,9 @@ const stylesheet = (theme: Theme) =>
     },
 
     content: {
-      flex: 1,
+      // flex: 1,
       // paddingTop: Constants.getStatusBarHeight(), // TODO check if iOS < 13, else use the below style
+      paddingTop: 15,
       paddingBottom: 15,
     },
 

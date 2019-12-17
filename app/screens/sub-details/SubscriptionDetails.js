@@ -2,14 +2,7 @@
 
 import React, {useRef, useCallback, useReducer, useLayoutEffect} from 'react';
 import type {Element} from 'react';
-import {
-  View,
-  ScrollView,
-  Text,
-  Image,
-  StatusBar,
-  TextInput,
-} from 'react-native';
+import {View, Animated, Text, Image, StatusBar, TextInput} from 'react-native';
 import {useSafeArea} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import stylesheet from './DetailsStyles';
@@ -152,6 +145,7 @@ const reducer = (state: State, action: ReducerAction): State => {
 
 const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
   const scrollview = useRef();
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   const [theme, styles] = useTheme(stylesheet);
 
@@ -273,8 +267,9 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
 
   const onScrollToEnd = () => {
     setTimeout(() => {
-      scrollview.current && scrollview.current.scrollToEnd();
-      scrollview.current && scrollview.current.flashScrollIndicators();
+      scrollview.current && scrollview.current._component.scrollToEnd();
+      scrollview.current &&
+        scrollview.current._component.flashScrollIndicators();
     }, 0);
   };
 
@@ -293,6 +288,12 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     onClose();
   };
 
+  const costTranslateY = scrollY.interpolate({
+    inputRange: [0, 180],
+    outputRange: [0, 10],
+    extrapolate: 'clamp',
+  });
+
   return (
     <>
       <StatusBar barStyle={'light-content'} animated />
@@ -304,20 +305,29 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
           onClose={onClose}
           onSave={onAction}
         />
-        <ScrollView
+        <Animated.ScrollView
           ref={scrollview}
           contentContainerStyle={[
             styles.listContent,
             {paddingBottom: insets.bottom + 15},
           ]}
-          stickyHeaderIndices={[1]}>
+          stickyHeaderIndices={[1]}
+          scrollEventThrottle={16}
+          onScroll={Animated.event(
+            [{nativeEvent: {contentOffset: {y: scrollY}}}],
+            {useNativeDriver: true},
+          )}>
           <View style={[styles.top, {backgroundColor: state.colorGroup.color}]}>
             <CustomLogo
               style={[
                 styles.logo,
                 !subscription.custom ? {tintColor: theme.colors.white} : null,
               ]}
-              uri={subscription.company.logoURI}
+              uri={
+                subscription.company.filledLogo != null
+                  ? subscription.company.filledLogo
+                  : subscription.company.logoURI
+              }
               initials={subscription.company.getInitials()}
               isAddMode={subscription.custom && !subscription.company.logoURI}
               rounded={subscription.custom}
@@ -351,30 +361,32 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
               styles.costSection,
               {backgroundColor: state.colorGroup.color},
             ]}>
-            <Row
-              style={[
-                styles.costContainer,
-                {backgroundColor: state.colorGroup.tint1},
-              ]}>
-              <Text
-                style={theme.styles.mdWhiteText}
-                maxFontSizeMultiplier={1.5}>
-                $
-              </Text>
-              <TextInput
-                style={styles.costInput}
-                placeholder={'0.00'}
-                placeholderTextColor={state.colorGroup.tint2}
-                value={state.cost}
-                onChangeText={(text: string) =>
-                  dispatch({type: types.SET_COST, payload: {cost: text}})
-                }
-                onBlur={onBlur}
-                selectionColor={theme.colors.white}
-                keyboardType={'numeric'}
-                maxFontSizeMultiplier={1.5}
-              />
-            </Row>
+            <Animated.View style={{transform: [{translateY: costTranslateY}]}}>
+              <Row
+                style={[
+                  styles.costContainer,
+                  {backgroundColor: state.colorGroup.tint1},
+                ]}>
+                <Text
+                  style={theme.styles.mdWhiteText}
+                  maxFontSizeMultiplier={1.5}>
+                  $
+                </Text>
+                <TextInput
+                  style={styles.costInput}
+                  placeholder={'0.00'}
+                  placeholderTextColor={state.colorGroup.tint2}
+                  value={state.cost}
+                  onChangeText={(text: string) =>
+                    dispatch({type: types.SET_COST, payload: {cost: text}})
+                  }
+                  onBlur={onBlur}
+                  selectionColor={theme.colors.white}
+                  keyboardType={'numeric'}
+                  maxFontSizeMultiplier={1.5}
+                />
+              </Row>
+            </Animated.View>
           </Row>
           <SubDetailsForm
             switchTint={
@@ -401,7 +413,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
               <LineDivider leftSpace={15} color={theme.colors.soft1} />
             </>
           )}
-        </ScrollView>
+        </Animated.ScrollView>
         <TouchableOpacity
           style={[styles.deleteBtn, {paddingBottom: insets.bottom + 15}]}
           activeOpacity={0.8}
