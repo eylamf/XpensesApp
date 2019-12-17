@@ -47,7 +47,16 @@ const ReceiptModal = ({navigation}: Props): Element<any> => {
   });
 
   const onDismiss = () => {
-    navigation.goBack();
+    Animated.timing(transitionVal, {
+      toValue: 0,
+      duration: 250,
+      easing: Easing.out(Easing.poly(4)),
+      useNativeDriver: true,
+    }).start(({finished}) => {
+      if (finished) {
+        navigation.goBack();
+      }
+    });
   };
 
   return (
