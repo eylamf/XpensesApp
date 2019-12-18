@@ -1,6 +1,6 @@
 // @flow
 
-import React, {useRef, useCallback, useReducer, useLayoutEffect} from 'react';
+import React, {useRef, useCallback, useReducer, useEffect} from 'react';
 import type {Element} from 'react';
 import {
   View,
@@ -243,7 +243,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     onClose,
   ]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isAddMode) {
       navigation.setOptions({
         headerRight: () => (

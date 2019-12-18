@@ -17,10 +17,7 @@ class Constants {
     this._windowWidth = width;
     this._windowHeight = height;
     this._statusBarHeight = fetchStatusBarHeight();
-
-    const systemVersion = DeviceInfo.getSystemVersion();
-
-    this._systemVersion = Number(systemVersion);
+    this._systemVersion = Number(DeviceInfo.getSystemVersion().substring(0, 2));
   }
 
   getNavbarHeight(): number {
