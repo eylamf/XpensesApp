@@ -14,14 +14,14 @@ const stylesheet = (theme: Theme) =>
       width: 32,
       height: 32,
       borderRadius: 16,
-      backgroundColor: theme.colors.soft1,
+      backgroundColor: theme.colors.primary,
       ...theme.styles.center,
     },
 
     addIcon: {
       width: 15,
       height: 15,
-      tintColor: theme.colors.primary,
+      tintColor: theme.colors.main,
     },
   });
 

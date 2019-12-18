@@ -177,7 +177,7 @@ class Subscription {
             incrementedDayOfYear += cycleAsDays;
           }
 
-          while (incrementedDayOfYear <= endOfWeekDayInYear) {
+          while (incrementedDayOfYear < endOfWeekDayInYear) {
             intervals++;
             incrementedDayOfYear += cycleAsDays;
           }
@@ -201,9 +201,9 @@ class Subscription {
 
           let intervals = 0;
 
-          if (firstPaymentDayInYear === dayInYear) {
-            intervals = -1;
-          }
+          // if (firstPaymentDayInYear === dayInYear) {
+          //   intervals = -1;
+          // }
 
           let incrementedDayOfYear = firstPaymentDayInYear;
 
@@ -218,16 +218,6 @@ class Subscription {
 
           result.cost = this.cost * intervals;
           result.intervals = intervals;
-          // if (cycleAsDays <= 7) {
-          //   const originalStartDay = new Date(this.firstPayment).getDay();
-          //   const startDay = now.getDay();
-
-          //   if (Math.abs(originalStartDay - startDay) % 2 === 0) {
-          //     result = this.cost * Math.round(6 / cycleAsDays);
-          //   } else {
-          //     result = this.cost * Math.round(7 / cycleAsDays);
-          //   }
-          // }
         }
         break;
       case 'Month':
@@ -291,9 +281,9 @@ class Subscription {
 
           let intervals = 0;
 
-          if (firstPaymentDayInYear === dayInYear) {
-            intervals = -1;
-          }
+          // if (firstPaymentDayInYear === dayInYear) {
+          //   intervals = -1;
+          // }
 
           let incrementedDayOfYear = firstPaymentDayInYear;
 

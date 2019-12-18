@@ -87,12 +87,15 @@ const stylesheet = (theme: Theme) =>
     content: {
       // flex: 1,
       // paddingTop: Constants.getStatusBarHeight(), // TODO check if iOS < 13, else use the below style
-      paddingTop: Constants.isIOS13OrLater() ? 15 : 30,
+      paddingTop: Constants.isIOS13OrLater()
+        ? 15
+        : Constants.getStatusBarHeight() + 10,
       paddingBottom: 15,
     },
 
     left: {
       width: 80,
+      height: 26,
       justifyContent: 'center',
     },
 
@@ -115,6 +118,7 @@ const stylesheet = (theme: Theme) =>
 
     right: {
       width: 80,
+      height: 26,
       alignItems: 'flex-end',
       justifyContent: 'center',
     },
