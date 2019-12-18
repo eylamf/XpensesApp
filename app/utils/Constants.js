@@ -1,7 +1,7 @@
 // @flow
 
+import DeviceInfo from 'react-native-device-info';
 import {getStatusBarHeight as fetchStatusBarHeight} from 'react-native-status-bar-height';
-
 import {Dimensions, Platform} from 'react-native';
 
 class Constants {
@@ -9,6 +9,7 @@ class Constants {
   _windowHeight: number;
   _navbarHeight: number;
   _statusBarHeight: number;
+  _systemVersion: number;
 
   constructor() {
     const {width, height} = Dimensions.get('window');
@@ -16,6 +17,10 @@ class Constants {
     this._windowWidth = width;
     this._windowHeight = height;
     this._statusBarHeight = fetchStatusBarHeight();
+
+    const systemVersion = DeviceInfo.getSystemVersion();
+
+    this._systemVersion = Number(systemVersion);
   }
 
   getNavbarHeight(): number {
@@ -36,6 +41,10 @@ class Constants {
 
   getWindowHeight(): number {
     return this._windowHeight;
+  }
+
+  isIOS13OrLater(): boolean {
+    return Platform.OS === 'ios' && this._systemVersion >= 13;
   }
 }
 

@@ -4,9 +4,14 @@ import * as remx from 'remx';
 import {Appearance} from 'react-native-appearance';
 import {generateTheme} from '../../utils/Theme';
 import type {Theme} from '../../utils/Types';
+import Constants from '../../utils/Constants';
+
+const defaultAppearance = Constants.isIOS13OrLater()
+  ? Appearance.getColorScheme()
+  : 'light';
 
 const initialState = {
-  theme: generateTheme(Appearance.getColorScheme()),
+  theme: generateTheme(defaultAppearance),
 };
 
 const state = remx.state(initialState);

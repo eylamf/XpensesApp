@@ -23,6 +23,7 @@
     "react-native": "0.61.5",
     "react-native-appearance": "^0.3.1",
     "react-native-date-picker": "^2.7.0",
+    "react-native-device-info": "^5.4.0",
     "react-native-gesture-handler": "^1.5.2",
     "react-native-image-crop-picker": "^0.26.1",
     "react-native-linear-gradient": "^2.5.6",

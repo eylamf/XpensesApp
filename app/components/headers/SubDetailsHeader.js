@@ -87,7 +87,7 @@ const stylesheet = (theme: Theme) =>
     content: {
       // flex: 1,
       // paddingTop: Constants.getStatusBarHeight(), // TODO check if iOS < 13, else use the below style
-      paddingTop: 15,
+      paddingTop: Constants.isIOS13OrLater() ? 15 : 30,
       paddingBottom: 15,
     },
 

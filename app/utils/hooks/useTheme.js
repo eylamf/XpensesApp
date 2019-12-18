@@ -3,20 +3,23 @@
 import {useState, useEffect} from 'react';
 import {Appearance} from 'react-native-appearance';
 import {ThemeStore} from '../../stores/theme/Store';
+import Constants from '../../utils/Constants';
 
 export function useTheme(stylesheet: any) {
   const [theme, setTheme] = useState(ThemeStore.getTheme());
   const [styles, setStyles] = useState(stylesheet(theme));
 
   useEffect(() => {
-    const subscription = Appearance.addChangeListener(({colorScheme}) => {
-      ThemeStore.setTheme(colorScheme);
+    if (Constants.isIOS13OrLater()) {
+      const subscription = Appearance.addChangeListener(({colorScheme}) => {
+        ThemeStore.setTheme(colorScheme);
 
-      setTheme(ThemeStore.getTheme());
-      setStyles(stylesheet(ThemeStore.getTheme()));
-    });
+        setTheme(ThemeStore.getTheme());
+        setStyles(stylesheet(ThemeStore.getTheme()));
+      });
 
-    return () => subscription.remove();
+      return () => subscription.remove();
+    }
   }, [stylesheet, theme]);
 
   useEffect(() => {
