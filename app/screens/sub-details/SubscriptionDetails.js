@@ -2,7 +2,14 @@
 
 import React, {useRef, useCallback, useReducer, useLayoutEffect} from 'react';
 import type {Element} from 'react';
-import {View, Animated, Text, Image, StatusBar, TextInput} from 'react-native';
+import {
+  View,
+  Animated,
+  Text,
+  ActionSheetIOS,
+  StatusBar,
+  TextInput,
+} from 'react-native';
 import {useSafeArea} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import stylesheet from './DetailsStyles';
@@ -283,14 +290,26 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     });
   };
 
-  const onRemove = async () => {
-    await SubscriptionActions.removeSubscription(subscription.id);
-    onClose();
+  const onRemove = () => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ['Cancel', 'Delete'],
+        destructiveButtonIndex: 1,
+        cancelButtonIndex: 0,
+      },
+      (buttonIndex: number) => {
+        if (buttonIndex === 1) {
+          SubscriptionActions.removeSubscription(subscription.id).then(() => {
+            onClose();
+          });
+        }
+      },
+    );
   };
 
   const costTranslateY = scrollY.interpolate({
     inputRange: [0, 180],
-    outputRange: [0, 10],
+    outputRange: [0, 15],
     extrapolate: 'clamp',
   });
 
@@ -414,12 +433,14 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
             </>
           )}
         </Animated.ScrollView>
-        <TouchableOpacity
-          style={[styles.deleteBtn, {paddingBottom: insets.bottom + 15}]}
-          activeOpacity={0.8}
-          onPress={onRemove}>
-          <Text style={theme.styles.lightText}>Delete Subscription</Text>
-        </TouchableOpacity>
+        {!isAddMode && (
+          <TouchableOpacity
+            style={[styles.deleteBtn, {paddingBottom: insets.bottom + 15}]}
+            activeOpacity={0.8}
+            onPress={onRemove}>
+            <Text style={theme.styles.lightText}>Delete Subscription</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </>
   );

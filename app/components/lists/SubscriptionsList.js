@@ -13,6 +13,7 @@ import Subscription from '../../class-models/Subscription';
 import SubscriptionItem from '../list-items/SubscriptionItem';
 import {SubscriptionsStore} from '../../stores/subscriptions/Store';
 import LineDivider from '../LineDivider';
+import EmptySubscriptions from '../list-items/EmptySubscriptions';
 
 type Props = {
   subscriptionIDs: string[],
@@ -59,6 +60,9 @@ const SubscriptionsList = ({
         <LinearGradient style={styles.gradient} colors={gradientColors} />
       </Animated.View>
       {/* <LineDivider color={theme.colors.soft2} /> */}
+      {/* {subscriptionIDs.length === 0 ? (
+        <EmptySubscriptions textStyle={theme.styles.mdLightText} />
+      ) : ( */}
       <AnimatedFlatList
         data={subscriptionIDs}
         keyExtractor={keyExtractor}
@@ -74,6 +78,7 @@ const SubscriptionsList = ({
         )}
         contentContainerStyle={styles.listContent}
       />
+      {/* )} */}
     </View>
   );
 };

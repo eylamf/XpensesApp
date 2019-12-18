@@ -1,6 +1,6 @@
 // @flow
 
-import React, {useReducer, useRef, useLayoutEffect, useCallback} from 'react';
+import React, {useReducer, useRef, useEffect, useCallback} from 'react';
 import type {Element} from 'react';
 import {View, ScrollView, TextInput, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -214,7 +214,7 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
     }
   }, [state, navigation]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       headerTitleStyle: {color: theme.colors.opposite},
       headerBackTitle: 'All',
