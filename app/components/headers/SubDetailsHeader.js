@@ -42,7 +42,7 @@ const SubDetailsHeader = React.memo<any>(
         colors={gradientColor}
         pointerEvents={'box-none'}>
         {!isAddMode && (
-          <Row style={styles.content}>
+          <Row style={styles.content} pointerEvents={'box-none'}>
             <TouchableOpacity
               style={styles.left}
               activeOpacity={0.8}

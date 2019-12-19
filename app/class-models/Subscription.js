@@ -404,7 +404,7 @@ class Subscription {
     daysUntil = Math.floor(incrementedDayOfYear - dayInYear);
     dueDate = moment({hour: 0}).add(daysUntil, 'd');
 
-    const label = dueDate.fromNow(true);
+    const label = dueDate.fromNow();
 
     return label.charAt(0).toUpperCase() + label.slice(1);
   }

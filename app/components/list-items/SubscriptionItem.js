@@ -1,12 +1,13 @@
 // @flow
 
-import React from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import type {Element} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, AppState, Text, StyleSheet} from 'react-native';
 import NumberFormat from 'react-number-format';
 import {RectButton} from 'react-native-gesture-handler';
 import {connect} from 'remx';
 import {useTheme} from '../../utils/hooks/useTheme';
+import {useAppStateChangeHandler} from '../../utils/hooks/useAppStateChangeHandler';
 import type {Theme} from '../../utils/Types';
 import Subscription from '../../class-models/Subscription';
 import {SubscriptionsStore} from '../../stores/subscriptions/Store';
@@ -29,6 +30,18 @@ const SubscriptionItem = ({
   onPress,
 }: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
+  const [timeUntil, setTimeUntil] = useState(
+    subscription.getTimeUntilDueLabel(),
+  );
+
+  const onAppStateChange = useCallback(() => {
+    setTimeUntil(subscription.getTimeUntilDueLabel());
+  }, [subscription]);
+
+  useEffect(onAppStateChange, [subscription.cycle, subscription.firstPayment]);
+
+  // TODO : get this to be called on state change
+  // useAppStateChangeHandler(onAppStateChange);
 
   return (
     <RectButton
@@ -77,8 +90,8 @@ const SubscriptionItem = ({
               </Text>
             )}
           />
-          <Text style={styles.interval}>
-            {subscription.getTimeUntilDueLabel()}
+          <Text style={styles.interval} maxFontSizeMultiplier={1.5}>
+            {timeUntil}
           </Text>
           {/* <Text style={styles.interval} maxFontSizeMultiplier={1.5}>
             {subscription.cycle.toPretty()}

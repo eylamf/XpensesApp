@@ -81,7 +81,9 @@ const ReceiptModal = ({navigation}: Props): Element<any> => {
             />
           </RNTouchableOpacity>
         </Row>
-        <Text style={styles.title}>Breakdown</Text>
+        <Text style={styles.title} maxFontSizeMultiplier={1.5}>
+          Breakdown
+        </Text>
         <ReceiptList />
       </Animated.View>
     </View>

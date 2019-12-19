@@ -45,7 +45,6 @@ const stylesheet = (theme: Theme) =>
     },
 
     costInput: {
-      height: 40,
       marginLeft: 2,
       letterSpacing: 1,
       marginRight: -1,

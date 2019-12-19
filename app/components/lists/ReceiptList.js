@@ -31,9 +31,13 @@ const ReceiptList = ({receipt}: Props): Element<any> => {
     return (
       <Row style={styles.item}>
         <Row style={theme.styles.flexOne}>
-          <Text style={theme.styles.text}>{`${sub.getCompanyName()}`}</Text>
+          <Text
+            style={theme.styles.text}
+            maxFontSizeMultiplier={1.5}>{`${sub.getCompanyName()}`}</Text>
           {intervals > 0 && (
-            <Text style={styles.intervals}>{`${intervalsLabel}`}</Text>
+            <Text
+              style={styles.intervals}
+              maxFontSizeMultiplier={1.5}>{`${intervalsLabel}`}</Text>
           )}
         </Row>
         <NumberFormat
@@ -43,7 +47,9 @@ const ReceiptList = ({receipt}: Props): Element<any> => {
           displayType={'text'}
           thousandSeparator
           renderText={(value: string) => (
-            <Text style={cost === 0 ? styles.disabledCost : styles.cost}>
+            <Text
+              style={cost === 0 ? styles.disabledCost : styles.cost}
+              maxFontSizeMultiplier={1.5}>
               {value}
             </Text>
           )}

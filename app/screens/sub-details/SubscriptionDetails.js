@@ -69,11 +69,11 @@ const reducer = (state: State, action: ReducerAction): State => {
     case types.SET_COST: {
       const {cost} = action.payload;
 
-      if (Number(cost) > 0) {
-        return {...state, cost: action.payload.cost};
+      if (Number(cost) === 0) {
+        return {...state, cost: ''};
       }
 
-      return state;
+      return {...state, cost};
     }
 
     case types.SET_DESC:
@@ -280,9 +280,14 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     dispatch({type: types.SET_COST, payload: {cost: formatted.toString()}});
   };
 
-  const onScrollToEnd = () => {
+  const onScrollToEnd = (toValue?: number) => {
     setTimeout(() => {
-      scrollview.current && scrollview.current._component.scrollToEnd();
+      if (typeof toValue !== 'undefined') {
+        scrollview.current &&
+          scrollview.current._component.scrollTo({x: 0, y: toValue});
+      } else {
+        scrollview.current && scrollview.current._component.scrollToEnd();
+      }
       scrollview.current &&
         scrollview.current._component.flashScrollIndicators();
     }, 0);

@@ -25,7 +25,7 @@ type Props = {
   switchTint: ?string,
   dispatch: (action: ReducerAction) => void,
   state: DetailsState,
-  onScrollToEnd: () => void,
+  onScrollToEnd: (toValue?: number) => void,
 };
 
 type DetailsState = {
@@ -70,7 +70,7 @@ const SubDetailsForm = ({
       payload: null,
     });
 
-    onScrollToEnd();
+    onScrollToEnd(150);
   };
 
   const onChangeFirstPayment = (value: Date) => {
@@ -90,7 +90,7 @@ const SubDetailsForm = ({
       payload: null,
     });
 
-    onScrollToEnd();
+    onScrollToEnd(250);
   };
 
   const onSelectCycleQuantity = (quantity: ReminderIntervalQuantity) => {

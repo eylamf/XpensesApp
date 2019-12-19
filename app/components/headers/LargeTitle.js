@@ -25,7 +25,7 @@ const LargeTitle = React.memo<any>(
           styles.container,
           {paddingTop: insets.top + Constants.getNavbarHeight() / 2},
         ]}>
-        <Text style={styles.title} maxFontSizeMultiplier={1.5}>
+        <Text style={styles.title} maxFontSizeMultiplier={1}>
           {title}
         </Text>
         {rightComponent}
