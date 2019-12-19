@@ -658,6 +658,7 @@
 				DEVELOPMENT_TEAM = Y998SBC5E9;
 				INFOPLIST_FILE = Xpenses/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -678,6 +679,7 @@
 				DEVELOPMENT_TEAM = Y998SBC5E9;
 				INFOPLIST_FILE = Xpenses/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

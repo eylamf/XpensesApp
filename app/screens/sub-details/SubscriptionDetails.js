@@ -66,8 +66,15 @@ const reducer = (state: State, action: ReducerAction): State => {
     case types.SET_NAME:
       return {...state, name: action.payload.name};
 
-    case types.SET_COST:
-      return {...state, cost: action.payload.cost};
+    case types.SET_COST: {
+      const {cost} = action.payload;
+
+      if (Number(cost) > 0) {
+        return {...state, cost: action.payload.cost};
+      }
+
+      return state;
+    }
 
     case types.SET_DESC:
       return {...state, description: action.payload.description};
@@ -165,7 +172,8 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
 
   const [state, dispatch] = useReducer(reducer, {
     name: subscription.company.name,
-    cost: subscription.cost.toFixed(2).toString(),
+    cost:
+      subscription.cost === 0 ? '' : subscription.cost.toFixed(2).toString(),
     description: subscription.description,
     colorGroup: subscription.company.colorGroup,
     firstPayment: subscription.firstPayment,

@@ -6,8 +6,13 @@ import {NotificationsStore} from './Store';
 import Notification from '../../class-models/Notification';
 
 export const registerForPushNotifications = () => {
+  console.log('Notification Actions: called register for push notifications');
   PushNotification.configure({
-    onNotification: notif => console.log('RECEIVED NOTIFICATION IN-APP', notif),
+    onNotification: notif => {
+      console.log('RECEIVED NOTIFICATION IN-APP', notif);
+      notif.finish(PushNotification.FetchResult.NoData);
+    },
+
     permissions: {
       alert: true,
       badge: true,
@@ -76,6 +81,7 @@ export const fetchNotifications = async () => {
  * Add a notification.
  */
 export const addNotification = async (notification: Notification) => {
+  console.log('Notification Actions: add notification', notification);
   try {
     await AsyncStorage.setItem(
       `notif:${notification.subID}`,
