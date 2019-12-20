@@ -77,6 +77,7 @@ class Subscription {
 
   generateNotification(): Notification {
     const firstPaymentDate = moment(this.firstPayment);
+    const today = moment();
 
     let fireDate = firstPaymentDate;
 
@@ -88,25 +89,35 @@ class Subscription {
       this.reminderInterval,
     );
 
-    // Set fire date
-    switch (unit) {
-      case 'Day(s)':
-        fireDate = firstPaymentDate
-          .add(quantity, 'd')
-          .subtract(reminderMillisInAdvance, 'ms');
-        break;
-      case 'Week(s)':
-        fireDate = firstPaymentDate
-          .add(quantity, 'w')
-          .subtract(reminderMillisInAdvance, 'ms');
-        break;
-      case 'Month(s)':
-        fireDate = firstPaymentDate
-          .add(quantity, 'M')
-          .subtract(reminderMillisInAdvance, 'ms');
-        break;
-      default:
-        break;
+    let isAfter = false;
+
+    if (firstPaymentDate.isAfter(today)) {
+      isAfter = true;
+    }
+
+    if (isAfter) {
+      fireDate = firstPaymentDate.subtract(reminderMillisInAdvance, 'ms');
+    } else {
+      // Set fire date
+      switch (unit) {
+        case 'Day(s)':
+          fireDate = firstPaymentDate
+            .add(quantity, 'd')
+            .subtract(reminderMillisInAdvance, 'ms');
+          break;
+        case 'Week(s)':
+          fireDate = firstPaymentDate
+            .add(quantity, 'w')
+            .subtract(reminderMillisInAdvance, 'ms');
+          break;
+        case 'Month(s)':
+          fireDate = firstPaymentDate
+            .add(quantity, 'M')
+            .subtract(reminderMillisInAdvance, 'ms');
+          break;
+        default:
+          break;
+      }
     }
 
     // Set repeat time if quantity > 1

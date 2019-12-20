@@ -10,7 +10,7 @@ export const registerForPushNotifications = () => {
   PushNotification.configure({
     onNotification: notif => {
       console.log('RECEIVED NOTIFICATION IN-APP', notif);
-      notif.finish(PushNotification.FetchResult.NoData);
+      // notif.finish(PushNotification.FetchResult.NoData);
     },
 
     permissions: {

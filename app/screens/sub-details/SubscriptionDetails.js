@@ -259,7 +259,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
             style={styles.headerRight}
             activeOpacity={0.8}
             onPress={onAction}>
-            <Text style={theme.styles.whiteText} maxFontSizeMultiplier={1.3}>
+            <Text style={theme.styles.mdWhiteText} maxFontSizeMultiplier={1.3}>
               Add
             </Text>
           </TouchableOpacity>
@@ -271,7 +271,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     isAddMode,
     onAction,
     styles.headerRight,
-    theme.styles.whiteText,
+    theme.styles.mdWhiteText,
   ]);
 
   const onBlur = () => {

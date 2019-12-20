@@ -124,8 +124,8 @@ const stylesheet = (theme: Theme) =>
     },
 
     actionLabel: {
-      ...theme.styles.whiteText,
-      ...theme.styles.bold,
+      ...theme.styles.mdWhiteText,
+      // ...theme.styles.bold,
     },
   });
 

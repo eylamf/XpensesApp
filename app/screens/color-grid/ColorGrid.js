@@ -48,7 +48,9 @@ const ColorGrid = ({navigation, route}: Props): Element<any> => {
             style={styles.headerRight}
             activeOpacity={0.8}
             onPress={onDone}>
-            <Text style={theme.styles.primaryText} maxFontSizeMultiplier={1.3}>
+            <Text
+              style={theme.styles.mdPrimaryText}
+              maxFontSizeMultiplier={1.3}>
               Done
             </Text>
           </TouchableOpacity>
@@ -62,7 +64,7 @@ const ColorGrid = ({navigation, route}: Props): Element<any> => {
     styles.headerRight,
     theme.colors.opposite,
     theme.colors.primary,
-    theme.styles.text,
+    theme.styles.mdPrimaryText,
   ]);
 
   const onClose = () => {

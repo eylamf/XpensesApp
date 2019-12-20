@@ -184,6 +184,10 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
   const onAdd = useCallback(async () => {
     const {name, colorGroup, logoURI} = state;
 
+    if (name.length === 0) {
+      return;
+    }
+
     const company = new Company({
       id: state.name.toLowerCase(),
       name,
@@ -223,7 +227,7 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
           style={styles.headerRight}
           activeOpacity={0.8}
           onPress={onAdd}>
-          <Text style={theme.styles.primaryText} maxFontSizeMultiplier={1.3}>
+          <Text style={theme.styles.mdPrimaryText} maxFontSizeMultiplier={1.3}>
             Add
           </Text>
         </TouchableOpacity>
@@ -235,7 +239,7 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
     styles.headerRight,
     theme.colors.primary,
     theme.colors.opposite,
-    theme.styles.primaryText,
+    theme.styles.mdPrimaryText,
   ]);
 
   const onBlur = () => {
