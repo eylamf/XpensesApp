@@ -2,7 +2,7 @@
 
 import React, {useLayoutEffect, useState, useCallback} from 'react';
 import type {Element} from 'react';
-import {View, FlatList, Text, StyleSheet} from 'react-native';
+import {View, FlatList, Image, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Constants from '../../utils/Constants';
 import {useTheme} from '../../utils/hooks/useTheme';
@@ -15,6 +15,8 @@ type Props = {
   navigation: any,
   route: any,
 };
+
+const CHECK = require('../../../assets/Checkmark.png');
 
 const ColorGrid = ({navigation, route}: Props): Element<any> => {
   const [theme, styles] = useTheme(stylesheet);
@@ -48,11 +50,11 @@ const ColorGrid = ({navigation, route}: Props): Element<any> => {
             style={styles.headerRight}
             activeOpacity={0.8}
             onPress={onDone}>
-            <Text
-              style={theme.styles.mdPrimaryText}
-              maxFontSizeMultiplier={1.3}>
-              Done
-            </Text>
+            <Image
+              style={styles.checkIcon}
+              source={CHECK}
+              resizeMode={'cover'}
+            />
           </TouchableOpacity>
         ),
       });
@@ -64,7 +66,7 @@ const ColorGrid = ({navigation, route}: Props): Element<any> => {
     styles.headerRight,
     theme.colors.opposite,
     theme.colors.primary,
-    theme.styles.mdPrimaryText,
+    styles.checkIcon,
   ]);
 
   const onClose = () => {
@@ -102,9 +104,15 @@ const ColorGrid = ({navigation, route}: Props): Element<any> => {
 const stylesheet = (theme: Theme) =>
   StyleSheet.create({
     headerRight: {
-      height: 24,
+      height: 30,
       paddingLeft: 40,
       ...theme.styles.center,
+    },
+
+    checkIcon: {
+      width: 20,
+      height: 20,
+      tintColor: theme.colors.primary,
     },
 
     listContent: {

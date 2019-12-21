@@ -2,7 +2,7 @@
 
 import React, {useReducer, useRef, useEffect, useCallback} from 'react';
 import type {Element} from 'react';
-import {View, ScrollView, TextInput, Text} from 'react-native';
+import {View, ScrollView, TextInput, Image, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import stylesheet from './CreateStyles';
@@ -42,6 +42,8 @@ type State = {
   enableReminderTimePicker: boolean,
 };
 
+const CHECK = require('../../../assets/Checkmark.png');
+
 const types = {
   SET_LOGO: 'SET_LOGO',
   SET_NAME: 'SET_NAME',
@@ -69,8 +71,15 @@ const reducer = (state: State, action: ReducerAction): State => {
     case types.SET_DESC:
       return {...state, description: action.payload.description};
 
-    case types.SET_COST:
-      return {...state, cost: action.payload.cost};
+    case types.SET_COST: {
+      const {cost} = action.payload;
+
+      if (Number(cost) > 0) {
+        return {...state, cost};
+      } else {
+        return {...state, cost: ''};
+      }
+    }
 
     case types.SET_COLOR: {
       const {colorGroup} = action.payload;
@@ -227,9 +236,7 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
           style={styles.headerRight}
           activeOpacity={0.8}
           onPress={onAdd}>
-          <Text style={theme.styles.mdPrimaryText} maxFontSizeMultiplier={1.3}>
-            Add
-          </Text>
+          <Image style={styles.checkIcon} source={CHECK} resizeMode={'cover'} />
         </TouchableOpacity>
       ),
     });
@@ -239,7 +246,7 @@ const CreateSubscription = ({navigation, route}: Props): Element<any> => {
     styles.headerRight,
     theme.colors.primary,
     theme.colors.opposite,
-    theme.styles.mdPrimaryText,
+    styles.checkIcon,
   ]);
 
   const onBlur = () => {

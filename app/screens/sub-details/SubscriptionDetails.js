@@ -9,6 +9,7 @@ import {
   ActionSheetIOS,
   StatusBar,
   TextInput,
+  Image,
 } from 'react-native';
 import {useSafeArea} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -45,6 +46,8 @@ type State = {
   enableReminderPicker: boolean,
   enableReminderTimePicker: boolean,
 };
+
+const CHECK = require('../../../assets/Checkmark.png');
 
 const types = {
   SET_NAME: 'SET_NAME',
@@ -258,10 +261,13 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
           <TouchableOpacity
             style={styles.headerRight}
             activeOpacity={0.8}
-            onPress={onAction}>
-            <Text style={theme.styles.mdWhiteText} maxFontSizeMultiplier={1.3}>
-              Add
-            </Text>
+            onPress={onAction}
+            hitSlop={{top: 10, bottom: 10}}>
+            <Image
+              style={styles.checkIcon}
+              source={CHECK}
+              resizeMode={'cover'}
+            />
           </TouchableOpacity>
         ),
       });
@@ -272,6 +278,7 @@ const SubscriptionDetails = ({navigation, route}: Props): Element<any> => {
     onAction,
     styles.headerRight,
     theme.styles.mdWhiteText,
+    styles.checkIcon,
   ]);
 
   const onBlur = () => {

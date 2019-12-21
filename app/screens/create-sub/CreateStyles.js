@@ -7,9 +7,15 @@ import Constants from '../../utils/Constants';
 const stylesheet = (theme: Theme) =>
   StyleSheet.create({
     headerRight: {
-      height: 24,
+      height: 30,
       paddingLeft: 40,
       ...theme.styles.center,
+    },
+
+    checkIcon: {
+      width: 20,
+      height: 20,
+      tintColor: theme.colors.primary,
     },
 
     top: {
