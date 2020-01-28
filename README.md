@@ -1,4 +1,4 @@
-# Xpenses
+# Xpenses (in development)
 
 ##### Xpenses is a mobile application that makes it easy to manage subscriptions.
 
